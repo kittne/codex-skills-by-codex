@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security"
+  short_description: "Security analysis and best practices"
+  default_prompt: "Use $security to analyze security issues, assess risk, and recommend fixes with verification steps."

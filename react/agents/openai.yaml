@@ -1,0 +1,4 @@
+interface:
+  display_name: "React"
+  short_description: "Help with React component design and app quality"
+  default_prompt: "Use $react to improve component architecture, state strategy, and testing discipline."

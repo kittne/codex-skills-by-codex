@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation Update"
+  short_description: "Update and validate docs after code changes."
+  default_prompt: "Use $documentation-update to update docs for these code changes."

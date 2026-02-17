@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tailwind Best Practices"
+  short_description: "Tailwind CSS usage and review guide"
+  default_prompt: "Use $tailwind-best-practices to review Tailwind CSS usage and recommend improvements."

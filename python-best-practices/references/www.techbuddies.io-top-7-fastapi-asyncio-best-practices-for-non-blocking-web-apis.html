@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+			<link rel="pingback" href="https://www.techbuddies.io/xmlrpc.php">
+		<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v26.9 - https://yoast.com/product/yoast-seo-wordpress/ -->
+	<title>Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs - techbuddies.io</title>
+	<link rel="canonical" href="https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs - techbuddies.io" />
+	<meta property="og:description" content="Introduction: Why FastAPI asyncio Best Practices Matter When I first started building high-throughput services with FastAPI, I quickly learned that just “using async def” wasn’t enough. To get real performance benefits, I had to understand how asyncio and the event loop actually work under the hood. FastAPI is designed to shine in asynchronous environments, but&hellip;&nbsp;Read More &raquo;Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs" />
+	<meta property="og:url" content="https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/" />
+	<meta property="og:site_name" content="techbuddies.io" />
+	<meta property="article:publisher" content="https://www.facebook.com/profile.php?id=100064321050746" />
+	<meta property="article:published_time" content="2026-01-05T13:04:46+00:00" />
+	<meta property="article:modified_time" content="2026-01-05T13:05:06+00:00" />
+	<meta property="og:image" content="https://www.techbuddies.io/wp-content/uploads/2026/01/vopqwibqrz-image-0.png" />
+	<meta name="author" content="Cary Huang" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:creator" content="@Techbuddie0823" />
+	<meta name="twitter:site" content="@Techbuddie0823" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Cary Huang" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="27 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#article","isPartOf":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/"},"author":{"name":"Cary Huang","@id":"https://www.techbuddies.io/#/schema/person/a6a81348e508059738981136b45ce67b"},"headline":"Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs","datePublished":"2026-01-05T13:04:46+00:00","dateModified":"2026-01-05T13:05:06+00:00","mainEntityOfPage":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/"},"wordCount":4282,"commentCount":0,"publisher":{"@id":"https://www.techbuddies.io/#organization"},"image":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#primaryimage"},"thumbnailUrl":"https://www.techbuddies.io/wp-content/uploads/2026/01/nxrzjodnns-image-0.png","keywords":["async Python web APIs","FastAPI asyncio best practices","FastAPI event loop","non-blocking I/O in FastAPI"],"articleSection":["Python Programming"],"inLanguage":"en-US","potentialAction":[{"@type":"CommentAction","name":"Comment","target":["https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#respond"]}]},{"@type":"WebPage","@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/","url":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/","name":"Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs - techbuddies.io","isPartOf":{"@id":"https://www.techbuddies.io/#website"},"primaryImageOfPage":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#primaryimage"},"image":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#primaryimage"},"thumbnailUrl":"https://www.techbuddies.io/wp-content/uploads/2026/01/nxrzjodnns-image-0.png","datePublished":"2026-01-05T13:04:46+00:00","dateModified":"2026-01-05T13:05:06+00:00","breadcrumb":{"@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/"]}]},{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#primaryimage","url":"https://www.techbuddies.io/wp-content/uploads/2026/01/nxrzjodnns-image-0.png","contentUrl":"https://www.techbuddies.io/wp-content/uploads/2026/01/nxrzjodnns-image-0.png","width":1024,"height":1024},{"@type":"BreadcrumbList","@id":"https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.techbuddies.io/"},{"@type":"ListItem","position":2,"name":"All Posts","item":"https://www.techbuddies.io/7b3c2-blog-archive/"},{"@type":"ListItem","position":3,"name":"Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs"}]},{"@type":"WebSite","@id":"https://www.techbuddies.io/#website","url":"https://www.techbuddies.io/","name":"techbuddies.io","description":"Your one stop site for all things tech","publisher":{"@id":"https://www.techbuddies.io/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.techbuddies.io/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://www.techbuddies.io/#organization","name":"techbuddies.io","url":"https://www.techbuddies.io/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.techbuddies.io/#/schema/logo/image/","url":"https://www.techbuddies.io/wp-content/uploads/2021/02/logo-neve.svg","contentUrl":"https://www.techbuddies.io/wp-content/uploads/2021/02/logo-neve.svg","width":85,"height":83,"caption":"techbuddies.io"},"image":{"@id":"https://www.techbuddies.io/#/schema/logo/image/"},"sameAs":["https://www.facebook.com/profile.php?id=100064321050746","https://x.com/Techbuddie0823"]},{"@type":"Person","@id":"https://www.techbuddies.io/#/schema/person/a6a81348e508059738981136b45ce67b","name":"Cary Huang","image":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://www.techbuddies.io/#/schema/person/image/","url":"https://secure.gravatar.com/avatar/8d592a3806ec485713df643de240758eee6cafbba0223b879647286dc75fd276?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/8d592a3806ec485713df643de240758eee6cafbba0223b879647286dc75fd276?s=96&d=mm&r=g","caption":"Cary Huang"},"description":"Hi, I'm Cary — a tech enthusiast, educator, and author, currently a software architect at Hornetlabs Technology in Canada. I love simplifying complex ideas, tackling coding challenges, and sharing what I learn with others.","sameAs":["https://www.techbuddies.io"],"url":"https://www.techbuddies.io/author/cary-huang328/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="techbuddies.io &raquo; Feed" href="https://www.techbuddies.io/feed/" />
+<link rel="alternate" type="application/rss+xml" title="techbuddies.io &raquo; Comments Feed" href="https://www.techbuddies.io/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="techbuddies.io &raquo; Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs Comments Feed" href="https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://www.techbuddies.io/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.techbuddies.io%2F2026%2F01%2F05%2Ftop-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://www.techbuddies.io/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.techbuddies.io%2F2026%2F01%2F05%2Ftop-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis%2F&#038;format=xml" />
+		<!-- This site uses the Google Analytics by MonsterInsights plugin v9.11.1 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+							<script src="//www.googletagmanager.com/gtag/js?id=G-6LJYG80N5L"  data-cfasync="false" data-wpfc-render="false" type="text/javascript" async></script>
+			<script data-cfasync="false" data-wpfc-render="false" type="text/javascript">
+				var mi_version = '9.11.1';
+				var mi_track_user = true;
+				var mi_no_track_reason = '';
+								var MonsterInsightsDefaultLocations = {"page_location":"https:\/\/www.techbuddies.io\/2026\/01\/05\/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis\/"};
+								if ( typeof MonsterInsightsPrivacyGuardFilter === 'function' ) {
+					var MonsterInsightsLocations = (typeof MonsterInsightsExcludeQuery === 'object') ? MonsterInsightsPrivacyGuardFilter( MonsterInsightsExcludeQuery ) : MonsterInsightsPrivacyGuardFilter( MonsterInsightsDefaultLocations );
+				} else {
+					var MonsterInsightsLocations = (typeof MonsterInsightsExcludeQuery === 'object') ? MonsterInsightsExcludeQuery : MonsterInsightsDefaultLocations;
+				}
+
+								var disableStrs = [
+										'ga-disable-G-6LJYG80N5L',
+									];
+
+				/* Function to detect opted out users */
+				function __gtagTrackerIsOptedOut() {
+					for (var index = 0; index < disableStrs.length; index++) {
+						if (document.cookie.indexOf(disableStrs[index] + '=true') > -1) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				/* Disable tracking if the opt-out cookie exists. */
+				if (__gtagTrackerIsOptedOut()) {
+					for (var index = 0; index < disableStrs.length; index++) {
+						window[disableStrs[index]] = true;
+					}
+				}
+
+				/* Opt-out function */
+				function __gtagTrackerOptout() {
+					for (var index = 0; index < disableStrs.length; index++) {
+						document.cookie = disableStrs[index] + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+						window[disableStrs[index]] = true;
+					}
+				}
+
+				if ('undefined' === typeof gaOptout) {
+					function gaOptout() {
+						__gtagTrackerOptout();
+					}
+				}
+								window.dataLayer = window.dataLayer || [];
+
+				window.MonsterInsightsDualTracker = {
+					helpers: {},
+					trackers: {},
+				};
+				if (mi_track_user) {
+					function __gtagDataLayer() {
+						dataLayer.push(arguments);
+					}
+
+					function __gtagTracker(type, name, parameters) {
+						if (!parameters) {
+							parameters = {};
+						}
+
+						if (parameters.send_to) {
+							__gtagDataLayer.apply(null, arguments);
+							return;
+						}
+
+						if (type === 'event') {
+														parameters.send_to = monsterinsights_frontend.v4_id;
+							var hookName = name;
+							if (typeof parameters['event_category'] !== 'undefined') {
+								hookName = parameters['event_category'] + ':' + name;
+							}
+
+							if (typeof MonsterInsightsDualTracker.trackers[hookName] !== 'undefined') {
+								MonsterInsightsDualTracker.trackers[hookName](parameters);
+							} else {
+								__gtagDataLayer('event', name, parameters);
+							}
+							
+						} else {
+							__gtagDataLayer.apply(null, arguments);
+						}
+					}
+
+					__gtagTracker('js', new Date());
+					__gtagTracker('set', {
+						'developer_id.dZGIzZG': true,
+											});
+					if ( MonsterInsightsLocations.page_location ) {
+						__gtagTracker('set', MonsterInsightsLocations);
+					}
+										__gtagTracker('config', 'G-6LJYG80N5L', {"forceSSL":"true","link_attribution":"true"} );
+										window.gtag = __gtagTracker;										(function () {
+						/* https://developers.google.com/analytics/devguides/collection/analyticsjs/ */
+						/* ga and __gaTracker compatibility shim. */
+						var noopfn = function () {
+							return null;
+						};
+						var newtracker = function () {
+							return new Tracker();
+						};
+						var Tracker = function () {
+							return null;
+						};
+						var p = Tracker.prototype;
+						p.get = noopfn;
+						p.set = noopfn;
+						p.send = function () {
+							var args = Array.prototype.slice.call(arguments);
+							args.unshift('send');
+							__gaTracker.apply(null, args);
+						};
+						var __gaTracker = function () {
+							var len = arguments.length;
+							if (len === 0) {
+								return;
+							}
+							var f = arguments[len - 1];
+							if (typeof f !== 'object' || f === null || typeof f.hitCallback !== 'function') {
+								if ('send' === arguments[0]) {
+									var hitConverted, hitObject = false, action;
+									if ('event' === arguments[1]) {
+										if ('undefined' !== typeof arguments[3]) {
+											hitObject = {
+												'eventAction': arguments[3],
+												'eventCategory': arguments[2],
+												'eventLabel': arguments[4],
+												'value': arguments[5] ? arguments[5] : 1,
+											}
+										}
+									}
+									if ('pageview' === arguments[1]) {
+										if ('undefined' !== typeof arguments[2]) {
+											hitObject = {
+												'eventAction': 'page_view',
+												'page_path': arguments[2],
+											}
+										}
+									}
+									if (typeof arguments[2] === 'object') {
+										hitObject = arguments[2];
+									}
+									if (typeof arguments[5] === 'object') {
+										Object.assign(hitObject, arguments[5]);
+									}
+									if ('undefined' !== typeof arguments[1].hitType) {
+										hitObject = arguments[1];
+										if ('pageview' === hitObject.hitType) {
+											hitObject.eventAction = 'page_view';
+										}
+									}
+									if (hitObject) {
+										action = 'timing' === arguments[1].hitType ? 'timing_complete' : hitObject.eventAction;
+										hitConverted = mapArgs(hitObject);
+										__gtagTracker('event', action, hitConverted);
+									}
+								}
+								return;
+							}
+
+							function mapArgs(args) {
+								var arg, hit = {};
+								var gaMap = {
+									'eventCategory': 'event_category',
+									'eventAction': 'event_action',
+									'eventLabel': 'event_label',
+									'eventValue': 'event_value',
+									'nonInteraction': 'non_interaction',
+									'timingCategory': 'event_category',
+									'timingVar': 'name',
+									'timingValue': 'value',
+									'timingLabel': 'event_label',
+									'page': 'page_path',
+									'location': 'page_location',
+									'title': 'page_title',
+									'referrer' : 'page_referrer',
+								};
+								for (arg in args) {
+																		if (!(!args.hasOwnProperty(arg) || !gaMap.hasOwnProperty(arg))) {
+										hit[gaMap[arg]] = args[arg];
+									} else {
+										hit[arg] = args[arg];
+									}
+								}
+								return hit;
+							}
+
+							try {
+								f.hitCallback();
+							} catch (ex) {
+							}
+						};
+						__gaTracker.create = newtracker;
+						__gaTracker.getByName = newtracker;
+						__gaTracker.getAll = function () {
+							return [];
+						};
+						__gaTracker.remove = noopfn;
+						__gaTracker.loaded = true;
+						window['__gaTracker'] = __gaTracker;
+					})();
+									} else {
+										console.log("");
+					(function () {
+						function __gtagTracker() {
+							return null;
+						}
+
+						window['__gtagTracker'] = __gtagTracker;
+						window['gtag'] = __gtagTracker;
+					})();
+									}
+			</script>
+							<!-- / Google Analytics by MonsterInsights -->
+		<style id='wp-img-auto-sizes-contain-inline-css' type='text/css'>
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='https://www.techbuddies.io/wp-includes/css/dist/block-library/style.min.css?ver=6.9.1' type='text/css' media='all' />
+
+<style id='wp-block-paragraph-inline-css' type='text/css'>
+.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
+/*# sourceURL=https://www.techbuddies.io/wp-includes/blocks/paragraph/style.min.css */
+</style>
+<style id='wp-block-spacer-inline-css' type='text/css'>
+.wp-block-spacer{clear:both}
+/*# sourceURL=https://www.techbuddies.io/wp-includes/blocks/spacer/style.min.css */
+</style>
+
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--neve-link-color: var(--nv-primary-accent);--wp--preset--color--neve-link-hover-color: var(--nv-secondary-accent);--wp--preset--color--nv-site-bg: var(--nv-site-bg);--wp--preset--color--nv-light-bg: var(--nv-light-bg);--wp--preset--color--nv-dark-bg: var(--nv-dark-bg);--wp--preset--color--neve-text-color: var(--nv-text-color);--wp--preset--color--nv-text-dark-bg: var(--nv-text-dark-bg);--wp--preset--color--nv-c-1: var(--nv-c-1);--wp--preset--color--nv-c-2: var(--nv-c-2);--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<style id='otter-sharing-icons-style-inline-css' type='text/css'>
+.wp-block-themeisle-blocks-sharing-icons{width:100%}.wp-block-themeisle-blocks-sharing-icons[class*=align]{float:unset}.wp-block-themeisle-blocks-sharing-icons.aligncenter .social-icons-wrap{justify-content:center}.wp-block-themeisle-blocks-sharing-icons.alignleft .social-icons-wrap{justify-content:flex-start}.wp-block-themeisle-blocks-sharing-icons.alignright .social-icons-wrap{justify-content:flex-end}.wp-block-themeisle-blocks-sharing-icons .social-icons-wrap{display:flex;column-gap:var(--icons-gap, 5px);flex-wrap:wrap}.wp-block-themeisle-blocks-sharing-icons .social-icon{font-size:14px;padding:12px;border-radius:var(--border-radius, 3px);white-space:nowrap;display:inline-block;text-align:center;touch-action:manipulation;line-height:20px;margin:10px 0;text-decoration:none}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-facebook{background-color:var(--icon-bg-color, #3b5998);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-twitter{background-color:var(--icon-bg-color, #55acee);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-linkedin{background-color:var(--icon-bg-color, #0976b4);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-pinterest{background-color:var(--icon-bg-color, #cc2127);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-tumblr{background-color:var(--icon-bg-color, #35465c);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-reddit{background-color:var(--icon-bg-color, #ff4500);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-telegram{background-color:var(--icon-bg-color, #0088cc);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-whatsapp{background-color:var(--icon-bg-color, #25d366);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-mastodon{background-color:var(--icon-bg-color, #2b90d9);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-email{background-color:var(--icon-bg-color, #dd4b39);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon.is-comments{background-color:var(--icon-bg-color, #dd4b39);color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons .social-icon:hover{box-shadow:0 14px 26px -12px rgba(59,89,152,.42),0 4px 23px 0 rgba(0,0,0,.12),0 8px 10px -5px rgba(59,89,152,.2)}.wp-block-themeisle-blocks-sharing-icons .social-icon i{min-width:20px;font-size:16px;color:var(--text-color, #fff)}.wp-block-themeisle-blocks-sharing-icons:not(.is-style-icons) .v-line{width:1px;height:20px;background-color:var(--text-color, #fff);opacity:.5;display:inline-block;vertical-align:top;margin:0 10px}/*# sourceMappingURL=style.css.map */
+
+/*# sourceURL=https://www.techbuddies.io/wp-content/plugins/otter-blocks/build/blocks/sharing-icons/style.css */
+</style>
+
+<link rel='stylesheet' id='rt-fontawsome-css' href='https://www.techbuddies.io/wp-content/plugins/the-post-grid/assets/vendor/font-awesome/css/font-awesome.min.css?ver=7.8.4' type='text/css' media='all' />
+<link rel='stylesheet' id='rt-flaticon-css' href='https://www.techbuddies.io/wp-content/plugins/the-post-grid/assets/vendor/flaticon/flaticon_the_post_grid.css?ver=7.8.4' type='text/css' media='all' />
+<link rel='stylesheet' id='rt-tpg-block-css' href='https://www.techbuddies.io/wp-content/plugins/the-post-grid/assets/css/tpg-block.min.css?ver=7.8.4' type='text/css' media='all' />
+<link rel='stylesheet' id='crp-style-rounded-thumbs-css' href='https://www.techbuddies.io/wp-content/plugins/contextual-related-posts/css/rounded-thumbs.min.css?ver=4.1.0' type='text/css' media='all' />
+<style id='crp-style-rounded-thumbs-inline-css' type='text/css'>
+
+			.crp_related.crp-rounded-thumbs a {
+				width: 150px;
+                height: 150px;
+				text-decoration: none;
+			}
+			.crp_related.crp-rounded-thumbs img {
+				max-width: 150px;
+				margin: auto;
+			}
+			.crp_related.crp-rounded-thumbs .crp_title {
+				width: 100%;
+			}
+			
+/*# sourceURL=crp-style-rounded-thumbs-inline-css */
+</style>
+<link rel='stylesheet' id='neve-style-css' href='https://www.techbuddies.io/wp-content/themes/neve/style-main-new.min.css?ver=3.6.7' type='text/css' media='all' />
+<style id='neve-style-inline-css' type='text/css'>
+
+			.nv-ft-post {
+				margin-top:60px
+			}
+			.nv-ft-post .nv-ft-wrap:not(.layout-covers){
+				background:var(--nv-light-bg);
+			}
+			.nv-ft-post h2{
+				font-size:calc( var(--fontsize, var(--h2fontsize)) * 1.3)
+			}
+			.nv-ft-post .nv-meta-list{
+				display:block
+			}
+			.nv-ft-post .non-grid-content{
+				padding:32px
+			}
+			.nv-ft-post .wp-post-image{
+				position:absolute;
+				object-fit:cover;
+				width:100%;
+				height:100%
+			}
+			.nv-ft-post:not(.layout-covers) .nv-post-thumbnail-wrap{
+				margin:0;
+				position:relative;
+				min-height:320px
+			}
+			
+.nv-meta-list li.meta:not(:last-child):after { content:"/" }.nv-meta-list .no-mobile{
+			display:none;
+		}.nv-meta-list li.last::after{
+			content: ""!important;
+		}@media (min-width: 769px) {
+			.nv-meta-list .no-mobile {
+				display: inline-block;
+			}
+			.nv-meta-list li.last:not(:last-child)::after {
+		 		content: "/" !important;
+			}
+		}
+.toggle-palette a { display: flex; align-items: center; } .toggle-palette .icon { display: flex; width: var(--iconsize); height: var(--iconsize); fill: currentColor; } .toggle-palette .label { font-size: 0.85em; margin-left: 5px; }
+ :root{ --container: 748px;--postwidth:100%; --primarybtnbg: var(--nv-secondary-accent); --primarybtnhoverbg: var(--nv-dark-bg); --primarybtncolor: #ffffff; --secondarybtncolor: var(--nv-primary-accent); --primarybtnhovercolor: #ffffff; --secondarybtnhovercolor: var(--nv-text-color);--primarybtnborderradius:0;--secondarybtnborderradius:3px;--secondarybtnborderwidth:3px;--btnpadding:10px 15px;--primarybtnpadding:10px 15px;--secondarybtnpadding:calc(10px - 3px) calc(15px - 3px); --btnlineheight: 1.6em; --btntexttransform: none; --btnfontweight: 600; --bodyfontfamily: Inter; --bodyfontsize: 15px; --bodylineheight: 1.6em; --bodyletterspacing: 0px; --bodyfontweight: 400; --bodytexttransform: none; --headingsfontfamily: Inter; --h1fontsize: 32px; --h1fontweight: 600; --h1lineheight: 1.2em; --h1letterspacing: 0px; --h1texttransform: none; --h2fontsize: 24px; --h2fontweight: 600; --h2lineheight: 1.3em; --h2letterspacing: 0px; --h2texttransform: none; --h3fontsize: 20px; --h3fontweight: 600; --h3lineheight: 1.4em; --h3letterspacing: 0px; --h3texttransform: none; --h4fontsize: 18px; --h4fontweight: 600; --h4lineheight: 1.6em; --h4letterspacing: 0px; --h4texttransform: none; --h5fontsize: 16px; --h5fontweight: 600; --h5lineheight: 1.6em; --h5letterspacing: 0px; --h5texttransform: none; --h6fontsize: 14px; --h6fontweight: 600; --h6lineheight: 1.6em; --h6letterspacing: 0px; --h6texttransform: none;--formfieldborderwidth:2px;--formfieldborderradius:3px; --formfieldbgcolor: var(--nv-light-bg); --formfieldbordercolor: #e7e7e7; --formfieldcolor: var(--nv-text-color);--formfieldpadding:10px 15px; } .has-neve-button-color-color{ color: var(--nv-secondary-accent)!important; } .has-neve-button-color-background-color{ background-color: var(--nv-secondary-accent)!important; } .single-post-container .alignfull > [class*="__inner-container"], .single-post-container .alignwide > [class*="__inner-container"]{ max-width:718px } .nv-meta-list{ --avatarsize: 20px; } .single .nv-meta-list{ --avatarsize: 20px; } .blog .nv-meta-list li, .archive .nv-meta-list li{ --fontweight: none; } .single h1.entry-title{ --fontsize: 32px; } .nv-post-cover{ --height: 0px;--padding:40px 0;--justify: flex-start; --textalign: left; --valign: center; } .nv-post-cover .nv-title-meta-wrap, .nv-page-title-wrap, .entry-header{ --textalign: left; } .nv-is-boxed.nv-title-meta-wrap{ --padding:40px 15px; --bgcolor: var(--nv-dark-bg); } .nv-overlay{ --opacity: 24; --blendmode: normal; } .nv-is-boxed.nv-comments-wrap{ --padding:20px; } .nv-is-boxed.comment-respond{ --padding:20px; } .nv-single-post-wrap{ --spacing: 60px; } .single:not(.single-product), .page{ --c-vspace:0 0 0 0;; } .global-styled{ --bgcolor: var(--nv-site-bg); } .header-top{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-color); --bgcolor: #f0f0f0; } .header-main{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-color); --bgcolor: var(--nv-light-bg); } .header-bottom{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-color); --bgcolor: #ffffff; } .header-menu-sidebar-bg{ --justify: flex-start; --textalign: left;--flexg: 1;--wrapdropdownwidth: auto; --color: var(--nv-text-color); --bgcolor: var(--nv-site-bg); } .header-menu-sidebar{ width: 360px; } .builder-item--logo{ --maxwidth: 48px;--padding:10px 0;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--nav-icon,.header-menu-sidebar .close-sidebar-panel .navbar-toggle{ --borderradius:3px;--borderwidth:1px; } .builder-item--nav-icon{ --label-margin:0 5px 0 0;;--padding:10px 15px;--margin:0; } .builder-item--primary-menu{ --color: var(--nv-text-color); --hovercolor: var(--nv-secondary-accent); --hovertextcolor: var(--nv-text-color); --activecolor: var(--nv-secondary-accent); --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 1em; --lineheight: 1.6; --letterspacing: 0px; --fontweight: 500; --texttransform: none; --iconsize: 1em; } .hfg-is-group.has-primary-menu .inherit-ff{ --inheritedfw: 500; } .builder-item--header_palette_switch{ --iconsize: 16px;--padding:0;--margin:0; } .builder-item--header_search{ --height: 40px;--formfieldborderwidth:2px;--formfieldborderradius:2px;--padding:0;--margin:0; } .builder-item--header_search_responsive{ --iconsize: 22px; --color: var(--nv-text-color); --formfieldfontsize: 14px;--formfieldborderwidth:2px;--formfieldborderradius:2px; --height: 40px;--padding:0 10px;--margin:0; } .footer-top-inner .row{ grid-template-columns:1fr; --valign: flex-start; } .footer-top{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-dark-bg); --bgcolor: var(--nv-dark-bg); } .footer-main-inner .row{ grid-template-columns:2fr 1fr; --valign: flex-start; } .footer-main{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-dark-bg); --bgcolor: var(--nv-dark-bg); } .footer-bottom-inner .row{ grid-template-columns:1fr 1fr; --valign: flex-start; } .footer-bottom{ --rowbcolor: var(--nv-light-bg); --color: var(--nv-text-dark-bg); --bgcolor: var(--nv-dark-bg); } .builder-item--footer-one-widgets{ --padding:20px;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--footer-menu{ --hovercolor: var(--nv-primary-accent); --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 0.8em; --lineheight: 1.6em; --letterspacing: 0px; --fontweight: 600; --texttransform: uppercase; --iconsize: 0.8em; --textalign: center;--justify: center; } @media(min-width: 576px){ :root{ --container: 992px;--postwidth:100%;--btnpadding:10px 15px;--primarybtnpadding:10px 15px;--secondarybtnpadding:calc(10px - 3px) calc(15px - 3px); --btnlineheight: 1.6em; --bodyfontsize: 16px; --bodylineheight: 1.6em; --bodyletterspacing: 0px; --h1fontsize: 40px; --h1lineheight: 1.2em; --h1letterspacing: 0px; --h2fontsize: 32px; --h2lineheight: 1.2em; --h2letterspacing: 0px; --h3fontsize: 24px; --h3lineheight: 1.4em; --h3letterspacing: 0px; --h4fontsize: 20px; --h4lineheight: 1.5em; --h4letterspacing: 0px; --h5fontsize: 18px; --h5lineheight: 1.6em; --h5letterspacing: 0px; --h6fontsize: 16px; --h6lineheight: 1.6em; --h6letterspacing: 0px; } .single-post-container .alignfull > [class*="__inner-container"], .single-post-container .alignwide > [class*="__inner-container"]{ max-width:962px } .nv-meta-list{ --avatarsize: 20px; } .single .nv-meta-list{ --avatarsize: 20px; } .single h1.entry-title{ --fontsize: 042px; } .nv-post-cover{ --height: 54vh;--padding:40px 20px;--justify: center; --textalign: center; --valign: center; } .nv-post-cover .nv-title-meta-wrap, .nv-page-title-wrap, .entry-header{ --textalign: center; } .nv-is-boxed.nv-title-meta-wrap{ --padding:60px 30px; } .nv-is-boxed.nv-comments-wrap{ --padding:30px; } .nv-is-boxed.comment-respond{ --padding:30px; } .nv-single-post-wrap{ --spacing: 60px; } .single:not(.single-product), .page{ --c-vspace:0 0 0 0;; } .header-menu-sidebar-bg{ --justify: flex-start; --textalign: left;--flexg: 1;--wrapdropdownwidth: auto; } .header-menu-sidebar{ width: 360px; } .builder-item--logo{ --maxwidth: 64px;--padding:10px 0;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--nav-icon{ --label-margin:0 5px 0 0;;--padding:10px 15px;--margin:0; } .builder-item--primary-menu{ --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 1em; --lineheight: 1.6; --letterspacing: 0px; --iconsize: 1em; } .builder-item--header_palette_switch{ --iconsize: 16px;--padding:0;--margin:0; } .builder-item--header_search{ --height: 40px;--formfieldborderwidth:2px;--formfieldborderradius:2px;--padding:0;--margin:0; } .builder-item--header_search_responsive{ --formfieldfontsize: 14px;--formfieldborderwidth:2px;--formfieldborderradius:2px; --height: 40px;--padding:0 10px;--margin:0; } .builder-item--footer-one-widgets{ --padding:20px;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--footer-menu{ --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 0.8em; --lineheight: 1.6em; --letterspacing: 0px; --iconsize: 0.8em; --textalign: center;--justify: center; } }@media(min-width: 960px){ :root{ --container: 1500px;--postwidth:100%;--btnpadding:13px 15px;--primarybtnpadding:13px 15px;--secondarybtnpadding:calc(13px - 3px) calc(15px - 3px); --btnfs: 16px; --btnlineheight: 1.6em; --bodyfontsize: 18px; --bodylineheight: 1.7em; --bodyletterspacing: 0px; --h1fontsize: 40px; --h1lineheight: 1.3em; --h1letterspacing: 0px; --h2fontsize: 32px; --h2lineheight: 1.2em; --h2letterspacing: 0px; --h3fontsize: 28px; --h3lineheight: 1.4em; --h3letterspacing: 0px; --h4fontsize: 24px; --h4lineheight: 1.5em; --h4letterspacing: 0px; --h5fontsize: 20px; --h5lineheight: 1.6em; --h5letterspacing: 0px; --h6fontsize: 16px; --h6lineheight: 1.6em; --h6letterspacing: 0px; --formfieldfontsize: 1em; } body:not(.single):not(.archive):not(.blog):not(.search):not(.error404) .neve-main > .container .col, body.post-type-archive-course .neve-main > .container .col, body.post-type-archive-llms_membership .neve-main > .container .col{ max-width: 100%; } body:not(.single):not(.archive):not(.blog):not(.search):not(.error404) .nv-sidebar-wrap, body.post-type-archive-course .nv-sidebar-wrap, body.post-type-archive-llms_membership .nv-sidebar-wrap{ max-width: 0%; } .neve-main > .archive-container .nv-index-posts.col{ max-width: 100%; } .neve-main > .archive-container .nv-sidebar-wrap{ max-width: 0%; } .neve-main > .single-post-container .nv-single-post-wrap.col{ max-width: 70%; } .single-post-container .alignfull > [class*="__inner-container"], .single-post-container .alignwide > [class*="__inner-container"]{ max-width:1020px } .container-fluid.single-post-container .alignfull > [class*="__inner-container"], .container-fluid.single-post-container .alignwide > [class*="__inner-container"]{ max-width:calc(70% + 15px) } .neve-main > .single-post-container .nv-sidebar-wrap{ max-width: 30%; } .nv-meta-list{ --avatarsize: 20px; } .single .nv-meta-list{ --avatarsize: 40px; } .blog .entry-summary, .archive .entry-summary, .blog .post-pages-links{ --fontsize: 18px; } .blog .nv-meta-list li, .archive .nv-meta-list li{ --fontsize: 1em; } .single h1.entry-title{ --fontsize: 064px; } .nv-post-cover{ --height: 50vh;--padding:60px 40px;--justify: flex-start; --textalign: left; --valign: center; } .nv-post-cover .nv-title-meta-wrap, .nv-page-title-wrap, .entry-header{ --textalign: left; } .nv-is-boxed.nv-title-meta-wrap{ --padding:40px 20px 40px 18px;; } .nv-is-boxed.nv-comments-wrap{ --padding:40px; } .nv-is-boxed.comment-respond{ --padding:40px; } .nv-single-post-wrap{ --spacing: 30px; } .single:not(.single-product), .page{ --c-vspace:0 0 0 0;; } .header-menu-sidebar-bg{ --justify: flex-start; --textalign: left;--flexg: 1;--wrapdropdownwidth: auto; } .header-menu-sidebar{ width: 360px; } .builder-item--logo{ --maxwidth: 64px;--padding:10px 0;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--nav-icon{ --label-margin:0 5px 0 0;;--padding:10px 15px;--margin:0; } .builder-item--primary-menu{ --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 1em; --lineheight: 1.6; --letterspacing: 0px; --iconsize: 1em; } .builder-item--header_palette_switch{ --iconsize: 20px;--padding:5px;--margin:0 0 0 20px;; } .builder-item--header_search{ --height: 40px;--formfieldborderwidth:2px;--formfieldborderradius:2px;--padding:0;--margin:0; } .builder-item--header_search_responsive{ --formfieldfontsize: 18px;--formfieldborderwidth:2px;--formfieldborderradius:2px; --height: 60px;--padding:5px;--margin:0 0 0 20px;; } .footer-top{ --height:365px; } .footer-bottom{ --height:80px; } .builder-item--footer-one-widgets{ --padding:20px;--margin:0; --textalign: left;--justify: flex-start; } .builder-item--footer-menu{ --spacing: 20px; --height: 25px;--padding:0;--margin:0; --fontsize: 0.8em; --lineheight: 1.6em; --letterspacing: 0px; --iconsize: 0.8em; --textalign: right;--justify: flex-end; } }:root{--nv-primary-accent:#0073aa;--nv-secondary-accent:#38a7dc;--nv-site-bg:#ffffff;--nv-light-bg:#f8f8f8;--nv-dark-bg:#202527;--nv-text-color:#272626;--nv-text-dark-bg:#ffffff;--nv-c-1:#76a658;--nv-c-2:#dc5a52;--nv-fallback-ff:Arial, Helvetica, sans-serif;} [data-neve-theme="light"], html.neve-light-theme { --nv-primary-accent:#0073aa;--nv-secondary-accent:#38a7dc;--nv-site-bg:#ffffff;--nv-light-bg:#f8f8f8;--nv-dark-bg:#202527;--nv-text-color:#272626;--nv-text-dark-bg:#ffffff;--nv-c-1:#76a658;--nv-c-2:#dc5a52; } [data-neve-theme="dark"], html.neve-dark-theme ~ * { --nv-primary-accent:#1fa2bd;--nv-secondary-accent:#1f90a6;--nv-site-bg:#202527;--nv-light-bg:#2c3235;--nv-dark-bg:#191d1f;--nv-text-color:#ffffff;--nv-text-dark-bg:#ffffff;--nv-c-1:#76a658;--nv-c-2:#dc5a52; } 
+/*# sourceURL=neve-style-inline-css */
+</style>
+<link rel='stylesheet' id='enlighterjs-css' href='https://www.techbuddies.io/wp-content/plugins/enlighter/cache/enlighterjs.min.css?ver=Wpcju+fGIRz01yX' type='text/css' media='all' />
+<link rel='stylesheet' id='neve-google-font-inter-css' href='//fonts.googleapis.com/css?family=Inter%3A400%2C600%2C500&#038;display=swap&#038;ver=3.6.7' type='text/css' media='all' />
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/google-analytics-for-wordpress/assets/js/frontend-gtag.min.js?ver=9.11.1" id="monsterinsights-frontend-script-js" async="async" data-wp-strategy="async"></script>
+<script data-cfasync="false" data-wpfc-render="false" type="text/javascript" id='monsterinsights-frontend-script-js-extra'>/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","download_extensions":"doc,pdf,ppt,zip,xls,docx,pptx,xlsx","inbound_paths":"[{\"path\":\"\\\/go\\\/\",\"label\":\"affiliate\"},{\"path\":\"\\\/recommend\\\/\",\"label\":\"affiliate\"}]","home_url":"https:\/\/www.techbuddies.io","hash_tracking":"false","v4_id":"G-6LJYG80N5L"};/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://www.techbuddies.io/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://www.techbuddies.io/wp-json/wp/v2/posts/3155" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.techbuddies.io/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.9.1" />
+<link rel='shortlink' href='https://www.techbuddies.io/?p=3155' />
+        <style>
+            :root {
+                --tpg-primary-color: #0d6efd;
+                --tpg-secondary-color: #0654c4;
+                --tpg-primary-light: #c4d0ff
+            }
+
+                        body .rt-tpg-container .rt-loading,
+            body #bottom-script-loader .rt-ball-clip-rotate {
+                color: #0367bf !important;
+            }
+
+                    </style>
+		<style type="text/css">.saboxplugin-wrap{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box;border:1px solid #eee;width:100%;clear:both;display:block;overflow:hidden;word-wrap:break-word;position:relative}.saboxplugin-wrap .saboxplugin-gravatar{float:left;padding:0 20px 20px 20px}.saboxplugin-wrap .saboxplugin-gravatar img{max-width:100px;height:auto;border-radius:0;}.saboxplugin-wrap .saboxplugin-authorname{font-size:18px;line-height:1;margin:20px 0 0 20px;display:block}.saboxplugin-wrap .saboxplugin-authorname a{text-decoration:none}.saboxplugin-wrap .saboxplugin-authorname a:focus{outline:0}.saboxplugin-wrap .saboxplugin-desc{display:block;margin:5px 20px}.saboxplugin-wrap .saboxplugin-desc a{text-decoration:underline}.saboxplugin-wrap .saboxplugin-desc p{margin:5px 0 12px}.saboxplugin-wrap .saboxplugin-web{margin:0 20px 15px;text-align:left}.saboxplugin-wrap .sab-web-position{text-align:right}.saboxplugin-wrap .saboxplugin-web a{color:#ccc;text-decoration:none}.saboxplugin-wrap .saboxplugin-socials{position:relative;display:block;background:#fcfcfc;padding:5px;border-top:1px solid #eee}.saboxplugin-wrap .saboxplugin-socials a svg{width:20px;height:20px}.saboxplugin-wrap .saboxplugin-socials a svg .st2{fill:#fff; transform-origin:center center;}.saboxplugin-wrap .saboxplugin-socials a svg .st1{fill:rgba(0,0,0,.3)}.saboxplugin-wrap .saboxplugin-socials a:hover{opacity:.8;-webkit-transition:opacity .4s;-moz-transition:opacity .4s;-o-transition:opacity .4s;transition:opacity .4s;box-shadow:none!important;-webkit-box-shadow:none!important}.saboxplugin-wrap .saboxplugin-socials .saboxplugin-icon-color{box-shadow:none;padding:0;border:0;-webkit-transition:opacity .4s;-moz-transition:opacity .4s;-o-transition:opacity .4s;transition:opacity .4s;display:inline-block;color:#fff;font-size:0;text-decoration:inherit;margin:5px;-webkit-border-radius:0;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;border-radius:0;overflow:hidden}.saboxplugin-wrap .saboxplugin-socials .saboxplugin-icon-grey{text-decoration:inherit;box-shadow:none;position:relative;display:-moz-inline-stack;display:inline-block;vertical-align:middle;zoom:1;margin:10px 5px;color:#444;fill:#444}.clearfix:after,.clearfix:before{content:' ';display:table;line-height:0;clear:both}.ie7 .clearfix{zoom:1}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-twitch{border-color:#38245c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-behance{border-color:#003eb0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-deviantart{border-color:#036824}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-digg{border-color:#00327c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-dribbble{border-color:#ba1655}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-facebook{border-color:#1e2e4f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-flickr{border-color:#003576}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-github{border-color:#264874}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-google{border-color:#0b51c5}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-html5{border-color:#902e13}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-instagram{border-color:#1630aa}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-linkedin{border-color:#00344f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-pinterest{border-color:#5b040e}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-reddit{border-color:#992900}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-rss{border-color:#a43b0a}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-sharethis{border-color:#5d8420}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-soundcloud{border-color:#995200}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-spotify{border-color:#0f612c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-stackoverflow{border-color:#a95009}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-steam{border-color:#006388}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-user_email{border-color:#b84e05}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-tumblr{border-color:#10151b}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-twitter{border-color:#0967a0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-vimeo{border-color:#0d7091}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-windows{border-color:#003f71}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-whatsapp{border-color:#003f71}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-wordpress{border-color:#0f3647}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-yahoo{border-color:#14002d}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-youtube{border-color:#900}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-xing{border-color:#000202}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-mixcloud{border-color:#2475a0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-vk{border-color:#243549}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-medium{border-color:#00452c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-quora{border-color:#420e00}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-meetup{border-color:#9b181c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-goodreads{border-color:#000}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-snapchat{border-color:#999700}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-500px{border-color:#00557f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-mastodont{border-color:#185886}.sabox-plus-item{margin-bottom:20px}@media screen and (max-width:480px){.saboxplugin-wrap{text-align:center}.saboxplugin-wrap .saboxplugin-gravatar{float:none;padding:20px 0;text-align:center;margin:0 auto;display:block}.saboxplugin-wrap .saboxplugin-gravatar img{float:none;display:inline-block;display:-moz-inline-stack;vertical-align:middle;zoom:1}.saboxplugin-wrap .saboxplugin-desc{margin:0 10px 20px;text-align:center}.saboxplugin-wrap .saboxplugin-authorname{text-align:center;margin:10px 0 20px}}body .saboxplugin-authorname a,body .saboxplugin-authorname a:hover{box-shadow:none;-webkit-box-shadow:none}a.sab-profile-edit{font-size:16px!important;line-height:1!important}.sab-edit-settings a,a.sab-profile-edit{color:#0073aa!important;box-shadow:none!important;-webkit-box-shadow:none!important}.sab-edit-settings{margin-right:15px;position:absolute;right:0;z-index:2;bottom:10px;line-height:20px}.sab-edit-settings i{margin-left:5px}.saboxplugin-socials{line-height:1!important}.rtl .saboxplugin-wrap .saboxplugin-gravatar{float:right}.rtl .saboxplugin-wrap .saboxplugin-authorname{display:flex;align-items:center}.rtl .saboxplugin-wrap .saboxplugin-authorname .sab-profile-edit{margin-right:10px}.rtl .sab-edit-settings{right:auto;left:0}img.sab-custom-avatar{max-width:75px;}.saboxplugin-wrap .saboxplugin-gravatar img {-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;}.saboxplugin-wrap .saboxplugin-gravatar img {-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;-o-border-radius:50%;border-radius:50%;}.saboxplugin-wrap {margin-top:0px; margin-bottom:0px; padding: 0px 0px }.saboxplugin-wrap .saboxplugin-authorname {font-size:18px; line-height:25px;}.saboxplugin-wrap .saboxplugin-desc p, .saboxplugin-wrap .saboxplugin-desc {font-size:15px !important; line-height:22px !important;}.saboxplugin-wrap .saboxplugin-web {font-size:14px;}.saboxplugin-wrap .saboxplugin-socials a svg {width:18px;height:18px;}</style><link rel="icon" href="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-150x150.png" sizes="32x32" />
+<link rel="icon" href="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-300x300.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-300x300.png" />
+<meta name="msapplication-TileImage" content="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-300x300.png" />
+		<style type="text/css" id="wp-custom-css">
+			.single-post .entry-title {
+    font-size: 40px;
+}
+body.page{
+	.comments-area {
+			margin-bottom: 60px;
+	}
+}
+.wp-block-cover .wp-block-group {
+  max-width: 1450px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.tb-card{border:1px solid rgba(0,0,0,.12);border-radius:14px;overflow:hidden;max-width:720px}
+.tb-card-link{display:flex;gap:14px;text-decoration:none;padding:14px;color:inherit}
+.tb-card-media{flex:0 0 140px}
+.tb-card-img{width:100%;height:auto;display:block;border-radius:10px}
+.tb-card-body{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.tb-card-title{font-weight:700;line-height:1.2}
+.tb-card-cta{margin-top:8px;opacity:.8}
+@media (max-width:640px){.tb-card-link{flex-direction:column}.tb-card-media{flex-basis:auto}}
+		</style>
+		
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4311119905122536"
+     crossorigin="anonymous"></script>
+<link rel='stylesheet' id='lwptoc-main-css' href='https://www.techbuddies.io/wp-content/plugins/luckywp-table-of-contents/front/assets/main.min.css?ver=2.1.14' type='text/css' media='all' />
+<link rel='stylesheet' id='otter-widgets-css' href='https://www.techbuddies.io/wp-content/uploads/themeisle-gutenberg/widgets-1709168096.css?ver=2.3.4' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-5-css' href='https://www.techbuddies.io/wp-content/plugins/otter-blocks/assets/fontawesome/css/all.min.css?ver=a06de4d45f38d36ac5b0' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-4-shims-css' href='https://www.techbuddies.io/wp-content/plugins/otter-blocks/assets/fontawesome/css/v4-shims.min.css?ver=a06de4d45f38d36ac5b0' type='text/css' media='all' />
+
+</head>
+
+<body  class="wp-singular post-template-default single single-post postid-3155 single-format-standard wp-custom-logo wp-theme-neve rttpg rttpg-7.8.4 radius-frontend rttpg-body-wrap rttpg-flaticon  nv-blog-default nv-sidebar-left menu_sidebar_slide_left" id="neve_body"  >
+<div class="wrapper">
+	
+	<header class="header"  >
+		<a class="neve-skip-link show-on-focus" href="#content" >
+			Skip to content		</a>
+		<div id="header-grid"  class="hfg_header site-header">
+	
+<nav class="header--row header-main hide-on-mobile hide-on-tablet layout-full-contained nv-navbar header--row"
+	data-row-id="main" data-show-on="desktop">
+
+	<div
+		class="header--row-inner header-main-inner">
+		<div class="container">
+			<div
+				class="row row--wrapper"
+				data-section="hfg_header_layout_main" >
+				<div class="hfg-slot left"><div class="builder-item desktop-left"><div class="item--inner builder-item--logo"
+		data-section="title_tagline"
+		data-item-id="logo">
+	
+<div class="site-logo">
+	<a class="brand" href="https://www.techbuddies.io/" title="← techbuddies.io"
+			aria-label="techbuddies.io" rel="home"><div class="title-with-logo"><img width="500" height="500" src="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02.png" class="neve-site-logo skip-lazy" alt="" data-variant="logo" decoding="async" fetchpriority="high" srcset="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02.png 500w, https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-150x150.png 150w" sizes="(max-width: 500px) 100vw, 500px" /><div class="nv-title-tagline-wrap"><p class="site-title">techbuddies.io</p></div></div></a></div>
+	</div>
+
+</div></div><div class="hfg-slot right"><div class="builder-item has-nav hfg-is-group has-primary-menu"><div class="item--inner builder-item--primary-menu has_menu"
+		data-section="header_menu_primary"
+		data-item-id="primary-menu">
+	<div class="nv-nav-wrap">
+	<div role="navigation" class="nav-menu-primary style-border-bottom m-style"
+			aria-label="Primary Menu">
+
+		<ul id="nv-primary-navigation-main" class="primary-menu-ul nav-ul menu-desktop"><li id="menu-item-412" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-412"><div class="wrap"><a href="https://www.techbuddies.io">Home</a></div></li>
+<li id="menu-item-2841" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-2841"><div class="wrap"><a href="https://www.techbuddies.io/category/news/"><span class="menu-item-title-wrap dd-title">Tech News</span></a><div role="button" aria-pressed="false" aria-label="Open Submenu" tabindex="0" class="caret-wrap caret 2" style="margin-left:5px;"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></div></div>
+<ul class="sub-menu">
+	<li id="menu-item-2843" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2843"><div class="wrap"><a href="https://www.techbuddies.io/category/news/business/">Business</a></div></li>
+	<li id="menu-item-2842" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2842"><div class="wrap"><a href="https://www.techbuddies.io/category/news/analysis/">Analysis</a></div></li>
+	<li id="menu-item-2844" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2844"><div class="wrap"><a href="https://www.techbuddies.io/category/news/featured/">Featured</a></div></li>
+	<li id="menu-item-2845" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2845"><div class="wrap"><a href="https://www.techbuddies.io/category/news/orchestration/">Orchestration</a></div></li>
+	<li id="menu-item-2846" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2846"><div class="wrap"><a href="https://www.techbuddies.io/category/news/technology/">Technology</a></div></li>
+	<li id="menu-item-2847" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2847"><div class="wrap"><a href="https://www.techbuddies.io/category/news/wallets/">Wallets</a></div></li>
+</ul>
+</li>
+<li id="menu-item-1493" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1493"><div class="wrap"><a href="https://www.techbuddies.io/category/c-programming/"><span class="menu-item-title-wrap dd-title">Categories</span></a><div role="button" aria-pressed="false" aria-label="Open Submenu" tabindex="0" class="caret-wrap caret 9" style="margin-left:5px;"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></div></div>
+<ul class="sub-menu">
+	<li id="menu-item-2233" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2233"><div class="wrap"><a href="https://www.techbuddies.io/category/n8n/">n8n</a></div></li>
+	<li id="menu-item-2112" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2112"><div class="wrap"><a href="https://www.techbuddies.io/category/c-programming/">C Programming</a></div></li>
+	<li id="menu-item-2436" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-2436"><div class="wrap"><a href="https://www.techbuddies.io/category/python-programming/">Python Programming</a></div></li>
+	<li id="menu-item-2437" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2437"><div class="wrap"><a href="https://www.techbuddies.io/category/rust-programming/">Rust Programming</a></div></li>
+	<li id="menu-item-466" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-466"><div class="wrap"><a href="https://www.techbuddies.io/category/postgresql/">PostgreSQL</a></div></li>
+	<li id="menu-item-574" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-574"><div class="wrap"><a href="https://www.techbuddies.io/category/cyber-security/">Security</a></div></li>
+	<li id="menu-item-703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-703"><div class="wrap"><a href="https://www.techbuddies.io/category/networking/">Networking</a></div></li>
+	<li id="menu-item-2111" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2111"><div class="wrap"><a href="https://www.techbuddies.io/category/dev-tools/">Dev Tools</a></div></li>
+	<li id="menu-item-2429" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2429"><div class="wrap"><a href="https://www.techbuddies.io/category/ci-cd/">CI/CD</a></div></li>
+	<li id="menu-item-2430" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2430"><div class="wrap"><a href="https://www.techbuddies.io/category/cloud-computing/">Cloud Computing</a></div></li>
+	<li id="menu-item-2433" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2433"><div class="wrap"><a href="https://www.techbuddies.io/category/database-engineering/">Database Engineering</a></div></li>
+	<li id="menu-item-2431" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2431"><div class="wrap"><a href="https://www.techbuddies.io/category/kubernetes/">Containerization &amp; Kubernetes</a></div></li>
+	<li id="menu-item-2432" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2432"><div class="wrap"><a href="https://www.techbuddies.io/category/cyber-security/">Cyber Security</a></div></li>
+	<li id="menu-item-2435" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2435"><div class="wrap"><a href="https://www.techbuddies.io/category/machine-learning/">Machine Learning</a></div></li>
+	<li id="menu-item-2434" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2434"><div class="wrap"><a href="https://www.techbuddies.io/category/linux-devops/">Linux &amp; DevOps</a></div></li>
+</ul>
+</li>
+<li id="menu-item-3046" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3046"><div class="wrap"><a href="https://www.techbuddies.io/sql-formatter-and-validator-for-postgresql/"><span class="menu-item-title-wrap dd-title">Useful Tools</span></a><div role="button" aria-pressed="false" aria-label="Open Submenu" tabindex="0" class="caret-wrap caret 25" style="margin-left:5px;"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></div></div>
+<ul class="sub-menu">
+	<li id="menu-item-3045" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3045"><div class="wrap"><a href="https://www.techbuddies.io/sql-formatter-and-validator-for-postgresql/">SQL Formatter and Validator for PostgreSQL</a></div></li>
+	<li id="menu-item-3051" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3051"><div class="wrap"><a href="https://www.techbuddies.io/postgresql-query-plan-explainer/">PostgreSQL Query Plan Explainer</a></div></li>
+</ul>
+</li>
+<li id="menu-item-428" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-428"><div class="wrap"><a href="https://www.techbuddies.io/7b3c2-blog-archive/">All Posts</a></div></li>
+<li id="menu-item-793" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-793"><div class="wrap"><a href="https://www.techbuddies.io/contact-your-tech-buddies/">Contact</a></div></li>
+</ul>	</div>
+</div>
+
+	</div>
+
+<div class="item--inner builder-item--header_palette_switch"
+		data-section="header_palette_switch"
+		data-item-id="header_palette_switch">
+	<div class="toggle-palette">
+	<a class="toggle palette-icon-wrapper" aria-label="Palette Switch" href="#" >
+		<span class="icon"><svg aria-hidden="true" fill="currentColor" width="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.516,0,0,114.497,0,256c0,141.484,114.497,256,256,256c141.484,0,256-114.497,256-256 C512,114.516,397.503,0,256,0z M276,471.079V40.921C385.28,50.889,472,142.704,472,256C472,369.28,385.294,461.11,276,471.079z" /></svg></span>
+			</a>
+</div>
+	</div>
+
+<div class="item--inner builder-item--header_search_responsive"
+		data-section="header_search_responsive"
+		data-item-id="header_search_responsive">
+	<div class="nv-search-icon-component" >
+	<div  class="menu-item-nav-search canvas">
+		<a aria-label="Search" href="#" class="nv-icon nv-search" >
+				<svg width="22" height="22" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1216 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z" /></svg>
+			</a>		<div class="nv-nav-search" aria-label="search">
+			<div class="form-wrap container responsive-search">
+				
+<form role="search"
+	method="get"
+	class="search-form"
+	action="https://www.techbuddies.io/">
+	<label>
+		<span class="screen-reader-text">Search for...</span>
+	</label>
+	<input type="search"
+		class="search-field"
+		aria-label="Search"
+		placeholder="Search for..."
+		value=""
+		name="s"/>
+	<button type="submit"
+			class="search-submit nv-submit"
+			aria-label="Search">
+					<span class="nv-search-icon-wrap">
+				<span class="nv-icon nv-search" >
+				<svg width="15" height="15" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1216 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z" /></svg>
+			</span>			</span>
+			</button>
+	</form>
+			</div>
+							<div class="close-container container responsive-search">
+					<button  class="close-responsive-search" aria-label="Close"
+												>
+						<svg width="50" height="50" viewBox="0 0 20 20" fill="#555555"><path d="M14.95 6.46L11.41 10l3.54 3.54l-1.41 1.41L10 11.42l-3.53 3.53l-1.42-1.42L8.58 10L5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z"/></svg>
+					</button>
+				</div>
+					</div>
+	</div>
+</div>
+	</div>
+
+</div></div>							</div>
+		</div>
+	</div>
+</nav>
+
+
+<nav class="header--row header-main hide-on-desktop layout-full-contained nv-navbar header--row"
+	data-row-id="main" data-show-on="mobile">
+
+	<div
+		class="header--row-inner header-main-inner">
+		<div class="container">
+			<div
+				class="row row--wrapper"
+				data-section="hfg_header_layout_main" >
+				<div class="hfg-slot left"><div class="builder-item tablet-left mobile-left"><div class="item--inner builder-item--logo"
+		data-section="title_tagline"
+		data-item-id="logo">
+	
+<div class="site-logo">
+	<a class="brand" href="https://www.techbuddies.io/" title="← techbuddies.io"
+			aria-label="techbuddies.io" rel="home"><div class="title-with-logo"><img width="500" height="500" src="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02.png" class="neve-site-logo skip-lazy" alt="" data-variant="logo" decoding="async" srcset="https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02.png 500w, https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2023/09/techbuddies-logo-icon-02-150x150.png 150w" sizes="(max-width: 500px) 100vw, 500px" /><div class="nv-title-tagline-wrap"><p class="site-title">techbuddies.io</p></div></div></a></div>
+	</div>
+
+</div></div><div class="hfg-slot right"><div class="builder-item tablet-left mobile-left"><div class="item--inner builder-item--nav-icon"
+		data-section="header_menu_icon"
+		data-item-id="nav-icon">
+	<div class="menu-mobile-toggle item-button navbar-toggle-wrapper">
+	<button type="button" class=" navbar-toggle"
+			value="Navigation Menu"
+					aria-label="Navigation Menu "
+			aria-expanded="false" onclick="if('undefined' !== typeof toggleAriaClick ) { toggleAriaClick() }">
+					<span class="bars">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</span>
+					<span class="screen-reader-text">Navigation Menu</span>
+	</button>
+</div> <!--.navbar-toggle-wrapper-->
+
+
+	</div>
+
+</div></div>							</div>
+		</div>
+	</div>
+</nav>
+
+<div
+		id="header-menu-sidebar" class="header-menu-sidebar tcb menu-sidebar-panel slide_left hfg-pe"
+		data-row-id="sidebar">
+	<div id="header-menu-sidebar-bg" class="header-menu-sidebar-bg">
+				<div class="close-sidebar-panel navbar-toggle-wrapper">
+			<button type="button" class="hamburger is-active  navbar-toggle active" 					value="Navigation Menu"
+					aria-label="Navigation Menu "
+					aria-expanded="false" onclick="if('undefined' !== typeof toggleAriaClick ) { toggleAriaClick() }">
+								<span class="bars">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</span>
+								<span class="screen-reader-text">
+			Navigation Menu					</span>
+			</button>
+		</div>
+					<div id="header-menu-sidebar-inner" class="header-menu-sidebar-inner tcb ">
+						<div class="builder-item has-nav"><div class="item--inner builder-item--primary-menu has_menu"
+		data-section="header_menu_primary"
+		data-item-id="primary-menu">
+	<div class="nv-nav-wrap">
+	<div role="navigation" class="nav-menu-primary style-border-bottom m-style"
+			aria-label="Primary Menu">
+
+		<ul id="nv-primary-navigation-sidebar" class="primary-menu-ul nav-ul menu-mobile"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-412"><div class="wrap"><a href="https://www.techbuddies.io">Home</a></div></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-2841"><div class="wrap"><a href="https://www.techbuddies.io/category/news/"><span class="menu-item-title-wrap dd-title">Tech News</span></a><button tabindex="0" type="button" class="caret-wrap navbar-toggle 2 " style="margin-left:5px;"  aria-label="Toggle Tech News"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></button></div>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2843"><div class="wrap"><a href="https://www.techbuddies.io/category/news/business/">Business</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2842"><div class="wrap"><a href="https://www.techbuddies.io/category/news/analysis/">Analysis</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2844"><div class="wrap"><a href="https://www.techbuddies.io/category/news/featured/">Featured</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2845"><div class="wrap"><a href="https://www.techbuddies.io/category/news/orchestration/">Orchestration</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2846"><div class="wrap"><a href="https://www.techbuddies.io/category/news/technology/">Technology</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2847"><div class="wrap"><a href="https://www.techbuddies.io/category/news/wallets/">Wallets</a></div></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1493"><div class="wrap"><a href="https://www.techbuddies.io/category/c-programming/"><span class="menu-item-title-wrap dd-title">Categories</span></a><button tabindex="0" type="button" class="caret-wrap navbar-toggle 9 " style="margin-left:5px;"  aria-label="Toggle Categories"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></button></div>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2233"><div class="wrap"><a href="https://www.techbuddies.io/category/n8n/">n8n</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2112"><div class="wrap"><a href="https://www.techbuddies.io/category/c-programming/">C Programming</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-2436"><div class="wrap"><a href="https://www.techbuddies.io/category/python-programming/">Python Programming</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2437"><div class="wrap"><a href="https://www.techbuddies.io/category/rust-programming/">Rust Programming</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-466"><div class="wrap"><a href="https://www.techbuddies.io/category/postgresql/">PostgreSQL</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-574"><div class="wrap"><a href="https://www.techbuddies.io/category/cyber-security/">Security</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-703"><div class="wrap"><a href="https://www.techbuddies.io/category/networking/">Networking</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2111"><div class="wrap"><a href="https://www.techbuddies.io/category/dev-tools/">Dev Tools</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2429"><div class="wrap"><a href="https://www.techbuddies.io/category/ci-cd/">CI/CD</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2430"><div class="wrap"><a href="https://www.techbuddies.io/category/cloud-computing/">Cloud Computing</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2433"><div class="wrap"><a href="https://www.techbuddies.io/category/database-engineering/">Database Engineering</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2431"><div class="wrap"><a href="https://www.techbuddies.io/category/kubernetes/">Containerization &amp; Kubernetes</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2432"><div class="wrap"><a href="https://www.techbuddies.io/category/cyber-security/">Cyber Security</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2435"><div class="wrap"><a href="https://www.techbuddies.io/category/machine-learning/">Machine Learning</a></div></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2434"><div class="wrap"><a href="https://www.techbuddies.io/category/linux-devops/">Linux &amp; DevOps</a></div></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3046"><div class="wrap"><a href="https://www.techbuddies.io/sql-formatter-and-validator-for-postgresql/"><span class="menu-item-title-wrap dd-title">Useful Tools</span></a><button tabindex="0" type="button" class="caret-wrap navbar-toggle 25 " style="margin-left:5px;"  aria-label="Toggle Useful Tools"><span class="caret"><svg fill="currentColor" aria-label="Dropdown" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"/></svg></span></button></div>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3045"><div class="wrap"><a href="https://www.techbuddies.io/sql-formatter-and-validator-for-postgresql/">SQL Formatter and Validator for PostgreSQL</a></div></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3051"><div class="wrap"><a href="https://www.techbuddies.io/postgresql-query-plan-explainer/">PostgreSQL Query Plan Explainer</a></div></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-428"><div class="wrap"><a href="https://www.techbuddies.io/7b3c2-blog-archive/">All Posts</a></div></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-793"><div class="wrap"><a href="https://www.techbuddies.io/contact-your-tech-buddies/">Contact</a></div></li>
+</ul>	</div>
+</div>
+
+	</div>
+
+</div><div class="builder-item desktop-left tablet-left mobile-left"><div class="item--inner builder-item--header_search"
+		data-section="header_search"
+		data-item-id="header_search">
+	<div class="component-wrap search-field">
+	<div class="widget widget-search"  style="padding: 0;margin: 8px 2px;"  >
+		
+<form role="search"
+	method="get"
+	class="search-form"
+	action="https://www.techbuddies.io/">
+	<label>
+		<span class="screen-reader-text">Search for...</span>
+	</label>
+	<input type="search"
+		class="search-field"
+		aria-label="Search"
+		placeholder="Search for..."
+		value=""
+		name="s"/>
+	<button type="submit"
+			class="search-submit nv-submit"
+			aria-label="Search">
+					<span class="nv-search-icon-wrap">
+				<span class="nv-icon nv-search" >
+				<svg width="15" height="15" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1216 832q0-185-131.5-316.5t-316.5-131.5-316.5 131.5-131.5 316.5 131.5 316.5 316.5 131.5 316.5-131.5 131.5-316.5zm512 832q0 52-38 90t-90 38q-54 0-90-38l-343-342q-179 124-399 124-143 0-273.5-55.5t-225-150-150-225-55.5-273.5 55.5-273.5 150-225 225-150 273.5-55.5 273.5 55.5 225 150 150 225 55.5 273.5q0 220-124 399l343 343q37 37 37 90z" /></svg>
+			</span>			</span>
+			</button>
+	</form>
+	</div>
+</div>
+	</div>
+
+</div>					</div>
+	</div>
+</div>
+<div class="header-menu-sidebar-overlay hfg-ov hfg-pe" onclick="if('undefined' !== typeof toggleAriaClick ) { toggleAriaClick() }"></div>
+</div>
+	</header>
+
+	<style>.is-menu-sidebar .header-menu-sidebar { visibility: visible; }.is-menu-sidebar.menu_sidebar_slide_left .header-menu-sidebar { transform: translate3d(0, 0, 0); left: 0; }.is-menu-sidebar.menu_sidebar_slide_right .header-menu-sidebar { transform: translate3d(0, 0, 0); right: 0; }.is-menu-sidebar.menu_sidebar_pull_right .header-menu-sidebar, .is-menu-sidebar.menu_sidebar_pull_left .header-menu-sidebar { transform: translateX(0); }.is-menu-sidebar.menu_sidebar_dropdown .header-menu-sidebar { height: auto; }.is-menu-sidebar.menu_sidebar_dropdown .header-menu-sidebar-inner { max-height: 400px; padding: 20px 0; }.is-menu-sidebar.menu_sidebar_full_canvas .header-menu-sidebar { opacity: 1; }.header-menu-sidebar .menu-item-nav-search { pointer-events: none; }.header-menu-sidebar .menu-item-nav-search .is-menu-sidebar & { pointer-events: unset; }.nav-ul li:focus-within .wrap.active + .sub-menu { opacity: 1; visibility: visible; }.nav-ul li.neve-mega-menu:focus-within .wrap.active + .sub-menu { display: grid; }.nav-ul li > .wrap { display: flex; align-items: center; position: relative; padding: 0 4px; }.nav-ul:not(.menu-mobile):not(.neve-mega-menu) > li > .wrap > a { padding-top: 1px }</style><style>.header-menu-sidebar .nav-ul li .wrap { padding: 0 4px; }.header-menu-sidebar .nav-ul li .wrap a { flex-grow: 1; display: flex; }.header-menu-sidebar .nav-ul li .wrap a .dd-title { width: var(--wrapdropdownwidth); }.header-menu-sidebar .nav-ul li .wrap button { border: 0; z-index: 1; background: 0; }.header-menu-sidebar .nav-ul li:not([class*=block]):not(.menu-item-has-children) > .wrap > a { padding-right: calc(1em + (18px*2));}</style><div class="nv-post-cover" style="background-image:url(https://www.techbuddies.io/wp-content/uploads/2026/01/nxrzjodnns-image-0.png);"><div class="nv-overlay"></div><div class="container"><div class="nv-title-meta-wrap nv-is-boxed"><small class="nv--yoast-breadcrumb neve-breadcrumbs-wrapper"><span><span><a href="https://www.techbuddies.io/">Home</a></span> » <span><a href="https://www.techbuddies.io/7b3c2-blog-archive/">All Posts</a></span> » <span class="breadcrumb_last" aria-current="page">Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs</span></span></small><h1 class="title entry-title">Top 7 FastAPI asyncio Best Practices for Non‑Blocking Web APIs</h1><ul class="nv-meta-list"><li  class="meta author vcard "><img class="photo" alt="Cary Huang" src="https://secure.gravatar.com/avatar/8d592a3806ec485713df643de240758eee6cafbba0223b879647286dc75fd276?s=40&#038;d=mm&#038;r=g" />&nbsp;<span class="author-name fn"><a href="https://www.techbuddies.io/author/cary-huang328/" title="Posts by Cary Huang" rel="author">Cary Huang</a></span></li><li class="meta date posted-on "><time class="entry-date published" datetime="2026-01-05T13:04:46+00:00" content="2026-01-05">January 5, 2026</time><time class="updated" datetime="2026-01-05T13:05:06+00:00">January 5, 2026</time></li><li class="meta category last"><a href="https://www.techbuddies.io/category/python-programming/" rel="category tag">Python Programming</a></li></ul></div></div></div>
+
+	
+	<main id="content" class="neve-main">
+
+	<div class="container single-post-container">
+		<div class="row">
+			<div class="nv-sidebar-wrap col-sm-12 nv-left blog-sidebar " >
+		<aside id="secondary" role="complementary">
+		
+		<div id="block-47" class="widget widget_block"><div class="lwptoc lwptoc-autoWidth lwptoc-baseItems lwptoc-light lwptoc-notInherit" data-smooth-scroll="1" data-smooth-scroll-offset="24"><div class="lwptoc_i">    <div class="lwptoc_header">
+        <b class="lwptoc_title">Contents</b>                    <span class="lwptoc_toggle">
+                <a href="#" class="lwptoc_toggle_label" data-label="show">hide</a>            </span>
+            </div>
+<div class="lwptoc_items lwptoc_items-visible">
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Introduction_Why_FastAPI_asyncio_Best_Practices_Matter">
+                    <span class="lwptoc_item_number">1</span>
+                <span class="lwptoc_item_label">Introduction: Why FastAPI asyncio Best Practices Matter</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#1_Understand_the_FastAPI_Event_Loop_Model_Before_You_Optimize">
+                    <span class="lwptoc_item_number">2</span>
+                <span class="lwptoc_item_label">1. Understand the FastAPI Event Loop Model Before You Optimize</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#How_FastAPI_Uvicorn_and_asyncio_Fit_Together">
+                    <span class="lwptoc_item_number">2.1</span>
+                <span class="lwptoc_item_label">How FastAPI, Uvicorn, and asyncio Fit Together</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Synchronous_vs_Asynchronous_Work_on_the_Event_Loop">
+                    <span class="lwptoc_item_number">2.2</span>
+                <span class="lwptoc_item_label">Synchronous vs Asynchronous Work on the Event Loop</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Common_Misconceptions_About_Concurrency_in_FastAPI">
+                    <span class="lwptoc_item_number">2.3</span>
+                <span class="lwptoc_item_label">Common Misconceptions About Concurrency in FastAPI</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#2_Keep_the_Event_Loop_Non-Blocking_Avoid_CPU-Bound_Work_in_async_Def">
+                    <span class="lwptoc_item_number">3</span>
+                <span class="lwptoc_item_label">2. Keep the Event Loop Non-Blocking: Avoid CPU-Bound Work in async Def</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Why_CPU-Bound_Work_Freezes_Your_FastAPI_App">
+                    <span class="lwptoc_item_number">3.1</span>
+                <span class="lwptoc_item_label">Why CPU-Bound Work Freezes Your FastAPI App</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Offloading_Heavy_Tasks_to_Threads_or_Background_Workers">
+                    <span class="lwptoc_item_number">3.2</span>
+                <span class="lwptoc_item_label">Offloading Heavy Tasks to Threads or Background Workers</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Spotting_and_Refactoring_Hidden_Blocking_Calls">
+                    <span class="lwptoc_item_number">3.3</span>
+                <span class="lwptoc_item_label">Spotting and Refactoring Hidden Blocking Calls</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#3_Use_True_Async_IO_for_Databases_HTTP_Clients_and_File_Access">
+                    <span class="lwptoc_item_number">4</span>
+                <span class="lwptoc_item_label">3. Use True Async I/O for Databases, HTTP Clients, and File Access</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Choosing_Async-Friendly_Database_Drivers_and_ORMs">
+                    <span class="lwptoc_item_number">4.1</span>
+                <span class="lwptoc_item_label">Choosing Async-Friendly Database Drivers and ORMs</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Switching_from_requests_to_Async_HTTP_Clients">
+                    <span class="lwptoc_item_number">4.2</span>
+                <span class="lwptoc_item_label">Switching from requests to Async HTTP Clients</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Using_Async_File_Access_When_It_Actually_Helps">
+                    <span class="lwptoc_item_number">4.3</span>
+                <span class="lwptoc_item_label">Using Async File Access (When It Actually Helps)</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#4_Structure_Your_FastAPI_Endpoints_for_Predictable_Concurrency">
+                    <span class="lwptoc_item_number">5</span>
+                <span class="lwptoc_item_label">4. Structure Your FastAPI Endpoints for Predictable Concurrency</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Designing_Lean_Single-Responsibility_Path_Operations">
+                    <span class="lwptoc_item_number">5.1</span>
+                <span class="lwptoc_item_label">Designing Lean, Single-Responsibility Path Operations</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Writing_Async-Safe_Dependencies_and_Middlewares">
+                    <span class="lwptoc_item_number">5.2</span>
+                <span class="lwptoc_item_label">Writing Async-Safe Dependencies and Middlewares</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Managing_Background_Tasks_and_In-Request_Parallelism_Carefully">
+                    <span class="lwptoc_item_number">5.3</span>
+                <span class="lwptoc_item_label">Managing Background Tasks and In-Request Parallelism Carefully</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#5_Manage_Background_Tasks_and_Long-Running_Work_Safely">
+                    <span class="lwptoc_item_number">6</span>
+                <span class="lwptoc_item_label">5. Manage Background Tasks and Long-Running Work Safely</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#When_to_Use_FastAPI_BackgroundTasks_and_When_Not_To">
+                    <span class="lwptoc_item_number">6.1</span>
+                <span class="lwptoc_item_label">When to Use FastAPI BackgroundTasks (and When Not To)</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Using_asynciocreate_task_and_to_thread_Without_Leaking_Tasks">
+                    <span class="lwptoc_item_number">6.2</span>
+                <span class="lwptoc_item_label">Using asyncio.create_task and to_thread Without Leaking Tasks</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Offloading_Truly_Long-Running_Jobs_to_External_Workers">
+                    <span class="lwptoc_item_number">6.3</span>
+                <span class="lwptoc_item_label">Offloading Truly Long-Running Jobs to External Workers</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#6_Tune_Concurrency_Worker_Counts_Connection_Limits_and_Timeouts">
+                    <span class="lwptoc_item_number">7</span>
+                <span class="lwptoc_item_label">6. Tune Concurrency: Worker Counts, Connection Limits, and Timeouts</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Choosing_Uvicorn_Worker_Counts_for_Your_Hardware">
+                    <span class="lwptoc_item_number">7.1</span>
+                <span class="lwptoc_item_label">Choosing Uvicorn Worker Counts for Your Hardware</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Right-Sizing_Database_Pools_and_Async_Client_Limits">
+                    <span class="lwptoc_item_number">7.2</span>
+                <span class="lwptoc_item_label">Right-Sizing Database Pools and Async Client Limits</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Timeouts_and_Circuit-Breaker_Thinking">
+                    <span class="lwptoc_item_number">7.3</span>
+                <span class="lwptoc_item_label">Timeouts and Circuit-Breaker Thinking</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#7_Verify_Your_FastAPI_asyncio_Best_Practices_with_Load_Testing_and_Profiling">
+                    <span class="lwptoc_item_number">8</span>
+                <span class="lwptoc_item_label">7. Verify Your FastAPI asyncio Best Practices with Load Testing and Profiling</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Load_Testing_FastAPI_Endpoints_for_Concurrency_Behavior">
+                    <span class="lwptoc_item_number">8.1</span>
+                <span class="lwptoc_item_label">Load Testing FastAPI Endpoints for Concurrency Behavior</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Profiling_and_Tracing_to_Find_Hidden_Blocking_Calls">
+                    <span class="lwptoc_item_number">8.2</span>
+                <span class="lwptoc_item_label">Profiling and Tracing to Find Hidden Blocking Calls</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#Monitoring_Event_Loop_Health_and_Latency">
+                    <span class="lwptoc_item_number">8.3</span>
+                <span class="lwptoc_item_label">Monitoring Event Loop Health and Latency</span>
+    </a>
+    </div></div></div><div class="lwptoc_item">    <a href="#Conclusion_Putting_FastAPI_asyncio_Best_Practices_Into_Daily_Use">
+                    <span class="lwptoc_item_number">9</span>
+                <span class="lwptoc_item_label">Conclusion: Putting FastAPI asyncio Best Practices Into Daily Use</span>
+    </a>
+    <div class="lwptoc_itemWrap"><div class="lwptoc_item">    <a href="#Recap_of_the_Core_Strategies">
+                    <span class="lwptoc_item_number">9.1</span>
+                <span class="lwptoc_item_label">Recap of the Core Strategies</span>
+    </a>
+    </div><div class="lwptoc_item">    <a href="#A_Practical_Checklist_for_Daily_Development">
+                    <span class="lwptoc_item_number">9.2</span>
+                <span class="lwptoc_item_label">A Practical Checklist for Daily Development</span>
+    </a>
+    </div></div></div></div></div>
+</div></div></div><div id="block-46" class="widget widget_block"><div class="is-style-icons wp-block-themeisle-blocks-sharing-icons" id="wp-block-themeisle-blocks-sharing-icons-00cd1e04"><div class="social-icons-wrap"><a class="social-icon is-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/&#038;title=Top%207%20FastAPI%20asyncio%20Best%20Practices%20for%20Non‑Blocking%20Web%20APIs" target="_blank"><i class="fab fa-facebook-f"></i><span class="v-line"></span></a><a class="social-icon is-twitter" href="http://twitter.com/share?url=https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/&#038;text=Top%207%20FastAPI%20asyncio%20Best%20Practices%20for%20Non‑Blocking%20Web%20APIs" target="_blank"><i class="fab fa-twitter"></i><span class="v-line"></span></a><a class="social-icon is-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&#038;url=https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/&#038;title=Top%207%20FastAPI%20asyncio%20Best%20Practices%20for%20Non‑Blocking%20Web%20APIs" target="_blank"><i class="fab fa-linkedin-in"></i><span class="v-line"></span></a><a class="social-icon is-email" href="mailto:?subject=Top%207%20FastAPI%20asyncio%20Best%20Practices%20for%20Non‑Blocking%20Web%20APIs&#038;body=https://www.techbuddies.io/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/" target="_blank"><i class="fa fa-envelope"></i><span class="v-line"></span></a></div></div></div>
+			</aside>
+</div>
+			<article id="post-3155"
+					class="nv-single-post-wrap col post-3155 post type-post status-publish format-standard has-post-thumbnail hentry category-python-programming tag-async-python-web-apis tag-fastapi-asyncio-best-practices tag-fastapi-event-loop tag-non-blocking-i-o-in-fastapi">
+				<div class="nv-content-wrap entry-content"><h2><span id="Introduction_Why_FastAPI_asyncio_Best_Practices_Matter">Introduction: Why FastAPI asyncio Best Practices Matter</span></h2>
+<p>When I first started building high-throughput services with FastAPI, I quickly learned that just “using async def” wasn’t enough. To get real performance benefits, I had to understand how asyncio and the event loop actually work under the hood. FastAPI is designed to shine in asynchronous environments, but it will only feel fast and responsive if I treat the event loop as a precious, shared resource.</p>
+<p>The core idea behind FastAPI asyncio best practices is simple: never block the event loop. Every time a handler performs slow CPU work, calls a blocking library, or waits on external I/O without using proper async tools, it can freeze other requests. Under light load that might go unnoticed, but as traffic grows, those small missteps quickly turn into timeouts, increased latency, and unhappy users.</p>
+<p>In my experience, the most painful production incidents have come from a single “innocent” blocking call buried deep in a dependency. One bad database call or file operation running on the main thread was enough to stall dozens of concurrent requests. By following a small set of focused FastAPI asyncio best practices, I’ve been able to prevent these bottlenecks, keep response times predictable, and make scaling out far more straightforward.</p>
+<p>This article walks through the specific patterns I now use by default: keeping the event loop free of heavy work, isolating sync code, choosing compatible libraries, and using asyncio primitives correctly. If you apply these practices from the start, your non-blocking web APIs will stay fast and resilient even as your traffic and codebase grow.</p>
+<h2><span id="1_Understand_the_FastAPI_Event_Loop_Model_Before_You_Optimize">1. Understand the FastAPI Event Loop Model Before You Optimize</span></h2>
+<p>Before I started applying any FastAPI asyncio best practices, I had to get clear on one thing: FastAPI itself doesn’t run your event loop. Instead, it sits on top of an ASGI server like Uvicorn, which owns the asyncio event loop and schedules all your async work. Once I understood that layering, my decisions about concurrency, background tasks, and I/O became much more deliberate and much less error-prone.</p>
+<p style="text-align:center;">
+    <img decoding="async" src="https://www.techbuddies.io/wp-content/uploads/2026/01/vopqwibqrz-image-0.png" alt="1. Understand the FastAPI Event Loop Model Before You Optimize - image 1" style="max-width:60%; height:auto; display:inline-block;">
+  </p>
+<h3><span id="How_FastAPI_Uvicorn_and_asyncio_Fit_Together">How FastAPI, Uvicorn, and asyncio Fit Together</span></h3>
+<p>In a typical deployment, Uvicorn starts an asyncio event loop in each worker process and mounts your FastAPI application as an ASGI app. Every incoming HTTP request becomes a coroutine that the event loop manages. FastAPI focuses on routing, dependency injection, and validation, while Uvicorn and asyncio handle scheduling and I/O multiplexing.</p>
+<p>In practice, that means:</p>
+<ul>
+<li><strong>One event loop per process</strong>: All your async endpoints in that worker share the same loop.</li>
+<li><strong>Each request is a task</strong>: The loop interleaves these tasks whenever they hit an <code>await</code> point.</li>
+<li><strong>Async I/O is cooperative</strong>: Tasks yield control when awaiting I/O so others can execute in the meantime.</li>
+</ul>
+<p>When I design a new endpoint now, I think in terms of “what will this coroutine do to the event loop?” instead of just “does this function compile?” That mindset shift alone prevents a lot of hidden bottlenecks.</p>
+<h3><span id="Synchronous_vs_Asynchronous_Work_on_the_Event_Loop">Synchronous vs Asynchronous Work on the Event Loop</span></h3>
+<p>The event loop is optimized for non-blocking I/O, not for heavy CPU work or blocking system calls. Async functions should spend most of their time <em>awaiting</em> I/O (database calls, HTTP requests, queues), not crunching data on the main thread. Whenever I accidentally mix in synchronous calls, I’m effectively freezing the loop until that work finishes.</p>
+<p>Here’s a simplified example I use when explaining this to teammates:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI
+import time
+
+app = FastAPI()
+
+# ❌ Blocks the event loop
+@app.get("/blocking")
+def blocking_endpoint():
+    time.sleep(2)  # blocks the thread and the event loop worker
+    return {"status": "done"}
+
+# ✅ Plays nicely with the event loop
+@app.get("/non_blocking")
+async def non_blocking_endpoint():
+    import asyncio
+    await asyncio.sleep(2)  # yields control back to the event loop
+    return {"status": "done"}
+</pre>
+<p>Both endpoints “sleep” for two seconds, but only the async version lets other requests progress during that time. In my experience, mixing just a few <code>time.sleep()</code> or blocking SDK calls into a busy API is enough to cause cascading latency spikes across all concurrent requests.</p>
+<h3><span id="Common_Misconceptions_About_Concurrency_in_FastAPI">Common Misconceptions About Concurrency in FastAPI</span></h3>
+<p>When I review code for teams moving to FastAPI, I see a few recurring misconceptions that lead to poor performance, even when they think they’re following FastAPI asyncio best practices:</p>
+<ul>
+<li><strong>“If I use <code>async def</code>, it’s automatically concurrent.”</strong> In reality, <code>async def</code> just means the function returns a coroutine. If that coroutine calls blocking functions internally, the event loop still stalls.</li>
+<li><strong>“More workers always means more throughput.”</strong> Spinning up more Uvicorn workers helps only if each worker uses the event loop efficiently. If every worker spends most of its time blocked on sync I/O, you mainly add overhead and memory use.</li>
+<li><strong>“Awaiting a sync function makes it non-blocking.”</strong> I learned this the hard way: wrapping a synchronous, blocking library call in an <code>async def</code> and then <code>await</code>-ing it does not turn it into async I/O. You need to offload it (for example, with <code>asyncio.to_thread</code> or a proper async client).</li>
+<li><strong>“CPU-bound work is fine in async endpoints.”</strong> Heavy computation in an async route (like big JSON transformations or complex loops) can still block the loop. I now treat CPU-heavy tasks as candidates for background workers or thread/process pools.</li>
+</ul>
+<p>Once I stopped assuming the event loop was “magic concurrency” and started treating it as a single-threaded scheduler that I had to protect, my FastAPI services became far more predictable under load. The rest of the FastAPI asyncio best practices in this article build on this mental model: keep the loop free, use non-blocking libraries, and offload what doesn’t belong there. <a href="https://stackoverflow.com/questions/49005651/how-does-asyncio-actually-work" target="_blank" rel="noopener">How does asyncio actually work? – Stack Overflow</a></p>
+<h2><span id="2_Keep_the_Event_Loop_Non-Blocking_Avoid_CPU-Bound_Work_in_async_Def">2. Keep the Event Loop Non-Blocking: Avoid CPU-Bound Work in async Def</span></h2>
+<p>One of the first FastAPI asyncio best practices I try to drill into teams is this: <strong>async is not a free performance booster for CPU-heavy logic</strong>. The asyncio event loop is great at juggling many I/O-bound tasks, but it’s still fundamentally single-threaded. If I drop a big CPU-bound chunk of work into an <code>async def</code> endpoint, I effectively pause the entire loop for every other request in that worker.</p>
+<p>When I debug real-world performance problems, they’re often caused by innocent-looking loops: large JSON transformations, encryption, image processing, or complex business rules that chew CPU for hundreds of milliseconds or more. The key is to keep that work <em>off</em> the main event loop and let async focus on I/O orchestration.</p>
+<h3><span id="Why_CPU-Bound_Work_Freezes_Your_FastAPI_App">Why CPU-Bound Work Freezes Your FastAPI App</span></h3>
+<p>Asyncio provides concurrency by letting tasks yield control when they hit an <code>await</code> on non-blocking I/O. CPU-bound code doesn’t naturally yield; it just runs until completion. So if an endpoint spends 500 ms crunching numbers in pure Python, the event loop can’t schedule other tasks during that time.</p>
+<p>Here’s a simplified example I’ve seen in performance reviews:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI
+
+app = FastAPI()
+
+# ❌ CPU-bound work directly on the event loop
+@app.get("/hash-all")
+async def hash_all():
+    # Pretend this list is large
+    data = [b"some-bytes-%d" % i for i in range(100_000)]
+
+    import hashlib
+    results = []
+    for item in data:  # tight CPU loop
+        digest = hashlib.sha256(item).hexdigest()
+        results.append(digest)
+
+    return {"count": len(results)}
+</pre>
+<p>Under light load this might look fine, but with concurrent traffic the latency of <em>other</em> endpoints will spike because the worker is stuck burning CPU in this handler. In my own services, one heavy analytics endpoint like this was enough to degrade p95 latency across unrelated routes.</p>
+<h3><span id="Offloading_Heavy_Tasks_to_Threads_or_Background_Workers">Offloading Heavy Tasks to Threads or Background Workers</span></h3>
+<p>When I realize an endpoint needs heavy processing, I have two main options:</p>
+<ul>
+<li><strong>Short, contained CPU work</strong>: Offload to a thread using <code>asyncio.to_thread</code> (Python 3.9+) or an executor.</li>
+<li><strong>Long-running or batch work</strong>: Push it to a background worker (Celery, RQ, or a custom job system) and return quickly.</li>
+</ul>
+<p>Here’s how I typically refactor CPU-bound logic into a thread while keeping the FastAPI endpoint async-friendly:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI
+import asyncio
+import hashlib
+
+app = FastAPI()
+
+
+def hash_all_sync(data: list[bytes]) -&gt; list[str]:
+    # Pure CPU work in a regular sync function
+    results = []
+    for item in data:
+        digest = hashlib.sha256(item).hexdigest()
+        results.append(digest)
+    return results
+
+
+@app.get("/hash-all-safe")
+async def hash_all_safe():
+    data = [b"some-bytes-%d" % i for i in range(100_000)]
+
+    # ✅ Offload CPU work to a separate thread so the event loop can keep running
+    results = await asyncio.to_thread(hash_all_sync, data)
+
+    return {"count": len(results)}
+</pre>
+<p>In my experience, this single change often turns a spiky, unpredictable endpoint into something that coexists peacefully with the rest of the app. The event loop stays responsive while the heavy work happens in a worker thread.</p>
+<p>For truly heavy or long-running jobs (for example, generating large reports or training models), I usually don’t run them in API threads at all. Instead, the API enqueues a job to a worker system and returns a task ID so clients can poll or use webhooks. <a href="https://medium.com/@rameshkannanyt0078/handling-cpu-bound-tasks-in-fastapi-without-killing-performance-32cd70c61d5a" target="_blank" rel="noopener">Handling CPU-Bound Tasks in FastAPI Without Killing Performance</a></p>
+<h3><span id="Spotting_and_Refactoring_Hidden_Blocking_Calls">Spotting and Refactoring Hidden Blocking Calls</span></h3>
+<p>Not all blocking work is obviously CPU-bound. Some of the worst offenders I’ve found in code reviews come from third-party libraries that look harmless but hide synchronous I/O or CPU-heavy logic under the hood. A few patterns I watch for:</p>
+<ul>
+<li><strong>Sync HTTP clients</strong> (e.g., <code>requests</code>) called inside <code>async def</code> routes.</li>
+<li><strong>Database drivers</strong> that aren’t designed for asyncio.</li>
+<li><strong>Filesystem operations</strong> like large file reads/writes using blocking APIs.</li>
+<li><strong>Crypto, compression, and image processing</strong> running inline inside async handlers.</li>
+</ul>
+<p>One technique that helped me a lot was temporarily enabling detailed logging and timing per endpoint to see where time is actually spent. When a handler consistently takes longer than expected, I inspect it for:</p>
+<ul>
+<li>Long loops without any <code>await</code>.</li>
+<li>Heavy CPU operations repeated for each item in a list.</li>
+<li>Libraries that don’t offer async variants.</li>
+</ul>
+<p>Once I find those hotspots, I apply a simple decision tree:</p>
+<ul>
+<li><strong>Is it I/O?</strong> Replace with an async library if possible (for example, <code>httpx.AsyncClient</code> instead of <code>requests</code>).</li>
+<li><strong>Is it CPU-bound but quick?</strong> Wrap it in <code>asyncio.to_thread</code> or a small executor pool.</li>
+<li><strong>Is it CPU-bound and slow?</strong> Move it to a background worker pattern and keep the endpoint non-blocking.</li>
+</ul>
+<p>In my own practice, the services that aged the best were the ones where I treated the event loop like a “traffic controller” and pushed everything heavy to specialized workers or threads. Following this principle consistently is one of the most impactful FastAPI asyncio best practices you can adopt for stable, low-latency APIs.</p>
+<h2><span id="3_Use_True_Async_IO_for_Databases_HTTP_Clients_and_File_Access">3. Use True Async I/O for Databases, HTTP Clients, and File Access</span></h2>
+<p>After I wrapped my head around the event loop model, the next big unlock was realizing how much damage a single blocking I/O call can do inside an <code>async def</code> route. If my database client, HTTP client, or file access code is synchronous, then my <em>entire</em> FastAPI asyncio setup is basically cosmetic. To get the real benefits of FastAPI asyncio best practices, I have to use genuine non-blocking I/O end to end.</p>
+<p style="text-align:center;">
+    <img decoding="async" src="https://www.techbuddies.io/wp-content/uploads/2026/01/ouooikmcel-image-1.png" alt="3. Use True Async I/O for Databases, HTTP Clients, and File Access - image 1" style="max-width:60%; height:auto; display:inline-block;">
+  </p>
+<h3><span id="Choosing_Async-Friendly_Database_Drivers_and_ORMs">Choosing Async-Friendly Database Drivers and ORMs</span></h3>
+<p>Databases are usually the hottest path in an API, so they’re the first place I look. The rule I follow is simple: if the driver can’t expose <code>await</code>-able operations, it doesn’t belong directly in an async path.</p>
+<p>These are patterns that have worked well for me:</p>
+<ul>
+<li><strong>PostgreSQL</strong>: <code>asyncpg</code>, or SQLAlchemy 2.x with its async engine.</li>
+<li><strong>MySQL</strong>: <code>aiomysql</code> or async support via compatible ORMs.</li>
+<li><strong>NoSQL</strong> (MongoDB, Redis): Native async clients like <code>motor</code> for MongoDB and <code>redis.asyncio</code> for Redis.</li>
+</ul>
+<p>Here’s a minimal example using SQLAlchemy’s async engine that I’ve used as a starting template:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI, Depends
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
+
+DATABASE_URL = "postgresql+asyncpg://user:pass@localhost:5432/app"
+
+engine = create_async_engine(DATABASE_URL, echo=False, future=True)
+AsyncSessionLocal = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+
+app = FastAPI()
+
+
+async def get_session() -&gt; AsyncSession:
+    async with AsyncSessionLocal() as session:
+        yield session
+
+
+@app.get("/users-count")
+async def users_count(session: AsyncSession = Depends(get_session)):
+    result = await session.execute(text("SELECT count(*) FROM users"))
+    (count,) = result.scalar_one_or_none() or (0,)
+    return {"count": count}
+</pre>
+<p>The critical detail is that every database operation is awaited, which lets the event loop handle other requests while the DB does its work. Earlier in my career, I tried to “fake it” by calling a sync ORM from an async route and paid the price in latency as concurrency grew. Now, if I absolutely must use a sync-only ORM, I isolate it in a separate worker or at least wrap calls with <code>asyncio.to_thread</code> as a temporary compromise.</p>
+<h3><span id="Switching_from_requests_to_Async_HTTP_Clients">Switching from requests to Async HTTP Clients</span></h3>
+<p>External HTTP calls are another common source of blocking I/O. I still see a lot of code like this in async routes:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+# ❌ This blocks the event loop
+import requests
+
+@app.get("/upstream")
+async def call_upstream():
+    resp = requests.get("https://api.example.com/data")
+    return resp.json()
+</pre>
+<p>Using <code>requests</code> inside an async path negates most of the concurrency benefits I’m trying to get. My go-to fix is to switch to an async HTTP client such as <code>httpx.AsyncClient</code> or <code>aiohttp</code>. Here’s the pattern I use most often with <code>httpx</code>:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import httpx
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup_event():
+    # Reuse a single async client with connection pooling
+    app.state.http_client = httpx.AsyncClient(timeout=10.0)
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    await app.state.http_client.aclose()
+
+
+@app.get("/upstream")
+async def call_upstream():
+    client: httpx.AsyncClient = app.state.http_client
+    resp = await client.get("https://api.example.com/data")
+    return resp.json()
+</pre>
+<p>In my experience, configuring a single shared async client like this both improves performance (connection pooling) and avoids subtle resource leaks. It also keeps the event loop free while upstream services respond.</p>
+<h3><span id="Using_Async_File_Access_When_It_Actually_Helps">Using Async File Access (When It Actually Helps)</span></h3>
+<p>File access is a bit trickier. On many systems, disk I/O is effectively blocking at the OS level, but using async wrappers can still help avoid tying up your main thread when dealing with many concurrent file operations. When I build FastAPI services that read or write lots of small files (uploads, logs, reports), I prefer async-friendly tools, or I deliberately push heavy file handling into background tasks.</p>
+<p>For basic async file reads and writes, I often reach for <code>aiofiles</code>:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI, UploadFile, File
+import aiofiles
+
+app = FastAPI()
+
+
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    # ✅ Non-blocking style file write
+    async with aiofiles.open(f"/tmp/{file.filename}", "wb") as out:
+        while chunk := await file.read(1024 * 1024):
+            await out.write(chunk)
+    return {"filename": file.filename}
+</pre>
+<p>On some deployments, I’ve measured only modest gains from async file I/O compared to offloading to a thread. But what matters most for me is that my FastAPI endpoints don’t sit in long blocking <code>open</code>/<code>read</code>/<code>write</code> calls. If file work gets heavy (e.g., zipping large directories, transcoding media), I treat it like other CPU-bound tasks and push it to workers or threads while keeping my HTTP handlers lean. <a href="https://fastapi.tiangolo.com/async/" target="_blank" rel="noopener">Concurrency and async / await – FastAPI</a></p>
+<p>When I look back at the FastAPI services that scaled the cleanest, they all have one thing in common: every critical integration—database, upstream APIs, file system—was designed with true async I/O in mind. Aligning those pieces with FastAPI asyncio best practices is what turns “theoretically async” code into APIs that stay responsive under real-world load.</p>
+<h2><span id="4_Structure_Your_FastAPI_Endpoints_for_Predictable_Concurrency">4. Structure Your FastAPI Endpoints for Predictable Concurrency</span></h2>
+<p>Once I had async I/O in place, the next gains came from <em>how</em> I structured my FastAPI endpoints and dependencies. Predictable concurrency isn’t just about libraries; it’s about keeping each request path simple, explicit, and free of surprises that could block the event loop. When I design routes now, I think in terms of a short, well-defined async pipeline per request.</p>
+<h3><span id="Designing_Lean_Single-Responsibility_Path_Operations">Designing Lean, Single-Responsibility Path Operations</span></h3>
+<p>In my experience, the most stable FastAPI asyncio architectures keep path operations as thin orchestration layers: validate input, call a few async services, shape the response. Heavy business logic and cross-cutting concerns live in separate functions or classes that can be tested and tuned independently.</p>
+<p>Here’s a structure I use a lot:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI, Depends
+
+app = FastAPI()
+
+
+class UserService:
+    async def get_user_profile(self, user_id: int):
+        # Async database + HTTP calls would live here
+        return {"id": user_id, "name": "Alice"}
+
+
+async def get_user_service() -&gt; UserService:
+    # Construct or fetch from container if needed
+    return UserService()
+
+
+@app.get("/users/{user_id}")
+async def get_user(user_id: int, service: UserService = Depends(get_user_service)):
+    # ✅ Endpoint is just orchestration
+    profile = await service.get_user_profile(user_id)
+    return profile
+</pre>
+<p>By keeping handlers small like this, it’s much easier for me to scan for potential blocking calls and reason about concurrency. If performance degrades, I know to look inside the service methods, not across a massive, monolithic path operation.</p>
+<h3><span id="Writing_Async-Safe_Dependencies_and_Middlewares">Writing Async-Safe Dependencies and Middlewares</span></h3>
+<p>Dependencies are a common place where hidden blocking creeps in. I’ve seen “harmless” dependencies open sync DB connections, read big files, or call external APIs with <code>requests</code>, all before the endpoint logic even runs. Now I treat dependencies with the same rigor as endpoints: if they might do I/O, they should be <code>async def</code> and use async libraries.</p>
+<p>For example, an async dependency that loads a current user from a token:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import Depends, HTTPException, status
+
+
+async def get_current_user(token: str = Depends(...), service: UserService = Depends(get_user_service)):
+    # ✅ Async DB/HTTP calls hidden behind service
+    user = await service.get_user_from_token(token)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    return user
+
+
+@app.get("/me")
+async def read_me(current_user = Depends(get_current_user)):
+    return current_user
+</pre>
+<p>When I review code now, I always walk the full dependency tree of critical endpoints. Anything that can run per request is part of the concurrency story, and it must honor FastAPI asyncio best practices just like the handler itself.</p>
+<h3><span id="Managing_Background_Tasks_and_In-Request_Parallelism_Carefully">Managing Background Tasks and In-Request Parallelism Carefully</span></h3>
+<p>FastAPI makes it easy to fire off background work or run multiple awaits in parallel, but I’ve learned to be cautious. Spawning too many concurrent tasks inside a single request can overload shared resources like DB pools or external APIs.</p>
+<p>For bounded in-request parallelism, I use structured patterns like:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import asyncio
+
+
+@app.get("/aggregate")
+async def aggregate():
+    # ✅ Explicit parallelism with clear bounds
+    task1 = asyncio.create_task(fetch_service_a())
+    task2 = asyncio.create_task(fetch_service_b())
+    result_a, result_b = await asyncio.gather(task1, task2)
+    return {"a": result_a, "b": result_b}
+</pre>
+<p>For background work that outlives the request (sending emails, logging, slow notifications), I either use FastAPI’s background tasks for short jobs or a dedicated queue for anything heavier. The goal is always the same: keep request paths lean, predictable, and fully cooperative with the event loop so concurrency remains stable as traffic grows.</p>
+<h2><span id="5_Manage_Background_Tasks_and_Long-Running_Work_Safely">5. Manage Background Tasks and Long-Running Work Safely</span></h2>
+<p>Some of the hardest production bugs I’ve dealt with in FastAPI apps came from “helpful” background work that quietly starved the event loop. Managing long-running operations is where FastAPI asyncio best practices really separate stable systems from flaky ones. My rule of thumb is simple: <strong>requests should be short; work can be long</strong>—but the long work must run in the right place.</p>
+<p style="text-align:center;">
+    <img decoding="async" src="https://www.techbuddies.io/wp-content/uploads/2026/01/jnhexqkvrf-image-2.png" alt="5. Manage Background Tasks and Long-Running Work Safely - image 1" style="max-width:60%; height:auto; display:inline-block;">
+  </p>
+<h3><span id="When_to_Use_FastAPI_BackgroundTasks_and_When_Not_To">When to Use FastAPI BackgroundTasks (and When Not To)</span></h3>
+<p><code>BackgroundTasks</code> are great for quick, non-critical follow-up work that doesn’t justify a full job queue. I use them for things like logging, analytics pings, and low-cost notifications that complete in a few hundred milliseconds.</p>
+<p>Typical pattern:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from fastapi import FastAPI, BackgroundTasks
+
+app = FastAPI()
+
+
+def send_email_sync(address: str, subject: str):
+    # Assume this uses a non-blocking library or is short
+    ...
+
+
+@app.post("/signup")
+async def signup(email: str, background_tasks: BackgroundTasks):
+    # ✅ Schedule lightweight follow-up work
+    background_tasks.add_task(send_email_sync, email, "Welcome!")
+    return {"status": "accepted"}
+</pre>
+<p>In my experience, <code>BackgroundTasks</code> become dangerous when they start doing heavy CPU work, long DB loops, or large file processing. At that point, I move the job to a proper worker system so API workers stay free for new requests. <a href="https://fastapi.tiangolo.com/tutorial/background-tasks/" target="_blank" rel="noopener">Background Tasks – FastAPI</a></p>
+<h3><span id="Using_asynciocreate_task_and_to_thread_Without_Leaking_Tasks">Using asyncio.create_task and to_thread Without Leaking Tasks</span></h3>
+<p>For in-process async work that should run alongside the current request, I use <code>asyncio.create_task</code> carefully and always keep a reference so I can await or monitor it. Fire-and-forget tasks are a common source of leaks and unhandled exceptions.</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import asyncio
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+async def audit_log(event: dict):
+    # Async DB/HTTP logging here
+    ...
+
+
+@app.post("/action")
+async def do_action(payload: dict):
+    # ✅ Spawn a supervised async task
+    task = asyncio.create_task(audit_log({"payload": payload}))
+    # Optionally await or attach callbacks if you must track completion
+    # await task  # only if you want to block until it's done
+
+    return {"status": "ok"}
+</pre>
+<p>When work is CPU-bound, I prefer <code>asyncio.to_thread</code> so the event loop can keep serving requests while a separate thread handles the heavy lifting. One thing I learned the hard way is to avoid spawning unbounded threads per request; I keep the offloaded work tight and idempotent so I can move it to a real job queue later if needed.</p>
+<h3><span id="Offloading_Truly_Long-Running_Jobs_to_External_Workers">Offloading Truly Long-Running Jobs to External Workers</span></h3>
+<p>For jobs measured in seconds or minutes—report generation, batch imports, media processing—I don’t let them live in the API process at all anymore. I push them to an external worker (Celery, RQ, Dramatiq, custom worker) and have the API return a task ID immediately.</p>
+<p>The basic pattern I use:</p>
+<ul>
+<li>API receives a request and validates input.</li>
+<li>API enqueues a job message (Redis, RabbitMQ, etc.).</li>
+<li>API returns a 202 Accepted with a job ID and maybe a status endpoint URL.</li>
+<li>Worker processes the job independently and updates status storage.</li>
+</ul>
+<p>This approach keeps FastAPI focused on fast, predictable HTTP responses while workers handle the heavy lifting. It also aligns perfectly with FastAPI asyncio best practices: the event loop coordinates requests and quick I/O, and anything that can clog it is moved out of the hot path.</p>
+<h2><span id="6_Tune_Concurrency_Worker_Counts_Connection_Limits_and_Timeouts">6. Tune Concurrency: Worker Counts, Connection Limits, and Timeouts</span></h2>
+<p>Once my FastAPI code was mostly async-correct, the next big gains came from tuning the runtime around it. I’ve seen perfectly written async code bog down in production simply because Uvicorn worker counts, DB pools, or HTTP client limits were misconfigured. Good FastAPI asyncio best practices aren’t just about code—they’re about sizing concurrency knobs to match your hardware and workloads.</p>
+<h3><span id="Choosing_Uvicorn_Worker_Counts_for_Your_Hardware">Choosing Uvicorn Worker Counts for Your Hardware</span></h3>
+<p>In my experience, Uvicorn worker count is where many teams start guessing. A simple rule that’s worked well for me in CPU-light, I/O-bound APIs is:</p>
+<ul>
+<li><strong>Base heuristic</strong>: start with <code>workers = number_of_cpu_cores</code>.</li>
+<li><strong>Adjust up</strong> if work is mostly I/O (lots of waiting on DB or external APIs).</li>
+<li><strong>Adjust down</strong> if work is CPU-heavy (or move that CPU work out of the workers).</li>
+</ul>
+<p>For example, on an 8-core machine I might start with 6–8 workers, then run a load test and watch p95 latency and CPU utilization. If CPU is low but latency is high, I consider adding a worker or verifying that my code is truly non-blocking before I crank the number further.</p>
+<p>Using Gunicorn with Uvicorn workers, a typical config I’ve run looks like this:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="bash">
+# Example: 8 workers, async worker class, reasonable timeout
+export WEB_CONCURRENCY=8
+
+gunicorn "app.main:app" \
+  -k uvicorn.workers.UvicornWorker \
+  --workers $WEB_CONCURRENCY \
+  --timeout 60
+</pre>
+<p>One thing I learned the hard way: more workers are not always better. If each worker opens many DB connections and HTTP clients, you can overwhelm shared backends long before the CPU is saturated.</p>
+<h3><span id="Right-Sizing_Database_Pools_and_Async_Client_Limits">Right-Sizing Database Pools and Async Client Limits</span></h3>
+<p>Database connection pools and HTTP client limits should be tuned in relation to your worker count. I try to think in terms of <em>total</em> concurrent connections to each backend, not just per-process settings.</p>
+<p>For a DB pool, a common starting point for an async engine is:</p>
+<ul>
+<li><strong>pool_size</strong>: 5–10 connections per worker.</li>
+<li><strong>max_overflow</strong>: small burst capacity (2–5) if supported.</li>
+</ul>
+<p>With 6 workers and a pool size of 5, that’s up to 30 concurrent DB connections. If the DB can’t handle that, I reduce either worker count or pool size until load tests show stable behavior.</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+from sqlalchemy.ext.asyncio import create_async_engine
+
+DATABASE_URL = "postgresql+asyncpg://user:pass@db:5432/app"
+
+engine = create_async_engine(
+    DATABASE_URL,
+    echo=False,
+    pool_size=5,        # per worker
+    max_overflow=2,     # small burst
+    pool_timeout=30,
+)
+</pre>
+<p>For async HTTP clients like <code>httpx.AsyncClient</code> or <code>aiohttp.ClientSession</code>, I explicitly configure connection limits instead of relying on defaults. Otherwise, concurrent requests can open far more upstream connections than I intended.</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import httpx
+
+limits = httpx.Limits(
+    max_keepalive_connections=50,
+    max_connections=100,  # per worker
+)
+
+client = httpx.AsyncClient(limits=limits, timeout=10.0)
+</pre>
+<p>In my own deployments, getting these numbers roughly right made services more predictable than any micro-optimization in code.</p>
+<h3><span id="Timeouts_and_Circuit-Breaker_Thinking">Timeouts and Circuit-Breaker Thinking</span></h3>
+<p>Timeouts are my safety net when a dependency misbehaves. Without strict timeouts, async apps can pile up hung tasks and exhaust resources even if everything else follows FastAPI asyncio best practices.</p>
+<p>For outbound calls (DB, HTTP, caches), I always:</p>
+<ul>
+<li>Set <strong>reasonable connect and read timeouts</strong> (often 1–5s for internal services).</li>
+<li>Use <strong>per-request timeouts</strong> rather than only global ones when the library supports it.</li>
+<li>Log and handle timeout errors explicitly, sometimes with fallbacks.</li>
+</ul>
+<p>With <code>httpx</code> I like to be explicit:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import httpx
+
+client = httpx.AsyncClient(
+    timeout=httpx.Timeout(  # seconds
+        connect=2.0,
+        read=3.0,
+        write=3.0,
+        pool=5.0,
+    )
+)
+</pre>
+<p>On the server side, I also make sure the reverse proxy (NGINX, Traefik, load balancer) and Gunicorn/Uvicorn timeouts align with my expectations for maximum request duration. In my experience, a well-tuned combination of worker counts, pool sizes, and timeouts turns an “it usually works” FastAPI deployment into one that behaves consistently under real load.</p>
+<h2><span id="7_Verify_Your_FastAPI_asyncio_Best_Practices_with_Load_Testing_and_Profiling">7. Verify Your FastAPI asyncio Best Practices with Load Testing and Profiling</span></h2>
+<p>The biggest mindset shift for me with FastAPI asyncio best practices was realizing that assumptions don’t count—only measurements do. I’ve seen apps that “felt” async-safe crumble the moment we put real load on them. To know whether your non-blocking design truly works, you need to stress it, observe the event loop, and profile where time is actually going.</p>
+<p style="text-align:center;">
+    <img decoding="async" src="https://www.techbuddies.io/wp-content/uploads/2026/01/jsnpvrfhns-image-3.png" alt="7. Verify Your FastAPI asyncio Best Practices with Load Testing and Profiling - image 1" style="max-width:60%; height:auto; display:inline-block;">
+  </p>
+<h3><span id="Load_Testing_FastAPI_Endpoints_for_Concurrency_Behavior">Load Testing FastAPI Endpoints for Concurrency Behavior</span></h3>
+<p>I like to run load tests early, even on staging, to catch blocking code before it hits production. Tools like <strong>Locust</strong>, <strong>k6</strong>, or even simple Python scripts with <code>asyncio</code> are enough to reveal whether the event loop stays responsive under concurrency.</p>
+<p>Here’s a minimal async load generator I’ve used to sanity-check endpoints:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import asyncio
+import httpx
+
+URL = "http://localhost:8000/health"
+CONCURRENCY = 100
+REQUESTS_PER_WORKER = 50
+
+
+async def worker(name: int):
+    async with httpx.AsyncClient(timeout=5.0) as client:
+        for i in range(REQUESTS_PER_WORKER):
+            resp = await client.get(URL)
+            if resp.status_code != 200:
+                print(f"worker {name}: unexpected status {resp.status_code}")
+
+
+async def main():
+    tasks = [asyncio.create_task(worker(i)) for i in range(CONCURRENCY)]
+    await asyncio.gather(*tasks)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+</pre>
+<p>When I run something like this, I’m looking at:</p>
+<ul>
+<li><strong>Latency curves</strong> (p50, p95, p99): sudden spikes often flag blocking I/O or CPU work.</li>
+<li><strong>Error rates</strong>: timeouts and 5xxs under load often mean resource exhaustion (DB pool, HTTP client limits, workers).</li>
+<li><strong>CPU usage</strong>: high CPU + poor scaling hints at CPU-bound work on the event loop.</li>
+</ul>
+<p>Once, I thought an endpoint was fully async because it only did DB calls—load testing quickly showed rising latency, and profiling later revealed a sync ORM hiding behind those calls.</p>
+<h3><span id="Profiling_and_Tracing_to_Find_Hidden_Blocking_Calls">Profiling and Tracing to Find Hidden Blocking Calls</span></h3>
+<p>When numbers look off, I shift to profiling and tracing. My goal is to find any sync call paths inside <code>async def</code> handlers or dependencies. I’ve had good results combining:</p>
+<ul>
+<li><strong>Standard profilers</strong> like <code>cProfile</code> or <code>py-spy</code> to see where CPU time is burned.</li>
+<li><strong>APM tools</strong> (New Relic, Datadog, OpenTelemetry-based stacks) for request traces and DB/HTTP timings.</li>
+<li><strong>Structured logging</strong> around slow sections to narrow down hotspots.</li>
+</ul>
+<p>A simple pattern I often start with is timing critical sections manually to see if they’re unexpectedly slow under load:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import time
+import logging
+from fastapi import FastAPI
+
+logger = logging.getLogger(__name__)
+app = FastAPI()
+
+
+@app.get("/expensive")
+async def expensive():
+    start = time.perf_counter()
+    result = await do_some_async_work()
+    elapsed = (time.perf_counter() - start) * 1000
+    if elapsed &gt; 200:  # ms threshold I care about
+        logger.warning("/expensive took %.2f ms", elapsed)
+    return {"elapsed_ms": elapsed, "result": result}
+</pre>
+<p>In my own projects, profiling has repeatedly surfaced things like stray <code>requests.get</code> calls, large JSON parsing in tight loops, or sync file access in dependencies. Once I find them, I either swap in async libraries, offload to threads, or refactor to background workers.</p>
+<h3><span id="Monitoring_Event_Loop_Health_and_Latency">Monitoring Event Loop Health and Latency</span></h3>
+<p>The last piece I rely on is direct monitoring of the event loop itself. Even with good load tests and profiling, the loop can still be starved intermittently if something starts blocking under specific conditions.</p>
+<p>There are a few tactics I’ve found practical:</p>
+<ul>
+<li><strong>Event loop lag metrics</strong>: measure how far timers drift from their scheduled times to estimate loop blockage.</li>
+<li><strong>Periodic health-check coroutines</strong>: tiny tasks scheduled at intervals to detect if they’re being delayed.</li>
+<li><strong>APM “event loop utilization” metrics</strong>: many modern APMs now expose this directly.</li>
+</ul>
+<p>Here’s a rough sketch of a simple loop-lag logger I’ve used on internal services:</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">
+import asyncio
+import time
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+async def monitor_event_loop(interval: float = 0.5, warn_threshold_ms: float = 100.0):
+    """Log when event loop appears blocked beyond threshold."""
+    loop = asyncio.get_running_loop()
+    next_ts = loop.time() + interval
+    while True:
+        await asyncio.sleep(interval)
+        now = loop.time()
+        lag_ms = (now - next_ts) * 1000
+        if lag_ms &gt; warn_threshold_ms:
+            logger.warning("Event loop lag detected: %.2f ms", lag_ms)
+        next_ts = now + interval
+
+
+# Start this in a startup event or top-level task in your app.
+</pre>
+<p>When I first added this kind of monitoring, I was surprised how often the event loop lagged during traffic spikes, even on systems that “looked fine” from a request/second perspective. Fixing those issues—usually by removing blocking calls or slimming down dependencies—made the APIs feel consistently snappy.</p>
+<p>For me, the real confidence in FastAPI asyncio best practices comes only after this feedback loop: implement async patterns, load test, profile, watch the event loop, and iterate. Once that’s in place, I trust the system a lot more than any static code review.</p>
+<h2><span id="Conclusion_Putting_FastAPI_asyncio_Best_Practices_Into_Daily_Use">Conclusion: Putting FastAPI asyncio Best Practices Into Daily Use</span></h2>
+<p>Over time, what’s helped me most with FastAPI asyncio best practices is treating them less like theory and more like a daily discipline. Every new endpoint, dependency, or integration is an opportunity either to keep the event loop clean—or to sneak in blocking work that will hurt you later under load.</p>
+<h3><span id="Recap_of_the_Core_Strategies">Recap of the Core Strategies</span></h3>
+<p>Here’s how I mentally summarize the seven practices from this guide:</p>
+<ul>
+<li><strong>Understand the event loop</strong> and avoid blocking it with CPU-heavy work.</li>
+<li><strong>Isolate sync code</strong> in threads or workers instead of calling it directly from async handlers.</li>
+<li><strong>Use true async I/O</strong> for databases, HTTP clients, and file access.</li>
+<li><strong>Keep endpoints lean</strong> and design async-safe dependencies and orchestration.</li>
+<li><strong>Handle background and long-running work</strong> through BackgroundTasks, <code>asyncio</code>, or external workers appropriately.</li>
+<li><strong>Tune concurrency knobs</strong> (workers, pools, timeouts) to match your hardware and backends.</li>
+<li><strong>Verify with load tests and profiling</strong> instead of trusting intuition.</li>
+</ul>
+<h3><span id="A_Practical_Checklist_for_Daily_Development">A Practical Checklist for Daily Development</span></h3>
+<p>When I review code now, I run through a quick checklist:</p>
+<ul>
+<li>Is every <code>async def</code> path free of obvious blocking calls?</li>
+<li>Are DB and HTTP calls using async libraries with sensible limits and timeouts?</li>
+<li>Is heavy or long-running work moved to threads, BackgroundTasks, or external workers?</li>
+<li>Do worker counts and pool sizes make sense for the environment?</li>
+<li>Has this code been exercised under realistic concurrency with basic load tests?</li>
+</ul>
+<p>If I can answer “yes” to those questions, I’m usually confident the service will behave well in production. From there, it’s just a matter of watching metrics and iterating as traffic and requirements evolve.</p>
+<div class="saboxplugin-wrap" itemtype="http://schema.org/Person" itemscope itemprop="author"><div class="saboxplugin-tab"><div class="saboxplugin-gravatar"><img decoding="async" src="https://www.techbuddies.io/wp-content/uploads/2023/09/cary-square-1.jpg" width="100" height="100" alt="" itemprop="image"></div><div class="saboxplugin-authorname"><a href="https://www.techbuddies.io/author/cary-huang328/" class="vcard author" rel="author"><span class="fn">Cary Huang</span></a></div><div class="saboxplugin-desc"><div itemprop="description"><p>Hi, I’m Cary — a tech enthusiast, educator, and author, currently a software architect at Hornetlabs Technology in Canada. I love simplifying complex ideas, tackling coding challenges, and sharing what I learn with others.</p>
+</div></div><div class="clearfix"></div><div class="saboxplugin-socials "><a title="Github" target="_blank" href="https://github.com/caryhuang" rel="nofollow noopener" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-github" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg></a><a title="Facebook" target="_blank" href="https://www.facebook.com/cary.huang.35/" rel="nofollow noopener" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-facebook" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 264 512"><path fill="currentColor" d="M76.7 512V283H0v-91h76.7v-71.7C76.7 42.4 124.3 0 193.8 0c33.3 0 61.9 2.5 70.2 3.6V85h-48.2c-37.8 0-45.1 18-45.1 44.3V192H256l-11.7 91h-73.6v229"></path></svg></a><a title="User email" target="_self" href="mailto:cary.huang328@gmail.com" rel="nofollow noopener" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-user_email" role="img" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path></svg></a></div></div></div><div class="crp_related     crp-rounded-thumbs"><h2><span id="Related_Posts">Related Posts:</span></h2><ul><li><a href="https://www.techbuddies.io/2026/01/10/case-study-fixing-fastapi-event-loop-blocking-in-a-high-traffic-api/" class="crp_link post-3298"><figure><img width="150" height="150" src="https://www.techbuddies.io/wp-content/uploads/2026/01/bjaymwkyht-image-0-150x150.png" class="crp_featured crp_thumb crp_thumbnail" alt="bjaymwkyht-image-0" style="" title="Case Study: Fixing FastAPI Event Loop Blocking in a High-Traffic API" srcset="https://www.techbuddies.io/wp-content/uploads/2026/01/bjaymwkyht-image-0-150x150.png 150w, https://www.techbuddies.io/wp-content/uploads/2026/01/bjaymwkyht-image-0-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2026/01/bjaymwkyht-image-0-768x768.png 768w, https://www.techbuddies.io/wp-content/uploads/2026/01/bjaymwkyht-image-0.png 1024w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">Case Study: Fixing FastAPI Event Loop Blocking in a&hellip;</span></a></li><li><a href="https://www.techbuddies.io/2025/12/13/python-rate-limiting-for-apis-implementing-robust-throttling-in-fastapi/" class="crp_link post-2536"><figure><img width="150" height="150" src="https://www.techbuddies.io/wp-content/uploads/2025/12/oeixtwznra-image-0.png" class="crp_featured crp_thumb crp_thumbnail" alt="oeixtwznra-image-0" style="" title="Python Rate Limiting for APIs: Implementing Robust Throttling in FastAPI" srcset="https://www.techbuddies.io/wp-content/uploads/2025/12/oeixtwznra-image-0.png 1024w, https://www.techbuddies.io/wp-content/uploads/2025/12/oeixtwznra-image-0-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2025/12/oeixtwznra-image-0-150x150.png 150w, https://www.techbuddies.io/wp-content/uploads/2025/12/oeixtwznra-image-0-768x768.png 768w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">Python Rate Limiting for APIs: Implementing Robust&hellip;</span></a></li><li><a href="https://www.techbuddies.io/2025/12/16/top-5-kubernetes-deployment-mistakes-backend-teams-still-make/" class="crp_link post-2605"><figure><img width="150" height="150" src="https://www.techbuddies.io/wp-content/uploads/2025/12/bfvtpyyfqs-image-0.png" class="crp_featured crp_thumb crp_thumbnail" alt="bfvtpyyfqs-image-0" style="" title="Top 5 Kubernetes Deployment Mistakes Backend Teams Still Make" srcset="https://www.techbuddies.io/wp-content/uploads/2025/12/bfvtpyyfqs-image-0.png 1024w, https://www.techbuddies.io/wp-content/uploads/2025/12/bfvtpyyfqs-image-0-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2025/12/bfvtpyyfqs-image-0-150x150.png 150w, https://www.techbuddies.io/wp-content/uploads/2025/12/bfvtpyyfqs-image-0-768x768.png 768w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">Top 5 Kubernetes Deployment Mistakes Backend Teams&hellip;</span></a></li><li><a href="https://www.techbuddies.io/2026/01/13/kubernetes-rollout-strategies-making-readiness-probes-actually-work/" class="crp_link post-3375"><figure><img width="150" height="150" src="https://www.techbuddies.io/wp-content/uploads/2026/01/mjzhyzmzry-image-0-150x150.png" class="crp_featured crp_thumb crp_thumbnail" alt="mjzhyzmzry-image-0" style="" title="Kubernetes Rollout Strategies: Making Readiness Probes Actually Work" srcset="https://www.techbuddies.io/wp-content/uploads/2026/01/mjzhyzmzry-image-0-150x150.png 150w, https://www.techbuddies.io/wp-content/uploads/2026/01/mjzhyzmzry-image-0-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2026/01/mjzhyzmzry-image-0-768x768.png 768w, https://www.techbuddies.io/wp-content/uploads/2026/01/mjzhyzmzry-image-0.png 1024w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">Kubernetes Rollout Strategies: Making Readiness&hellip;</span></a></li><li><a href="https://www.techbuddies.io/2026/01/22/orchestrating-pytorch-training-with-n8n-practical-mlops-automation/" class="crp_link post-3648"><figure><img width="150" height="150" src="https://www.techbuddies.io/wp-content/uploads/2026/01/vybtyzptxi-image-0-150x150.png" class="crp_featured crp_thumb crp_thumbnail" alt="vybtyzptxi-image-0" style="" title="Orchestrating PyTorch Training With n8n: Practical MLOps Automation" srcset="https://www.techbuddies.io/wp-content/uploads/2026/01/vybtyzptxi-image-0-150x150.png 150w, https://www.techbuddies.io/wp-content/uploads/2026/01/vybtyzptxi-image-0-300x300.png 300w, https://www.techbuddies.io/wp-content/uploads/2026/01/vybtyzptxi-image-0-768x768.png 768w, https://www.techbuddies.io/wp-content/uploads/2026/01/vybtyzptxi-image-0.png 1024w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">Orchestrating PyTorch Training With n8n: Practical&hellip;</span></a></li><li><a href="https://www.techbuddies.io/2023/11/20/how-not-to-exploit-the-c-loops/" class="crp_link post-1694"><figure><img width="150" height="79" src="https://www.techbuddies.io/wp-content/uploads/2023/12/techbuddies-22.png" class="crp_featured crp_thumb crp_thumbnail" alt="the c loops" style="" title="How Not To Exploit The C Loops" srcset="https://www.techbuddies.io/wp-content/uploads/2023/12/techbuddies-22.png 1190w, https://www.techbuddies.io/wp-content/uploads/2023/12/techbuddies-22-300x159.png 300w, https://www.techbuddies.io/wp-content/uploads/2023/12/techbuddies-22-1024x542.png 1024w, https://www.techbuddies.io/wp-content/uploads/2023/12/techbuddies-22-768x407.png 768w" sizes="(max-width: 150px) 100vw, 150px"></figure><span class="crp_title">How Not To Exploit The C Loops</span></a></li></ul><div class="crp_clear"></div></div></div><div class="nv-tags-list"><span>Tags:</span><a href=https://www.techbuddies.io/tag/async-python-web-apis/ title="async Python web APIs" class=async-python-web-apis rel="tag">async Python web APIs</a><a href=https://www.techbuddies.io/tag/fastapi-asyncio-best-practices/ title="FastAPI asyncio best practices" class=fastapi-asyncio-best-practices rel="tag">FastAPI asyncio best practices</a><a href=https://www.techbuddies.io/tag/fastapi-event-loop/ title="FastAPI event loop" class=fastapi-event-loop rel="tag">FastAPI event loop</a><a href=https://www.techbuddies.io/tag/non-blocking-i-o-in-fastapi/ title="non-blocking I/O in FastAPI" class=non-blocking-i-o-in-fastapi rel="tag">non-blocking I/O in FastAPI</a> </div> 
+<div id="comments" class="comments-area">
+		<div id="respond" class="comment-respond nv-is-boxed">
+		<h2 id="reply-title" class="comment-reply-title">Join the conversation <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2026/01/05/top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis/#respond" style="display:none;">Cancel reply</a></small></h2><form action="https://www.techbuddies.io/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> <span class="required-field-message">Required fields are marked <span class="required">*</span></span></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" autocomplete="name" required="required" /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" autocomplete="email" required="required" /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200" autocomplete="url" /></p>
+<p class="comment-form-comment"><label for="comment">Comment <span class="required">*</span></label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="button button-primary" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='3155' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p></form>	</div><!-- #respond -->
+	</div>
+			</article>
+					</div>
+	</div>
+
+</main><!--/.neve-main-->
+
+<footer class="site-footer" id="site-footer"  >
+	<div class="hfg_footer">
+		<div class="footer--row footer-top layout-full-contained"
+	id="cb-row--footer-top"
+	data-row-id="top" data-show-on="desktop">
+	<div
+		class="footer--row-inner footer-top-inner footer-content-wrap">
+		<div class="container">
+			<div
+				class="hfg-grid nv-footer-content hfg-grid-top row--wrapper row "
+				data-section="hfg_footer_layout_top" >
+				<div class="hfg-slot left"><div class="builder-item desktop-left tablet-left mobile-left"><div class="item--inner builder-item--footer-one-widgets"
+		data-section="neve_sidebar-widgets-footer-one-widgets"
+		data-item-id="footer-one-widgets">
+		<div class="widget-area">
+		<div id="block-28" class="widget widget_block">
+<div style="height:13px" aria-hidden="true" class="wp-block-spacer"></div>
+</div><div id="text-2" class="widget widget_text"><p class="widget-title">About techbuddies.io</p>			<div class="textwidget"><p data-start="119" data-end="436"><strong data-start="119" data-end="137">TechBuddies.io</strong> is dedicated to sharing practical knowledge across the tech spectrum — from programming techniques and database engineering to cybersecurity, cloud computing and AI agent automations. Built on the professional experience of <strong data-start="340" data-end="354">Cary Huang</strong>, the site reflects decades of real-world work in complex production environments.</p>
+<p data-start="438" data-end="785">In addition to tutorials and hands-on technical articles, TechBuddies.io delivers <strong data-start="520" data-end="551">carefully curated tech news</strong>, along with case studies and Top-X articles across major technology categories. With a strong focus on open-source, high-performance systems, the site serves as a trusted resource for developers, learners, and technology enthusiasts.</p>
+</div>
+		</div><div id="block-29" class="widget widget_block widget_text">
+<p class="has-text-align-center">© 2025 techbuddies.io. All Rights Reserved.</p>
+</div>	</div>
+	</div>
+
+</div></div>							</div>
+		</div>
+	</div>
+</div>
+
+<div class="footer--row footer-bottom layout-full-contained"
+	id="cb-row--footer-bottom"
+	data-row-id="bottom" data-show-on="desktop">
+	<div
+		class="footer--row-inner footer-bottom-inner footer-content-wrap">
+		<div class="container">
+			<div
+				class="hfg-grid nv-footer-content hfg-grid-bottom row--wrapper row "
+				data-section="hfg_footer_layout_bottom" >
+				<div class="hfg-slot left"><div class="builder-item"><div class="item--inner"><div class="component-wrap"><div><p><a href="https://themeisle.com/themes/neve/" rel="nofollow">Neve</a> | Powered by <a href="http://wordpress.org" rel="nofollow">WordPress</a></p></div></div></div></div></div><div class="hfg-slot c-left"><div class="builder-item desktop-right tablet-center mobile-center"><div class="item--inner builder-item--footer-menu has_menu"
+		data-section="footer_menu_primary"
+		data-item-id="footer-menu">
+	<div class="component-wrap">
+	<div role="navigation" class="nav-menu-footer"
+		aria-label="Footer Menu">
+
+		<ul id="footer-menu" class="footer-menu nav-ul"><li id="menu-item-2153" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-2153"><div class="wrap"><a rel="privacy-policy" href="https://www.techbuddies.io/privacy-policy/">Privacy Policy</a></div></li>
+</ul>	</div>
+</div>
+
+	</div>
+
+</div></div>							</div>
+		</div>
+	</div>
+</div>
+
+	</div>
+</footer>
+
+</div><!--/.wrapper-->
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/neve/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script type="text/javascript" id="neve-script-js-extra">
+/* <![CDATA[ */
+var NeveProperties = {"ajaxurl":"https://www.techbuddies.io/wp-admin/admin-ajax.php","nonce":"ba36d975a6","isRTL":"","isCustomize":"","infScroll":"enabled","maxPages":"0","endpoint":"https://www.techbuddies.io/wp-json/nv/v1/posts/page/","query":"{\"page\":\"\",\"year\":\"2026\",\"monthnum\":\"01\",\"day\":\"05\",\"name\":\"top-7-fastapi-asyncio-best-practices-for-non-blocking-web-apis\"}","lang":"en_US"};
+//# sourceURL=neve-script-js-extra
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/themes/neve/assets/js/build/modern/frontend.js?ver=3.6.7" id="neve-script-js" async></script>
+<script type="text/javascript" id="neve-script-js-after">
+/* <![CDATA[ */
+	var html = document.documentElement;
+	var theme = html.getAttribute('data-neve-theme') || 'light';
+	var variants = {"logo":{"light":{"src":"https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02.png","srcset":"https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02.png 500w, https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02-300x300.png 300w, https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02-150x150.png 150w","sizes":"(max-width: 500px) 100vw, 500px"},"dark":{"src":"https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02.png","srcset":"https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02.png 500w, https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02-300x300.png 300w, https:\/\/www.techbuddies.io\/wp-content\/uploads\/2023\/09\/techbuddies-logo-icon-02-150x150.png 150w","sizes":"(max-width: 500px) 100vw, 500px"},"same":true}};
+
+	function setCurrentTheme( theme ) {
+		var pictures = document.getElementsByClassName( 'neve-site-logo' );
+		for(var i = 0; i<pictures.length; i++) {
+			var picture = pictures.item(i);
+			if( ! picture ) {
+				continue;
+			};
+			var fileExt = picture.src.slice((Math.max(0, picture.src.lastIndexOf(".")) || Infinity) + 1);
+			if ( fileExt === 'svg' ) {
+				picture.removeAttribute('width');
+				picture.removeAttribute('height');
+				picture.style = 'width: var(--maxwidth)';
+			}
+			var compId = picture.getAttribute('data-variant');
+			if ( compId && variants[compId] ) {
+				var isConditional = variants[compId]['same'];
+				if ( theme === 'light' || isConditional || variants[compId]['dark']['src'] === false ) {
+					picture.src = variants[compId]['light']['src'];
+					picture.srcset = variants[compId]['light']['srcset'] || '';
+					picture.sizes = variants[compId]['light']['sizes'];
+					continue;
+				};
+				picture.src = variants[compId]['dark']['src'];
+				picture.srcset = variants[compId]['dark']['srcset'] || '';
+				picture.sizes = variants[compId]['dark']['sizes'];
+			};
+		};
+	};
+
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type == 'attributes') {
+				theme = html.getAttribute('data-neve-theme');
+				setCurrentTheme(theme);
+			};
+		});
+	});
+
+	observer.observe(html, {
+		attributes: true
+	});!function() {const e = "neve_user_theme";const t = "data-neve-theme";let n = localStorage.getItem(e);;document.documentElement.setAttribute(t, n);document.addEventListener("click", (n => {if (n.target.matches(".palette-icon-wrapper, .palette-icon-wrapper *")) {(n => {n.preventDefault();const a = "light" === document.documentElement.getAttribute(t) ? "dark" : "light";document.documentElement.setAttribute(t, a);localStorage.setItem(e, a);})(n);}}));}();
+function toggleAriaClick() { function toggleAriaExpanded(toggle = 'true') { document.querySelectorAll('button.navbar-toggle').forEach(function(el) { if ( el.classList.contains('caret-wrap') ) { return; } el.setAttribute('aria-expanded', 'true' === el.getAttribute('aria-expanded') ? 'false' : toggle); }); } toggleAriaExpanded(); if ( document.body.hasAttribute('data-ftrap-listener') ) { return; } document.body.setAttribute('data-ftrap-listener', 'true'); document.addEventListener('ftrap-end', function() { toggleAriaExpanded('false'); }); }
+var menuCarets=document.querySelectorAll(".nav-ul li > .wrap > .caret");menuCarets.forEach(function(e){e.addEventListener("keydown",e=>{13===e.keyCode&&(e.target.parentElement.classList.toggle("active"),e.target.getAttribute("aria-pressed")&&e.target.setAttribute("aria-pressed","true"===e.target.getAttribute("aria-pressed")?"false":"true"))}),e.parentElement.parentElement.addEventListener("focusout",t=>{!e.parentElement.parentElement.contains(t.relatedTarget)&&(e.parentElement.classList.remove("active"),e.setAttribute("aria-pressed","false"))})});
+//# sourceURL=neve-script-js-after
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-includes/js/comment-reply.min.js?ver=6.9.1" id="comment-reply-js" async="async" data-wp-strategy="async" fetchpriority="low"></script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/page-links-to/dist/new-tab.js?ver=3.3.6" id="page-links-to-js"></script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/enlighter/cache/enlighterjs.min.js?ver=Wpcju+fGIRz01yX" id="enlighterjs-js"></script>
+<script type="text/javascript" id="enlighterjs-js-after">
+/* <![CDATA[ */
+!function(e,n){if("undefined"!=typeof EnlighterJS){var o={"selectors":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"options":{"indent":4,"ampersandCleanup":true,"linehover":true,"rawcodeDbclick":false,"textOverflow":"break","linenumbers":true,"theme":"eclipse","language":"generic","retainCssClasses":false,"collapse":false,"toolbarOuter":"","toolbarTop":"{BTN_RAW}{BTN_COPY}{BTN_WINDOW}{BTN_WEBSITE}","toolbarBottom":""}};(e.EnlighterJSINIT=function(){EnlighterJS.init(o.selectors.block,o.selectors.inline,o.options)})()}else{(n&&(n.error||n.log)||function(){})("Error: EnlighterJS resources not loaded yet!")}}(window,console);
+//# sourceURL=enlighterjs-js-after
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/mystickysidebar/js/detectmobilebrowser.js?ver=1.2.3" id="detectmobilebrowser-js"></script>
+<script type="text/javascript" id="mystickysidebar-js-extra">
+/* <![CDATA[ */
+var mystickyside_name = {"mystickyside_string":".blog-sidebar","mystickyside_content_string":"","mystickyside_margin_top_string":"90","mystickyside_margin_bot_string":"0","mystickyside_update_sidebar_height_string":"false","mystickyside_min_width_string":"795","device_desktop":"1","device_mobile":"1"};
+//# sourceURL=mystickysidebar-js-extra
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/mystickysidebar/js/theia-sticky-sidebar.js?ver=1.2.3" id="mystickysidebar-js"></script>
+<script type="text/javascript" src="https://www.techbuddies.io/wp-content/plugins/luckywp-table-of-contents/front/assets/main.min.js?ver=2.1.14" id="lwptoc-main-js"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://www.techbuddies.io/wp-includes/js/wp-emoji-release.min.js?ver=6.9.1"}}
+</script>
+<script type="module">
+/* <![CDATA[ */
+/*! This file is auto-generated */
+const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(window._wpemojiSettings=a,"wpEmojiSettingsSupports"),s=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const a=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===a[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,a){let r;const o=(r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),s=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(e=>{s[e]=t(o,e,n,a)}),s}function r(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}a.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),c.toString(),p.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"});const r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=e=>{i(n=e.data),r.terminate(),t(n)})}catch(e){}i(n=f(s,u,c,p))}t(n)}).then(e=>{for(const n in e)a.supports[n]=e[n],a.supports.everything=a.supports.everything&&a.supports[n],"flag"!==n&&(a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&a.supports[n]);var t;a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&!a.supports.flag,a.supports.everything||((t=a.source||{}).concatemoji?r(t.concatemoji):t.wpemoji&&t.twemoji&&(r(t.twemoji),r(t.wpemoji)))});
+//# sourceURL=https://www.techbuddies.io/wp-includes/js/wp-emoji-loader.min.js
+/* ]]> */
+</script>
+</body>
+
+</html>
+
+
+<!-- Page cached by LiteSpeed Cache 7.7 on 2026-02-04 15:10:23 -->

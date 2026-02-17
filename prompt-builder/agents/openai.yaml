@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prompt Builder"
+  short_description: "Design and iterate high-quality prompts."
+  default_prompt: "Use $prompt-builder to craft a strong prompt for this task."

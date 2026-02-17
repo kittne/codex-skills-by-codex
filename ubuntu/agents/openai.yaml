@@ -1,0 +1,5 @@
+interface:
+  display_name: "Ubuntu"
+  short_description: "Ubuntu Server best practices"
+  default_prompt: "Use $ubuntu to harden and operate Ubuntu servers (release strategy, updates/upgrades, SSH, firewall, AppArmor, logging, backups, and verification commands)."
+

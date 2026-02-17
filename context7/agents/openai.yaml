@@ -1,0 +1,4 @@
+interface:
+  display_name: "Context7"
+  short_description: "Up-to-date docs and version guidance for libraries."
+  default_prompt: "Use $context7 to look up the latest docs for the library in question."

@@ -1,0 +1,662 @@
+# PostgreSQL Best Practices for DBAs and Developers
+
+## Executive summary
+
+PostgreSQL production success is mostly determined by operational discipline: (a) realistic capacity planning and configuration that matches workload and hardware, (b) schema and indexing choices that keep the planner accurate and I/O bounded, (c) tight control of transaction behavior and vacuum, (d) backup/restore procedures that are **proven** via routine restore drills, and (e) a clearly defined high-availability (HA) and disaster-recovery (DR) posture that matches business RPO/RTO targets. citeturn24search1turn21search2turn9search9turn11search5turn11search1
+
+Across versions, PostgreSQL’s core mechanics remain stable: MVCC means updates/deletes create dead tuples that must be vacuumed; WAL and checkpoints govern durability and recovery; and the query planner depends on statistics that must be maintained (ANALYZE) and sometimes enriched (extended statistics). Best practices should therefore be expressed as **guardrails** and **validation loops** rather than fixed “one-size” numbers. citeturn24search19turn24search1turn25search4turn25search12turn25search0
+
+Version-dependent recommendations matter most in a few areas: identity columns (added in v10), declarative partitioning improvements (v10–v13+), recovery configuration changes (recovery.conf removed in v12), WAL retention parameter rename (wal_keep_segments → wal_keep_size in v13), structured JSON logging (jsonlog in v15), and defaults affecting memory for hash operations (hash_mem_multiplier default 2.0 in v15). citeturn20view0turn17search1turn10search3turn23view0turn22search11turn17search2
+
+The remainder of this document is organized as an implementation-focused “best practices” reference, with goals, recommended patterns/settings, trade-offs, pitfalls, and concrete examples for each domain.
+
+## Configuration and capacity planning
+
+### Goals
+
+Configuration best practices aim to:
+1) keep the system stable under peak concurrency,  
+2) bound tail latency by preventing checkpoint/vacuum/lock storms,  
+3) enable fast recovery and predictable replication behavior, and  
+4) make performance diagnosable via logs and statistics. citeturn3search2turn24search1turn4search0turn25search3turn25search10
+
+### Recommended patterns and settings
+
+#### Set configuration as code and validate effective settings
+Use:
+- `postgresql.conf` for baseline,
+- `ALTER SYSTEM` for controlled overrides,
+- `ALTER ROLE SET` / `ALTER DATABASE SET` for scoped tuning (e.g., enabling profiling only for a role), and
+- `pg_settings` / `SHOW` to verify *effective* runtime values. PostgreSQL explicitly supports per-role/per-database parameter defaults and library preloading controls. citeturn4search29turn8search1turn15search15turn25search17
+
+Example: inspect non-default settings and a few critical knobs.
+```sql
+-- View current settings and sources
+SELECT name, setting, unit, source, context
+FROM pg_settings
+WHERE name IN (
+  'shared_buffers','effective_cache_size','work_mem','maintenance_work_mem',
+  'max_connections','wal_level','max_wal_size','checkpoint_timeout',
+  'autovacuum','log_destination','log_line_prefix'
+)
+ORDER BY name;
+```
+(Use this query in CI-style validation for new clusters and after upgrades.)
+
+#### Treat connection count as a first-class capacity variable
+`max_connections` caps concurrent connections, with `superuser_reserved_connections` preventing total lockout. PostgreSQL warns that various resources are sized based on `max_connections`, and managed services likewise emphasize the resource cost of connections. Prefer connection pooling for high client concurrency. citeturn8search1turn8search4turn8search18turn3search3
+
+Example: recommended posture
+- keep `max_connections` aligned to *actual* database CPU cores and memory budget,
+- use a pooler (transaction/session pooling as appropriate),
+- reserve superuser connections.
+
+#### Memory: avoid “math-by-folklore”; use workload envelopes
+PostgreSQL memory is split between:
+- shared memory (notably `shared_buffers`), and
+- per-backend memory (e.g., `work_mem` for sorts/joins, plus other executor allocations).
+
+A critical best practice is to size `work_mem` based on worst-case concurrency: it is *per operation* (sort/hash) within a query, and multiple operations/queries can run concurrently across sessions. Where hash operations are heavy, PostgreSQL’s `hash_mem_multiplier` controls how much memory hash operations can use relative to `work_mem` and its default increased to 2.0 in v15. citeturn7search2turn17search2turn25search4turn25search3
+
+Operational pattern:
+- Maintain conservative global defaults (`work_mem`, `maintenance_work_mem`), then raise them per role/session for known heavy jobs (ETL/maintenance). PostgreSQL supports role-level defaults and maintenance memory is designed to be set higher than `work_mem` because fewer maintenance operations run concurrently. citeturn4search29turn7search6turn7search2
+
+Example: scope memory to an ETL role
+```sql
+ALTER ROLE etl_jobs SET work_mem = '256MB';
+ALTER ROLE etl_jobs SET maintenance_work_mem = '2GB';
+```
+
+#### WAL and checkpoints: tune to reduce spikes, then monitor recovery trade-offs
+Checkpoints occur when `checkpoint_timeout` elapses or `max_wal_size` is approached; increasing WAL size can reduce checkpoint frequency but may increase crash recovery time. These are explicit trade-offs in the official WAL configuration documentation. citeturn3search2turn3search6turn22search0
+
+Recommended pattern:
+- set `checkpoint_completion_target` high (typically near default 0.9) to spread checkpoint I/O,
+- choose `max_wal_size` that matches write volume and storage capacity,
+- enable `log_checkpoints` to confirm checkpoint behavior in logs and correlate with latency. citeturn4search3turn4search35turn21search22turn3search2
+
+#### Durability: never disable fsync in production; use asynchronous commit selectively
+PostgreSQL distinguishes **asynchronous commit** (controlled by `synchronous_commit`) from disabling `fsync`. Disabling `fsync` can lead to “arbitrarily bad corruption” after OS/hardware crashes; asynchronous commit trades durability for latency but is designed to avoid corruption risk (possible transaction loss only). citeturn7search0turn10search1turn7search4
+
+Best practice:
+- keep `fsync=on` and default durable settings for primary OLTP,
+- if you explicitly accept some loss for low-value writes, scope `synchronous_commit=off` to those transactions/roles rather than changing server-wide durability posture. citeturn7search0turn10search1
+
+#### Autovacuum: tune triggers and throughput, especially per-table
+Routine vacuuming aims to reclaim space from dead tuples, keep statistics fresh, and prevent transaction ID wraparound; autovacuum exists to do this continuously and will not issue VACUUM FULL. PostgreSQL exposes thresholds/scale factors and allows per-table overrides via storage parameters. citeturn24search1turn24search4turn6search2
+
+Recommended pattern:
+- Ensure autovacuum is enabled and sized so it can keep up.
+- Lower scale factors for high-churn large tables to avoid “20% of table changed” being too late.
+- Monitor wraparound risk and vacuum lag. citeturn24search4turn24search1turn24search19turn24search24
+
+Example: per-table tuning for a high-write table
+```sql
+ALTER TABLE events SET (
+  autovacuum_vacuum_scale_factor = 0.02,
+  autovacuum_analyze_scale_factor = 0.01
+);
+```
+(Per-table override is specifically supported for autovacuum thresholds/scale factors. citeturn24search4)
+
+### Trade-offs and decision guidance
+
+Configuration decisions usually trade:
+- latency vs durability (`synchronous_commit`), citeturn10search1turn7search0  
+- steady I/O vs crash recovery time (`max_wal_size`, checkpoint frequency), citeturn3search2turn3search6  
+- connection concurrency vs memory safety (`max_connections` combined with `work_mem`), citeturn8search1turn25search4turn17search2  
+- “let replicas run queries” vs “avoid primary bloat” (hot standby conflict parameters like `max_standby_streaming_delay` and `hot_standby_feedback`). citeturn7search3turn7search11  
+
+### Common pitfalls
+
+Mis-sizing `work_mem` and `max_connections` is a leading cause of OOM and swap storms because memory is multiplied by concurrent operations. citeturn25search4turn8search1turn17search2
+
+Ignoring checkpoint behavior leads to periodic latency spikes; the platform provides explicit instrumentation (`log_checkpoints`) and documented checkpoint mechanics. citeturn3search2turn21search22
+
+Treating autovacuum as “set and forget” leads to bloat and, in worst cases, wraparound threats; the official docs emphasize vacuum’s necessity and autovacuum’s role in steady-state maintenance. citeturn24search1turn24search19turn24search4
+
+### Configuration parameter comparison table
+
+| Area | Parameter | What it controls | Baseline recommendation (general) | Key trade-off / risk | Version notes / references |
+|---|---|---|---|---|---|
+| Connections | `max_connections` | Max concurrent sessions | Keep as low as practical; use pooling for bursty clients | Higher values increase resource sizing and reduce per-session memory headroom | Explicitly capped; reserve admin slots via `superuser_reserved_connections` citeturn8search1turn8search4 |
+| WAL durability | `synchronous_commit` | Commit acknowledgement guarantees | Default durable for OLTP; selectively relax for low-value writes | `off` can lose recent commits on crash; avoids corruption unlike `fsync=off` | Behavior described in async commit docs; see also WAL settings summary citeturn10search1turn7search0turn10search31 |
+| Crash safety | `fsync` | Forces file sync to disk | Keep `on` in production | `off` can cause severe corruption after OS/hardware crash | PostgreSQL explicitly warns about corruption risk citeturn7search0 |
+| Checkpoints | `checkpoint_timeout`, `max_wal_size` | Frequency and WAL growth | Increase WAL size / tune timeouts to reduce checkpoint churn; then measure recovery impact | Too-frequent checkpoints → I/O spikes; too-large WAL → longer recovery | WAL config describes checkpoint triggers and recovery implications citeturn3search2turn3search6 |
+| Autovacuum triggers | `autovacuum_vacuum_threshold`, `autovacuum_vacuum_scale_factor`, `autovacuum_analyze_*` | When VACUUM/ANALYZE triggers | Tune per table; reduce scale factor on large/high-churn tables | Too high → bloat and bad plans; too low → maintenance overhead | Parameters and per-table override documented citeturn24search4turn24search1 |
+| Planner accuracy | `default_statistics_target` / per-column `SET STATISTICS` | Depth of histograms/MCV | Raise for skewed columns; push per-column not global when possible | More ANALYZE overhead; potentially better plans | Planner stats docs explain targets; `ANALYZE` and `ALTER TABLE ... SET STATISTICS` cover usage citeturn25search4turn25search12turn25search16 |
+| Logging formats | `log_destination`, `logging_collector` | Output formats / capture | Enable structured logs when you have a pipeline (csvlog/jsonlog) | More I/O and storage; must manage rotation | jsonlog introduced in v15; logging format requirements documented citeturn15search3turn22search11turn17search2 |
+| Replication retention | `wal_keep_size` | WAL retained for standbys | Set based on worst-case replica lag and WAL volume | Too low → replicas fall behind; too high → disk use | Renamed from `wal_keep_segments` in v13 citeturn22search7turn23view0 |
+| Slots safety rail | `max_slot_wal_keep_size` | Caps WAL retained by slots | Set to prevent unlimited disk growth; monitor slot lag | If exceeded, replicas/consumers can break and require re-sync | Default allows unlimited retention; explicitly documented citeturn10search0turn10search2 |
+
+## Schema design and data modeling
+
+### Goals
+
+Schema best practices aim to:
+- guarantee data integrity (constraints, keys),
+- express business rules close to data,
+- enable the planner to choose efficient join and filter strategies,
+- keep schema evolution (migrations) safe and rollbackable. citeturn5search1turn14search7turn5search2turn25search4
+
+### Recommended patterns and settings
+
+#### Prefer appropriate native types and constraints over application-only checks
+PostgreSQL supports a rich set of native data types and DDL constraints. Constraints (primary key, foreign key, unique, check, not null) provide correctness guarantees and also shape indexing and planner behavior. citeturn5search0turn5search1turn14search7
+
+Pattern:
+- Use `timestamptz` for real-world times (time zone aware).
+- Use `uuid` for externally generated identifiers when needed.
+- Use `jsonb` when you truly need semi-structured data, not as a default substitute for relational modeling.
+- Enforce not-null/unique/fk relationships unless there is a clear reason not to.
+
+Concrete example:
+```sql
+CREATE TABLE accounts (
+  account_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  email      text NOT NULL UNIQUE,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE invoices (
+  invoice_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  account_id bigint NOT NULL REFERENCES accounts(account_id),
+  amount_cents bigint NOT NULL CHECK (amount_cents >= 0),
+  status text NOT NULL CHECK (status IN ('draft','sent','paid','void'))
+);
+```
+Identity columns are SQL-standard compliant and were introduced in PostgreSQL 10. citeturn18search2turn20view0turn5search1
+
+#### Use identity columns instead of SERIAL for new designs
+Identity columns (`GENERATED ... AS IDENTITY`) were added in v10 and explicitly described in v10 release notes as SQL-standard compliant and similar to SERIAL. citeturn20view0turn5search3
+
+Trade-off:
+- SERIAL is widely used and still works, but identity integrates better with SQL-standard behaviors and privilege management patterns.
+
+#### Partition intentionally, not aspirationally
+Declarative partitioning supports range/list/hash partitioning. Partitioning can improve manageability and pruning performance for large datasets, but it increases complexity: more objects, more planning overhead, and more operational surface area. citeturn5search2turn17search1
+
+Version-dependent notes:
+- Partitioning (declarative) was introduced in v10, and v11 added major improvements including hash partitioning and support for keys/indexes/triggers on partitioned tables. citeturn19view0turn17search1
+
+Concrete example (time-based range partitioning):
+```sql
+CREATE TABLE events (
+  event_time timestamptz NOT NULL,
+  account_id bigint NOT NULL,
+  payload jsonb NOT NULL
+) PARTITION BY RANGE (event_time);
+
+CREATE TABLE events_2026_01 PARTITION OF events
+FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+```
+
+Pitfall:
+- Partitioning without aligning queries to the partition key can yield poor pruning and disappointing performance; partitioning benefits require planning for access patterns and retention workflows. citeturn5search2turn17search1
+
+### Common pitfalls
+
+Relying on application code alone for integrity (missing foreign keys/checks) leads to silent corruption and hard-to-debug anomalies; PostgreSQL provides strong constraint mechanisms explicitly intended to model these rules. citeturn5search1turn14search7
+
+Overusing `jsonb` as a default schema shortcut often shifts complexity into query tuning and indexing; while PostgreSQL supports JSON/JSONB and indexing patterns, relational modeling remains more predictable for joins and constraints. citeturn5search0turn6search1
+
+## Indexing, query tuning, and concurrency control
+
+### Goals
+
+Performance best practices aim to:
+- make the common path fast and predictable,
+- keep planner estimates accurate,
+- bound lock contention and avoid deadlocks,
+- prevent bloat from long transactions and heavy churn, and
+- preserve correctness under concurrency. citeturn25search4turn24search14turn6search2turn4search5turn24search1
+
+### Indexing best practices
+
+#### Choose indexes that match predicates, sort order, and access patterns
+`CREATE INDEX` supports indexing columns or expressions; partial indexes index a predicate-defined subset; covering indexes and index-only scans can avoid heap access when visibility map allows. PostgreSQL explicitly documents partial indexes and index-only scans/covering indexes. citeturn6search1turn6search4turn6search0
+
+Concrete examples:
+```sql
+-- Standard B-tree (equality/range)
+CREATE INDEX CONCURRENTLY idx_invoices_account_id ON invoices(account_id);
+
+-- Partial index for a hot subset
+CREATE INDEX CONCURRENTLY idx_invoices_unpaid
+ON invoices(account_id, invoice_id)
+WHERE status IN ('sent');
+
+-- Expression index
+CREATE INDEX CONCURRENTLY idx_accounts_lower_email
+ON accounts (lower(email));
+```
+
+Trade-off:
+- Every index speeds reads for certain patterns but slows writes and adds maintenance (vacuum, reindex, bloat risk).
+
+#### Build and rebuild indexes with minimal disruption
+For production tables, use concurrent index operations where appropriate:
+- `CREATE INDEX CONCURRENTLY` to avoid blocking writes (with longer build time and multiple phases),
+- `REINDEX CONCURRENTLY` to rebuild while allowing access (again with longer runtime). PostgreSQL documents concurrent rebuild mechanics and progress reporting. citeturn6search5turn6search12turn6search1
+
+Pitfall:
+- Concurrent index operations can wait on conflicting transactions; isolate long-running transactions and use progress views to understand phases. citeturn6search12turn4search0
+
+#### Use fillfactor for HOT updates on high-update tables
+Heap-only tuples (HOT) reduce index churn when updates can stay on the same page; PostgreSQL documents that lowering a table’s fillfactor can increase HOT update likelihood. citeturn6search3turn6search7
+
+Example:
+```sql
+ALTER TABLE events SET (fillfactor = 80);
+```
+
+Trade-off:
+- Lower fillfactor increases table size; it can improve update throughput by reducing index updates and bloat pressure. citeturn6search3turn6search7
+
+### Query tuning best practices
+
+#### Use EXPLAIN with real execution data
+PostgreSQL’s `EXPLAIN` supports `ANALYZE` (actual runtime), plus options such as `VERBOSE` and `BUFFERS` for deeper I/O insight. citeturn25search2turn25search13
+
+Example workflow:
+```sql
+EXPLAIN (ANALYZE, BUFFERS, VERBOSE)
+SELECT i.invoice_id
+FROM invoices i
+WHERE i.account_id = 42
+  AND i.status = 'sent'
+ORDER BY i.invoice_id DESC
+LIMIT 50;
+```
+
+Pitfall:
+- Tuning without `ANALYZE` can optimize the *estimated* plan rather than the *real* one.
+
+#### Keep statistics accurate and “rich enough”
+`ANALYZE` updates planner statistics; its depth is governed by `default_statistics_target` or per-column targets. PostgreSQL documents the planner’s use of statistics and how to control the extent of analysis. citeturn25search12turn25search4turn25search16
+
+When the planner misestimates correlated columns, use extended statistics (`CREATE STATISTICS`) and optionally tune the statistics target for that object. citeturn25search0turn25search1turn20view0
+
+Example:
+```sql
+-- Correlated predicates: (country, region) or (tenant_id, status)
+CREATE STATISTICS st_invoices_account_status
+ON account_id, status
+FROM invoices;
+
+ANALYZE invoices;
+```
+
+Trade-off:
+- More statistics can improve plans but increases ANALYZE overhead; target only the columns that matter for expensive misplanned queries. citeturn25search4turn25search0turn25search12
+
+#### Enable query-level observability (pg_stat_statements + optional auto_explain)
+`pg_stat_statements` tracks planning and execution statistics for SQL statements. It requires loading via `shared_preload_libraries` and thus a restart to enable/disable. citeturn25search3turn8search16
+
+Example setup:
+```conf
+shared_preload_libraries = 'pg_stat_statements'
+```
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+```
+
+For hard-to-catch slow queries, `auto_explain` can log execution plans of slow statements automatically. citeturn4search2turn4search29
+
+### Transactions and concurrency best practices
+
+#### Use the weakest isolation level that preserves correctness
+PostgreSQL supports standard isolation levels; higher isolation can reduce anomalies but increases overhead and may cause serialization failures. Choose based on the anomaly you must prevent, not as a blanket setting. PostgreSQL’s MVCC and transaction semantics are documented in the concurrency chapters. citeturn2search33turn24search14turn24search19
+
+#### Set timeouts to prevent lock storms
+Best practice is to set reasonable:
+- `statement_timeout`,
+- `lock_timeout`,
+- `idle_in_transaction_session_timeout`,
+then handle timeouts at application level (retry/idempotency).
+
+Rationale:
+- Long waits hide contention and can cascade into pool exhaustion; PostgreSQL offers lock management and lock wait logging controls such as `log_lock_waits` and `deadlock_timeout`. citeturn4search5turn4search1turn21search14
+
+#### Use explicit row locking patterns for work queues
+`SELECT ... FOR UPDATE` locks rows for update; options like `SKIP LOCKED` are documented and allow workers to avoid waiting on locked rows. citeturn24search14turn24search3
+
+Queue pattern example:
+```sql
+WITH next_job AS (
+  SELECT id
+  FROM jobs
+  WHERE status = 'queued'
+  ORDER BY created_at
+  FOR UPDATE SKIP LOCKED
+  LIMIT 1
+)
+UPDATE jobs
+SET status = 'running', started_at = now()
+WHERE id IN (SELECT id FROM next_job)
+RETURNING *;
+```
+
+Trade-off:
+- `SKIP LOCKED` can starve some rows unless ordering and retry logic are designed carefully.
+
+### Vacuum and bloat prevention
+
+Routine vacuuming is intended to avoid the need for `VACUUM FULL`; `VACUUM FULL` is not recommended for routine use and blocks with strong locks while rewriting the table. citeturn24search1turn6search2turn24search19
+
+Best practice:
+- Let autovacuum do steady-state cleanup; tune it per-table for churn.
+- Investigate long-running transactions (which delay cleanup due to MVCC horizons) as first-class bloat drivers.
+
+## Backup, restore, replication, and high availability
+
+### Goals
+
+These practices aim to:
+- meet defined RPO/RTO targets,
+- recover from user error (logical corruption) and infrastructure failure,
+- ensure replicas don’t break under lag, and
+- make failover and restore predictable and rehearsed. citeturn21search2turn9search9turn11search1turn11search5turn12search1
+
+### Backups and restore best practices
+
+#### Treat restores as the real product; test them routinely
+Point-in-time recovery (PITR) requires a continuous sequence of archived WAL covering at least back to the start of the base backup; PostgreSQL emphasizes configuring and testing WAL archiving *before* relying on PITR. citeturn9search5turn21search2
+
+#### Use the right backup type for the job
+PostgreSQL supports:
+- logical dumps via `pg_dump`/`pg_dumpall`,
+- physical/base backups via `pg_basebackup`,
+- WAL streaming capture via `pg_receivewal`,
+- continuous archiving via `archive_command`/`restore_command` plus base backups. citeturn16search0turn16search11turn9search9turn9search3turn21search2
+
+Concrete examples:
+
+Logical backup (portable, selective restore with custom/directory formats):
+```bash
+pg_dump -Fc -d appdb -f appdb.dump
+pg_restore --list appdb.dump | head
+pg_restore -j 8 -d appdb_restored appdb.dump
+```
+Custom/directory formats are explicitly recommended for flexibility with `pg_restore`, and parallel restore is supported for those archive types. citeturn16search0turn16search4turn16search22
+
+Physical base backup for PITR and replica seeding:
+```bash
+pg_basebackup -h primary -U replicator -D /var/lib/postgresql/data -R -X stream
+```
+`pg_basebackup` is designed to take a base backup of a running cluster and is usable for PITR and as a starting point for standby servers. citeturn9search9turn9search0
+
+WAL capture for archive directory (streaming protocol):
+```bash
+pg_receivewal -h primary -U replicator -D /archives/wal --create-slot --slot=wal_archive_slot
+```
+`pg_receivewal` streams and writes WAL locally, which can be used as the archive location for PITR restores. citeturn9search3turn9search5
+
+#### Managed services: understand what “automated backups” really are
+On entity["company","Amazon Web Services","cloud provider"] managed PostgreSQL, automated backups are storage-volume snapshots plus transaction logs, with point-in-time restore within the retention window; retention is configurable up to 35 days for RDS DB instances and Multi-AZ clusters (per AWS docs). citeturn21search9turn21search1turn11search0
+
+On entity["company","Google Cloud","cloud provider"] Cloud SQL, backups and retention depend on backup options; docs describe automated backup retention ranges and PITR capabilities. citeturn12search3turn11search11
+
+On entity["company","Microsoft Azure","cloud provider"], Azure Database for PostgreSQL backups include snapshots and WAL archiving, enabling point-in-time restore within the configured retention period. citeturn12search1turn12search13
+
+### Backup strategy comparison table
+
+| Strategy | What it is | Best for | RPO/RTO shape | Pros | Cons / pitfalls | Authoritative references |
+|---|---|---|---|---|---|---|
+| `pg_dump`/`pg_restore` (logical) | Logical export of schema+data (custom/directory formats) | Migrations, selective restore, cross-platform portability | RPO: up to last dump; RTO: restore time | Portable archives; selective restore; supports parallel restore for certain formats | Can be slow at large scale; does not include global objects unless `pg_dumpall` | `pg_dump`, SQL dump backup docs citeturn16search0turn16search4turn16search11 |
+| `pg_dumpall` (cluster logical) | Dumps all DBs + global objects (roles/tablespaces) | Full logical cluster export | Similar to `pg_dump` but cluster-level | Captures global objects not dumped by `pg_dump` | Often large; restore is script-based | `pg_dumpall` docs citeturn16search11 |
+| `pg_basebackup` (physical base) + WAL | Physical base backup for PITR and standby seeding | HA/DR foundations, fast large restores | RPO: near-zero if WAL archived; RTO: relatively fast | Required for PITR; suitable for replica creation | Requires WAL archiving discipline | `pg_basebackup`, continuous archiving docs citeturn9search9turn9search5 |
+| Continuous archiving (`archive_command`/`restore_command`) | Upload completed WAL segments + base backups | PITR to recover from logical/user errors | Fine-grained RPO (depends on WAL capture) | Restore to a point in time; standard DR mechanism | Must verify WAL continuity and restore procedures | PITR requirements emphasized in docs citeturn9search5turn21search2 |
+| Managed automated backups (RDS/Cloud SQL/Azure) | Provider-managed snapshots + logs + PITR | Teams outsourcing ops; baseline DR | RPO/RTO per service | Operational simplicity; PITR in console/API | Still must test restore; retention windows limit recovery | RDS PITR/backups; Cloud SQL backups/PITR; Azure backup/restore citeturn11search0turn21search9turn12search3turn11search11turn12search1 |
+
+### Replication and HA best practices
+
+#### Physical (streaming) replication for HA/read scaling
+PostgreSQL streaming replication involves standbys connecting to the primary (e.g., via `primary_conninfo`) and receiving WAL. Postgres documents that enabling streaming replication involves configuring connection info and authentication so replicas can connect to the `replication` pseudo-database. citeturn9search0turn9search14
+
+Version-dependent note:
+- `recovery.conf` was removed in v12; replicas use `standby.signal`/`recovery.signal` and settings moved into `postgresql.conf`. citeturn10search3turn10search11
+
+#### Synchronous replication and quorum commit when you need stronger RPO
+Synchronous replication ensures commits wait for acknowledgements, configured via `synchronous_standby_names`; PostgreSQL supports quorum commit (ANY) semantics. citeturn10search12turn10search31turn10search1
+
+Trade-off:
+- Lower data loss risk vs higher commit latency and potential availability impact if synchronous standbys are unavailable.
+
+#### Replication slots: use them intentionally and cap their damage
+Replication slots prevent required WAL from being removed, but can also retain unbounded WAL if consumers stop. PostgreSQL documents `pg_replication_slots` and the `max_slot_wal_keep_size` safety cap; if `max_slot_wal_keep_size` is -1, slots may retain unlimited WAL. citeturn10search2turn10search0turn9search2
+
+Best practices:
+- Monitor slot lag and WAL retention.
+- Set `max_slot_wal_keep_size` to a value aligned to disk capacity and acceptable consumer lag, then alert on slots approaching thresholds.
+- Ensure operational processes exist to recreate consumers/standbys if slots fall behind and WAL is removed.
+
+#### Logical replication for selective replication and migrations
+Logical replication uses publications/subscriptions, enabling table-level replication patterns used for migrations and heterogeneous topologies. PostgreSQL 10 introduced built-in logical replication, and later releases improved it (including partitioned table replication improvements noted in release notes). citeturn19view0turn23view0
+
+### HA option comparison table
+
+| Option | Primary use | Consistency (RPO) | Typical failover | Read scaling | Complexity | Notes / authoritative references |
+|---|---|---|---|---|---|---|
+| Single node + PITR | Simple deployments | Depends on backup schedule and WAL archiving | Manual restore | No | Low | PITR mechanics and restore requirements documented citeturn9search5turn21search2 |
+| Primary + async streaming standby | HA with fast recovery; read offload | Small RPO possible (async lag) | Manual or orchestrated promotion | Yes | Medium | Streaming standby documented; standby conflicts require tuning citeturn9search0turn7search11turn7search3 |
+| Primary + synchronous standby | Stronger RPO (near-zero) | Commit waits for sync confirmation | Promotion needed; may stall if sync standby unavailable | Limited (depending on topology) | Medium–High | Synchronous commit and quorum commit documented citeturn10search1turn10search12turn10search31 |
+| Quorum synchronous (ANY N) | HA with multiple standbys and reduced commit sensitivity | Strong, with quorum semantics | Depends on orchestration | Yes | High | Quorum commit feature described by PostgreSQL citeturn10search12 |
+| Logical replication pub/sub | Selective replication; migrations; CDC | Depends on apply lag and tooling | Not automatic HA for whole cluster | Yes (table-set specific) | Medium–High | Built-in logical replication introduced in v10 citeturn19view0 |
+| RDS Multi-AZ DB instance/cluster | Managed HA | Designed for HA; details service-specific | Managed failover (DNS endpoint change) | Cluster: yes; instance standby: no | Low–Medium | Multi-AZ failover changes DNS and requires reconnect; standby DB instance is not for reads citeturn11search1turn11search5turn11search9 |
+| Aurora PostgreSQL | Managed HA + storage replication | Storage layer replicated across AZs | Managed failover | Yes (Aurora replicas) | Medium | Aurora replicates across AZs to six storage nodes and has multiple replication options citeturn11search2turn11search10turn11search6 |
+| Cloud SQL HA / Azure zone-redundant HA | Managed HA | “Zero data loss” goals stated per service | Managed failover | Read replicas separate | Medium | Cloud SQL HA overview; Azure HA model describes synchronous commit to standby and zero data loss for HA setup citeturn11search3turn12search0turn12search16 |
+
+### Mermaid diagrams for typical architectures
+
+Single-node with PITR:
+```mermaid
+flowchart LR
+  App[Application] --> Pool[Connection Pooler]
+  Pool --> DB[(PostgreSQL Primary)]
+  DB --> Logs[Centralized Logs]
+  DB --> Metrics[Metrics/Tracing]
+  DB --> Backup[Base Backups + WAL Archive]
+  Backup --> Obj[Object Storage]
+```
+
+Primary-standby streaming replication:
+```mermaid
+flowchart LR
+  App[Application] --> Pool[Connection Pooler]
+  Pool --> Primary[(Primary)]
+  Primary -- WAL stream --> Standby[(Standby)]
+  Primary --> Backup[Base Backup + WAL Archive]
+  Backup --> Obj[Object Storage]
+  Standby --> ReadScale[Read-only Queries]
+  Primary --> Metrics[Monitoring/Alerts]
+  Standby --> Metrics
+```
+
+Logical replication (publisher/subscriber):
+```mermaid
+flowchart LR
+  AppA[Apps A] --> DBA[(DB A - Publisher)]
+  DBA -- Publications/Changes --> DBB[(DB B - Subscriber)]
+  DBB --> AppB[Apps B / Analytics]
+  DBA --> MonA[Observability]
+  DBB --> MonB[Observability]
+```
+
+Multi-AZ managed service (generic pattern):
+```mermaid
+flowchart LR
+  App[Application] --> Endpoint[Managed DB Endpoint]
+  Endpoint --> Writer[(Writer / Primary)]
+  Writer --> Reader1[(Reader/Replica AZ-1)]
+  Writer --> Reader2[(Reader/Replica AZ-2)]
+  Writer --> Storage[(Managed Storage + Snapshots + Logs)]
+  Storage --> PITR[Point-in-Time Restore]
+  Writer --> Mon[Provider Monitoring + Logs]
+```
+
+## Monitoring, observability, and security
+
+### Goals
+
+Observability best practices aim to detect:
+- query regressions and lock contention early,
+- checkpoint/WAL pressure,
+- autovacuum lag and bloat risk,
+- replication lag and slot danger,
+- security anomalies (unexpected role usage, access patterns). citeturn4search4turn4search0turn3search2turn24search1turn10search2
+
+Security best practices aim to enforce:
+- least privilege,
+- strong authentication,
+- encrypted transport,
+- auditable actions. citeturn14search7turn14search1turn15search2turn22search24
+
+### Monitoring and logging best practices
+
+#### Use cumulative statistics views for “what is happening now and over time”
+PostgreSQL’s cumulative statistics system includes `pg_stat_activity` and other views for ongoing monitoring; official monitoring docs describe these views and their roles. citeturn4search4turn4search0
+
+Example triage queries:
+```sql
+-- Active sessions and wait states
+SELECT pid, usename, datname, state, wait_event_type, wait_event, query
+FROM pg_stat_activity
+WHERE state <> 'idle'
+ORDER BY pid;
+
+-- Replication state (if applicable)
+SELECT * FROM pg_stat_replication;
+```
+(`pg_stat_activity` is documented as one row per server process. citeturn4search0)
+
+#### Log for diagnosis, not for noise
+PostgreSQL supports multiple log destinations including stderr, csvlog, jsonlog, and syslog; csvlog/jsonlog require enabling the logging collector. citeturn3search0turn15search3
+
+Version note:
+- `jsonlog` was introduced in PostgreSQL 15. citeturn22search11turn17search2
+
+Recommended log events (baseline):
+- enable slow query logging via `log_min_duration_statement`,
+- enable `log_lock_waits` with a tuned `deadlock_timeout` to surface lock waits,
+- enable `log_checkpoints` to diagnose checkpoint pressure. citeturn4search5turn4search1turn4search35turn21search22
+
+#### Use pg_stat_statements for top queries and regression tracking
+`pg_stat_statements` tracks planning and execution statistics for statements. citeturn25search3turn8search16
+
+Example:
+```sql
+SELECT queryid, calls, total_exec_time, mean_exec_time, rows, query
+FROM pg_stat_statements
+ORDER BY total_exec_time DESC
+LIMIT 20;
+```
+
+### Security best practices
+
+#### Prefer SCRAM over MD5; plan for MD5 removal
+PostgreSQL documents SCRAM password authentication and notes that support for MD5-encrypted passwords is deprecated and will be removed in a future release. citeturn14search1turn22search3
+
+Best practice steps:
+- set `password_encryption = scram-sha-256`,
+- migrate stored password verifiers by resetting passwords,
+- update `pg_hba.conf` methods accordingly (after confirming client support). PostgreSQL notes that older clients might not support SCRAM. citeturn14search18turn14search1turn18search0
+
+#### Enforce least privilege with roles and explicit grants
+Privileges and grant/revoke semantics are explicitly defined; avoid granting privileges broadly to `PUBLIC` unless intended. citeturn14search7turn14search4turn14search25
+
+#### Use row-level security for multi-tenant constraints (when appropriate)
+Row security policies are documented and require enabling RLS on the table; `CREATE POLICY` specifies which commands/roles are governed. citeturn14search2turn14search15
+
+#### Audit logging: pgAudit where you need governance-grade logs
+pgAudit provides detailed session/object auditing via PostgreSQL’s logging facility and is referenced by multiple managed-service guides. citeturn15search2turn15search10turn15search14turn15search22
+
+#### Cloud-managed authentication integrations
+- entity["company","Amazon Web Services","cloud provider"]: IAM database authentication uses auth tokens instead of stored database passwords. citeturn14search3turn14search6turn15search12  
+- entity["company","Google Cloud","cloud provider"]: Cloud SQL IAM database authentication can be handled by Cloud SQL connectors/proxy, passing IAM usernames and tokens. citeturn15search0turn15search20  
+- entity["company","Microsoft Azure","cloud provider"]: Microsoft Entra ID authentication is supported for Azure Database for PostgreSQL flexible server. citeturn15search1turn15search5  
+
+## Upgrades, migrations, extensions, and operational runbooks
+
+### Goals
+
+Lifecycle best practices aim to:
+- upgrade safely (minor patches quickly; majors with rehearsal),
+- keep extension sprawl controlled and supportable,
+- adapt to cloud-managed constraints without losing operational rigor, and
+- provide a clear runbook for on-call response. citeturn2search15turn16search3turn10search11turn13search2turn7search26
+
+### Upgrades and migrations best practices
+
+#### Major upgrades: choose an approach and rehearse it
+PostgreSQL supports major upgrades via `pg_upgrade` (in-place migration) and also via dump/restore; official docs cover upgrading clusters and note that `pg_upgrade` can perform upgrades quickly (especially with link mode). citeturn2search15turn10search11turn16search0
+
+Version-dependent note:
+- Some upgrades require follow-on maintenance (e.g., reindexing) depending on changes; release notes call out cases where `pg_upgrade` requires `REINDEX` to realize new index-format benefits. citeturn23view0turn6search5
+
+Managed services:
+- entity["company","Amazon Web Services","cloud provider"] RDS supports automatic minor upgrades after provider testing/approval (during maintenance window) if you enable it; majors require manual action. citeturn16search3turn16search6turn16search13  
+- entity["company","Google Cloud","cloud provider"] provides in-place major version upgrade procedures for Cloud SQL. citeturn2search23  
+
+#### Logical migration best practices (pg_dump/pg_restore)
+Use the most flexible formats (`-Fc` custom or `-Fd` directory) and parallel restore (`pg_restore -j`) for large restores. citeturn16search0turn16search4turn16search22
+
+For managed services, provider docs explicitly describe import/export via `pg_dump`/`pg_restore` and their constraints. citeturn16search20turn21search23
+
+### Extensions best practices
+
+#### Treat extensions as supply-chain dependencies
+PostgreSQL extensions can function like built-ins; the project documents this extensibility model and distinguishes core contrib extensions from external ones like PostGIS. citeturn13search23
+
+Best practice:
+- Maintain an “approved extensions” list with version pinning, operational owners, and usage justification.
+- Prefer widely adopted, well-maintained extensions, and validate upgrade compatibility in staging.
+
+#### Managed services: extension availability is provider- and version-specific
+- entity["company","Amazon Web Services","cloud provider"] RDS and Aurora publish supported extension/version lists by engine version and describe how to view and restrict extension installation (e.g., `rds.allowed_extensions`, `rds.extensions`). citeturn13search0turn13search4turn13search8turn13search1  
+- entity["company","Google Cloud","cloud provider"] lists extensions supported by Cloud SQL, grouped by category. citeturn13search2  
+- entity["company","Microsoft Azure","cloud provider"] documents allowlisting (`azure.extensions`) and the supported extension list; you cannot “bring your own” extension binaries. citeturn13search21turn13search15turn13search3  
+
+#### Popular extensions comparison table
+
+| Category | Extension | What it’s for | Operational considerations | Cloud-managed availability guidance | Sources |
+|---|---|---|---|---|---|
+| Observability | `pg_stat_statements` | Track query planning/execution stats | Requires `shared_preload_libraries` and restart; monitor overhead | Generally available on major providers; confirm version-specific lists | Module docs citeturn25search3turn8search16 |
+| Observability | `auto_explain` | Auto-log plans for slow queries | Requires preload for global use; configure thresholds carefully | Often available; provider guidance exists (e.g., managed query tuning workflows) | auto_explain docs citeturn4search2 |
+| Security/Audit | `pgcrypto` | Column-level encryption/hashing | Key management is external; encryption at rest is still a storage concern | Availability varies; confirm provider extension lists | Encryption options mention pgcrypto usage citeturn22search24 |
+| Security/Audit | `pgaudit` | Detailed audit logs | Log volume can be high; define audit policy | Supported by several managed services; must enable/allowlist as required | pgAudit + provider docs citeturn15search2turn15search10turn15search14turn15search22 |
+| Data types | PostGIS | Geospatial data and indexes | Heavy; requires careful versioning and dependency mgmt | Offered by major providers; see provider extension catalogs | Cloud SQL extensions include PostGIS category; Postgres extensibility docs note PostGIS as external example citeturn13search2turn13search23 |
+| Maintenance | `pg_partman` | Partition creation/maintenance automation | Adds automation surface area; align with retention policies | Often supported on managed services (version-dependent); verify lists | AWS notes pg_partman usage; Aurora extension docs mention it as example citeturn13search8turn13search5 |
+| Scheduling | `pg_cron` | Schedule jobs in-database | Requires preload on some platforms; avoid overloading DB with heavy jobs | Managed services may require preload parameter changes and restart | AWS notes pg_cron as preload module example citeturn13search8turn8search6 |
+
+### Cloud-managed PostgreSQL operational guidance
+
+#### Understand HA semantics, not just checkboxes
+- RDS Multi-AZ DB instance uses a synchronous standby for failover but does not serve reads; failover updates DNS and requires reconnect. citeturn11search5turn11search1  
+- Aurora replicates writes across AZs to six storage nodes at the storage layer; this changes failure modes and operational tuning vs standard streaming replication. citeturn11search2turn11search6  
+- Cloud SQL and Azure document HA configurations and DR guidance; Cloud SQL is regional for HA and region failure requires DR constructs, while Azure describes zonal/zone-redundant models with synchronous commit to standby in HA. citeturn11search3turn11search7turn12search0turn12search16  
+
+#### Treat provider maintenance windows as part of your release process
+Managed services apply minor upgrades/patching during maintenance windows; plan load tests and rollouts around these windows, and confirm rollback posture via snapshots/PITR. citeturn16search3turn11search4turn21search9
+
+### One-page actionable runbook checklist
+
+| Domain | Routine checks | Incident triggers | Immediate actions (first 15–30 min) | References |
+|---|---|---|---|---|
+| Backups/PITR | Verify latest successful backup; verify WAL archiving continuity; perform restore drill on schedule | Restore needed; suspected corruption; missing WAL | Identify recovery target time; restore base backup; ensure `restore_command` works; validate data | PITR requirements and restore_command emphasis citeturn9search5turn21search2 |
+| Autovacuum/bloat | Track vacuum lag and long transactions; review large-table autovacuum tuning | Rapid disk growth; wraparound warnings; query regressions due to bloat | Identify blockers (`pg_stat_activity`); tune per-table thresholds; avoid `VACUUM FULL` unless necessary | Routine vacuuming + vacuum semantics citeturn24search1turn24search19turn6search2 |
+| Checkpoints/WAL | Monitor checkpoint frequency and duration; watch WAL growth | Latency spikes; WAL disk pressure | Enable/inspect `log_checkpoints`; adjust checkpoint/WAL knobs cautiously; confirm storage health | WAL config and logging guidance citeturn3search2turn21search22turn3search6 |
+| Locks/contention | Track lock waits and deadlocks; baseline top waits | Pool exhaustion; timeouts; deadlock reports | Inspect blocking chains; use timeouts; consider query/index fixes | Lock logging controls and explicit locking docs citeturn4search5turn4search1turn24search14 |
+| Replication | Monitor lag and slot health; alert on slot retention growth | Replica falling behind; disk filling due to slots | Check `pg_replication_slots`; confirm `max_slot_wal_keep_size`; re-seed if WAL lost | Slot docs + safety cap citeturn10search2turn10search0 |
+| Query regressions | Review `pg_stat_statements` top queries; sample plans | Sudden latency/CPU | Identify top offenders; run `EXPLAIN (ANALYZE, BUFFERS)`; update stats or add targeted indexes | `pg_stat_statements` and EXPLAIN docs citeturn25search3turn25search2turn25search12 |
+| Security | Review role grants; ensure SCRAM posture; audit policy | Suspicious access; compliance events | Confirm auth method; enable/inspect audit logs; rotate credentials/tokens per policy | SCRAM docs; md5 deprecation; pgAudit citeturn14search1turn22search3turn15search2turn15search10 |
+| Cloud-managed HA | Validate failover drills (where supported); watch provider events | AZ failover; maintenance event | Reconnect handling (DNS/endpoint); verify writer/reader roles; confirm replication lag | RDS failover/DNS; Cloud SQL/Azure HA docs citeturn11search1turn11search5turn11search3turn12search0 |
+
+### Version-dependent notes quick reference
+
+- v10: built-in logical replication; declarative partitioning; identity columns; SCRAM-SHA-256 authentication added. citeturn19view0turn20view0  
+- v11: major partitioning improvements (hash partitioning, keys/indexes/triggers on partitioned tables, default partition). citeturn17search1turn17search4  
+- v12: `recovery.conf` removed; `standby.signal` / `recovery.signal` used. citeturn10search11turn10search3  
+- v13: `wal_keep_segments` renamed to `wal_keep_size` with MB-based sizing. citeturn23view0  
+- v15: `jsonlog` logging format introduced; `hash_mem_multiplier` default increased to 2.0. citeturn22search11turn17search2  
+- Current docs: MD5-encrypted passwords are deprecated and targeted for removal in a future release; migration should be planned to SCRAM. citeturn22search3turn14search1

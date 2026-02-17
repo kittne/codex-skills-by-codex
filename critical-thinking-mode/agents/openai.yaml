@@ -1,0 +1,4 @@
+interface:
+  display_name: "Critical Thinking Mode"
+  short_description: "Ask one question at a time."
+  default_prompt: "Use $critical-thinking-mode to probe assumptions with one concise question at a time."

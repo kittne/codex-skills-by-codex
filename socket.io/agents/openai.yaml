@@ -1,0 +1,4 @@
+interface:
+  display_name: "Socket.IO"
+  short_description: "Help with Socket.IO security, scaling, and reliability"
+  default_prompt: "Use $socket-io to harden Socket.IO architecture, delivery semantics, and operations."

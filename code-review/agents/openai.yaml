@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Comprehensive, language-agnostic code review guide."
+  default_prompt: "Use $code-review to review this change set for quality and risk."

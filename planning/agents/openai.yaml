@@ -1,0 +1,4 @@
+interface:
+  display_name: "Planning"
+  short_description: "Comprehensive implementation and research planning."
+  default_prompt: "Use $planning to create a step-by-step execution plan."

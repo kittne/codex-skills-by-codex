@@ -1,0 +1,4 @@
+interface:
+  display_name: "Expo SDK"
+  short_description: "Help with Expo app architecture, releases, and upgrades"
+  default_prompt: "Use $expo-sdk to plan Expo architecture, EAS releases, and SDK upgrades."

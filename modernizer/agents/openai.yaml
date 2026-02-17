@@ -1,0 +1,4 @@
+interface:
+  display_name: "Modernizer"
+  short_description: "Plan and guide modernization of software stacks."
+  default_prompt: "Use $modernizer to propose a modernization plan for this project."

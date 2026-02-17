@@ -1,0 +1,4 @@
+interface:
+  display_name: "Redis"
+  short_description: "Model and operate Redis safely"
+  default_prompt: "Use $redis to design a Redis plan (keys, TTLs, eviction, persistence, HA) and identify performance and security risks."

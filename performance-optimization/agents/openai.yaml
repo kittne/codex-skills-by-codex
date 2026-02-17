@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance Optimization"
+  short_description: "Cross-stack performance optimization guidance."
+  default_prompt: "Use $performance-optimization to diagnose and improve performance."

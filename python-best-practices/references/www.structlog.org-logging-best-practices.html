@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Logging Best Practices" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="logging-best-practices.html" />
+<meta property="og:site_name" content="structlog" />
+<meta property="og:description" content="Logging is not a new concept and is in no way unique to Python. Logfiles have existed for decades, and there’s little reason to reinvent the wheel in our little world. Therefore, let’s rely on prov..." />
+<meta property="og:image" content="_static/structlog_logo.png" />
+<meta property="og:image:alt" content="structlog" />
+<meta name="description" content="Logging is not a new concept and is in no way unique to Python. Logfiles have existed for decades, and there’s little reason to reinvent the wheel in our little world. Therefore, let’s rely on prov..." />
+
+    <title>Logging Best Practices &#8212; structlog 25.5.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d6232483" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=de7a50ed"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'logging-best-practices';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performance" href="performance.html" />
+    <link rel="prev" title="Recipes" href="recipes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="structlog" /><meta name="readthedocs-version-slug" content="stable" /><meta name="readthedocs-resolver-filename" content="/logging-best-practices.html" /><meta name="readthedocs-http-status" content="200" /></head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/structlog_logo.svg" class="logo__image only-light" alt="structlog 25.5.0 documentation - Home"/>
+    <script>document.write(`<img src="_static/structlog_logo.svg" class="logo__image only-dark" alt="structlog 25.5.0 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="why.html">Why …</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Basics</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bound-loggers.html">Bound Loggers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processors.html">Processors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contextvars.html">Context Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Development Affordances</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="console-output.html">Console Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typing.html">Type Hints</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Integrations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="frameworks.html">Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standard-library.html">Standard Library Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twisted.html">Twisted</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">In Practice</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="recipes.html">Recipes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Logging Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deprecated Features</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="thread-local.html">Legacy Thread-local Context</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Meta</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="license.html">License and Hall of Fame</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/structlog/">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hynek/structlog/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hynek/structlog/blob/main/CHANGELOG.md">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hynek/structlog/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/hynek/structlog/blob/main/.github/SECURITY.md">Security Policy</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://hynek.me/say-thanks/">Funding</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/logging-best-practices.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Logging Best Practices</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#canonical-log-lines">Canonical log lines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretty-printing-vs-structured-output">Pretty printing vs. structured output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centralized-logging">Centralized logging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elk">ELK</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graylog">Graylog</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="logging-best-practices">
+<h1>Logging Best Practices<a class="headerlink" href="#logging-best-practices" title="Link to this heading">#</a></h1>
+<p>Logging is not a new concept and is in no way unique to Python.
+Logfiles have existed for decades, and there’s little reason to reinvent the wheel in our little world.
+Therefore, let’s rely on proven tools as much as possible and do only the bare minimum inside Python applications<a class="footnote-reference brackets" href="#unix" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>A simple but powerful approach is to log to unbuffered <a class="reference external" href="https://en.wikipedia.org/wiki/Standard_out#Standard_output_.28stdout.29">standard out</a> and let other tools take care of the rest.</p>
+<p>That can be your terminal window while developing; it can be <a class="reference external" href="https://en.wikipedia.org/wiki/Systemd"><em>systemd</em></a> redirecting your log entries to <a class="reference external" href="https://en.wikipedia.org/wiki/Syslogd"><em>syslogd</em></a> and rotating them using <a class="reference external" href="https://github.com/logrotate/logrotate"><em>logrotate</em></a>; or it can be your <a class="reference external" href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">cluster manager</a> forwarding them to an obscenely expensive log aggregator service.</p>
+<p>It doesn’t matter where or how your application runs – it just works, and the reason why the popular <a class="reference external" href="https://12factor.net/logs"><em>Twelve-Factor App</em> methodology</a> suggests just that.</p>
+<section id="canonical-log-lines">
+<h2>Canonical log lines<a class="headerlink" href="#canonical-log-lines" title="Link to this heading">#</a></h2>
+<p>Generally speaking, having as few log entries per request as possible is a good thing.
+The less noise, the more insights.</p>
+<p><em>structlog</em>’s ability to <a class="reference internal" href="getting-started.html#building-ctx"><span class="std std-ref">bind data to loggers incrementally</span></a> – plus <a class="reference internal" href="contextvars.html"><span class="doc">loggers that are local to the current execution context</span></a> – can help you to minimize the output to a <em>single log entry</em>.</p>
+<p>At Stripe, this concept is called <a class="reference external" href="https://brandur.org/canonical-log-lines">Canonical Log Lines</a>.</p>
+</section>
+<section id="pretty-printing-vs-structured-output">
+<h2>Pretty printing vs. structured output<a class="headerlink" href="#pretty-printing-vs-structured-output" title="Link to this heading">#</a></h2>
+<p>Colorful and pretty printed log messages are nice during development when you locally run your code.</p>
+<p>However, in production you should emit structured output (like JSON) which is a lot easier to parse by log aggregators.
+Since you already log in a structured way, writing JSON output with <em>structlog</em> comes naturally.
+You can even generate structured exception tracebacks.
+This makes analyzing errors easier, since log aggregators can render JSON much better than multiline strings with a lot escaped quotation marks.</p>
+<p>Here is a simple example of how you can have pretty logs during development and JSON output when your app is running in a production context:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">structlog</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shared_processors</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="c1"># Processors that have nothing to do with output,</span>
+<span class="gp">... </span>    <span class="c1"># e.g., add timestamps or log level names.</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="c1"># Pretty printing when we run in a terminal session.</span>
+<span class="gp">... </span>    <span class="c1"># Automatically prints pretty tracebacks when &quot;rich&quot; is installed</span>
+<span class="gp">... </span>    <span class="n">processors</span> <span class="o">=</span> <span class="n">shared_processors</span> <span class="o">+</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">structlog</span><span class="o">.</span><span class="n">dev</span><span class="o">.</span><span class="n">ConsoleRenderer</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># Print JSON when we run, e.g., in a Docker container.</span>
+<span class="gp">... </span>    <span class="c1"># Also print structured tracebacks.</span>
+<span class="gp">... </span>    <span class="n">processors</span> <span class="o">=</span> <span class="n">shared_processors</span> <span class="o">+</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">dict_tracebacks</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">JSONRenderer</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">processors</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="centralized-logging">
+<h2>Centralized logging<a class="headerlink" href="#centralized-logging" title="Link to this heading">#</a></h2>
+<p>Nowadays you usually don’t want your log files in compressed archives distributed over dozens – if not thousands – of servers or cluster nodes.
+You want them in a single location.
+Parsed, indexed, and easy to search.</p>
+<section id="elk">
+<h3>ELK<a class="headerlink" href="#elk" title="Link to this heading">#</a></h3>
+<p>The ELK stack (<a class="reference external" href="https://www.elastic.co/elasticsearch"><strong>E</strong>lasticsearch</a>, <a class="reference external" href="https://www.elastic.co/logstash"><strong>L</strong>ogstash</a>, <a class="reference external" href="https://www.elastic.co/kibana"><strong>K</strong>ibana</a>) from Elastic is a great way to store, parse, and search your logs.</p>
+<p>The way it works is that you have local log shippers like <a class="reference external" href="https://github.com/elastic/beats/tree/main/filebeat">Filebeat</a> that parse your log files and forward the log entries to your <a class="reference external" href="https://www.elastic.co/logstash">Logstash</a> server.
+Logstash parses the log entries and stores them in <a class="reference external" href="https://www.elastic.co/elasticsearch">Elasticsearch</a>.
+Finally, you can view and search them in <a class="reference external" href="https://www.elastic.co/kibana">Kibana</a>.</p>
+<p>If your log entries consist of a JSON dictionary, this is fairly easy and efficient.
+All you have to do is to tell <a class="reference external" href="https://www.elastic.co/logstash">Logstash</a> either that your log entries are prepended with a timestamp from <a class="reference internal" href="api.html#structlog.processors.TimeStamper" title="structlog.processors.TimeStamper"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeStamper</span></code></a> or the name of your timestamp field.</p>
+</section>
+<section id="graylog">
+<h3>Graylog<a class="headerlink" href="#graylog" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://graylog.org/">Graylog</a> goes one step further.
+It not only supports everything those above do (and then some); you can also directly log JSON entries towards it – optionally even through an AMQP server (like <a class="reference external" href="https://www.rabbitmq.com/">RabbitMQ</a>) for better reliability.
+Additionally, <a class="reference external" href="https://go2docs.graylog.org/current/getting_in_log_data/gelf.html">Graylog’s Extended Log Format</a> (GELF) allows for structured data which makes it an obvious choice to use together with <em>structlog</em>.</p>
+</section>
+</section>
+</section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="unix" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This is obviously a privileged UNIX-centric view but even Windows has tools and means for log management although we won’t be able to discuss them here.</p>
+</aside>
+</aside>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="recipes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Recipes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="performance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Performance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#canonical-log-lines">Canonical log lines</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretty-printing-vs-structured-output">Pretty printing vs. structured output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centralized-logging">Centralized logging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elk">ELK</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graylog">Graylog</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Hynek Schlawack
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2013, Hynek Schlawack.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

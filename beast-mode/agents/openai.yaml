@@ -1,0 +1,4 @@
+interface:
+  display_name: "Beast Mode"
+  short_description: "Autonomous, assumption-led execution mode."
+  default_prompt: "Use $beast-mode to solve the task end-to-end without follow-up questions."

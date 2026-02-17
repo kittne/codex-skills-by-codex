@@ -1,0 +1,4 @@
+interface:
+  display_name: "MySQL"
+  short_description: "Design and operate MySQL safely"
+  default_prompt: "Use $mysql to review a MySQL schema and slow queries, propose index/migration changes, and outline backup/HA and security hardening steps."

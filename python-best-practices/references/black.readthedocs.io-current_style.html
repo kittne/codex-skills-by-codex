@@ -1,0 +1,840 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="The (future of the) Black code style" href="future_style.html"><link rel="prev" title="The Black Code Style" href="index.html">
+        <link rel="prefetch" href="../_static/logo2-readme.png" as="image">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>The Black code style - Black 26.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="black" /><meta name="readthedocs-version-slug" content="stable" /><meta name="readthedocs-resolver-filename" content="/the_black_code_style/current_style.html" /><meta name="readthedocs-http-status" content="200" /></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Black 26.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/logo2-readme.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Black 26.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">The Black Code Style</a><input aria-label="Toggle navigation of The Black Code Style" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Current style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="future_style.html">Future style</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage_and_configuration/index.html">Usage and Configuration</a><input aria-label="Toggle navigation of Usage and Configuration" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage_and_configuration/the_basics.html">The basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage_and_configuration/file_collection_and_discovery.html">File collection and discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage_and_configuration/black_as_a_server.html">Black as a server (blackd)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage_and_configuration/black_docker_image.html">Black Docker image</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../integrations/index.html">Integrations</a><input aria-label="Toggle navigation of Integrations" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../integrations/editors.html">Editor integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integrations/github_actions.html">GitHub Actions integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../integrations/source_version_control.html">Version control integration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">Guides</a><input aria-label="Toggle navigation of Guides" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../guides/introducing_black_to_your_project.html">Introducing <em>Black</em> to your project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/using_black_with_other_tools.html">Using <em>Black</em> with other tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contributing/index.html">Contributing</a><input aria-label="Toggle navigation of Contributing" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/the_basics.html">The basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/gauging_changes.html">Gauging changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/issue_triage.html">Issue triage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/release_process.html">Release process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/psf/black">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.org/project/black">PyPI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discord.gg/RtVdv86PrH">Chat</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/the_black_code_style/current_style.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="the-black-code-style">
+<h1>The <em>Black</em> code style<a class="headerlink" href="#the-black-code-style" title="Link to this heading">¶</a></h1>
+<section id="code-style">
+<h2>Code style<a class="headerlink" href="#code-style" title="Link to this heading">¶</a></h2>
+<p><em>Black</em> aims for consistency, generality, readability and reducing git diffs. Similar
+language constructs are formatted with similar rules. Style configuration options are
+deliberately limited and rarely added. Previous formatting is taken into account as
+little as possible, with rare exceptions like the magic trailing comma. The coding style
+used by <em>Black</em> can be viewed as a strict subset of PEP 8.</p>
+<p>This document describes the current formatting style. If you’re interested in trying out
+where the style is heading, see <a class="reference internal" href="future_style.html"><span class="std std-doc">future style</span></a> and try running
+<code class="docutils literal notranslate"><span class="pre">black</span> <span class="pre">--preview</span></code>.</p>
+<section id="how-black-wraps-lines">
+<h3>How <em>Black</em> wraps lines<a class="headerlink" href="#how-black-wraps-lines" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> ignores previous formatting and applies uniform horizontal and vertical
+whitespace to your code. The rules for horizontal whitespace can be summarized as: do
+whatever makes <code class="docutils literal notranslate"><span class="pre">pycodestyle</span></code> happy.</p>
+<p>As for vertical whitespace, <em>Black</em> tries to render one full expression or simple
+statement per line. If this fits the allotted line length, great.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in:</span>
+
+<span class="n">j</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span>
+     <span class="mi">2</span><span class="p">,</span>
+     <span class="mi">3</span>
+<span class="p">]</span>
+
+<span class="c1"># out:</span>
+
+<span class="n">j</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If not, <em>Black</em> will look at the contents of the first outer matching brackets and put
+that in a separate indented line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in:</span>
+
+<span class="n">ImportantClass</span><span class="o">.</span><span class="n">important_method</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">lookup_lines</span><span class="p">,</span> <span class="n">capture_locals</span><span class="p">,</span> <span class="n">extra_argument</span><span class="p">)</span>
+
+<span class="c1"># out:</span>
+
+<span class="n">ImportantClass</span><span class="o">.</span><span class="n">important_method</span><span class="p">(</span>
+    <span class="n">exc</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">lookup_lines</span><span class="p">,</span> <span class="n">capture_locals</span><span class="p">,</span> <span class="n">extra_argument</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If that still doesn’t fit the bill, it will decompose the internal expression further
+using the same rule, indenting matching brackets every time. If the contents of the
+matching brackets pair are comma-separated (like an argument list, or a dict literal,
+and so on) then <em>Black</em> will first try to keep them on the same line with the matching
+brackets. If that doesn’t work, it will put all of them in separate lines.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in:</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">very_important_function</span><span class="p">(</span><span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">variables</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span> <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies `variables` to the `template` and writes to `file`.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="o">...</span>
+
+<span class="c1"># out:</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">very_important_function</span><span class="p">(</span>
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">variables</span><span class="p">,</span>
+    <span class="n">file</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+    <span class="n">engine</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies `variables` to the `template` and writes to `file`.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>If a data structure literal (tuple, list, set, dict) or a line of “from” imports cannot
+fit in the allotted length, it’s always split into one element per line. This minimizes
+diffs as well as enables readers of code to find which commit introduced a particular
+entry. This also makes <em>Black</em> compatible with
+<a class="reference internal" href="../guides/using_black_with_other_tools.html#isort"><span class="std std-ref">isort</span></a> with the ready-made <code class="docutils literal notranslate"><span class="pre">black</span></code>
+profile or manual configuration.</p>
+<p>You might have noticed that closing brackets are always dedented and that a trailing
+comma is always added. Such formatting produces smaller diffs; when you add or remove an
+element, it’s always just one line. Also, having the closing bracket dedented provides a
+clear delimiter between two distinct sections of the code that otherwise share the same
+indentation level (like the arguments list and the docstring in the example above).</p>
+<p id="labels-why-no-backslashes"><em>Black</em> prefers parentheses over backslashes, and will remove backslashes if found.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in:</span>
+
+<span class="k">if</span> <span class="n">some_short_rule1</span> \
+  <span class="ow">and</span> <span class="n">some_short_rule2</span><span class="p">:</span>
+      <span class="o">...</span>
+
+<span class="c1"># out:</span>
+
+<span class="k">if</span> <span class="n">some_short_rule1</span> <span class="ow">and</span> <span class="n">some_short_rule2</span><span class="p">:</span>
+  <span class="o">...</span>
+
+
+<span class="c1"># in:</span>
+
+<span class="k">if</span> <span class="n">some_long_rule1</span> \
+  <span class="ow">and</span> <span class="n">some_long_rule2</span><span class="p">:</span>
+    <span class="o">...</span>
+
+<span class="c1"># out:</span>
+
+<span class="k">if</span> <span class="p">(</span>
+    <span class="n">some_long_rule1</span>
+    <span class="ow">and</span> <span class="n">some_long_rule2</span>
+<span class="p">):</span>
+    <span class="o">...</span>
+
+</pre></div>
+</div>
+<p>Backslashes and multiline strings are one of the two places in the Python grammar that
+break significant indentation. You never need backslashes, they are used to force the
+grammar to accept breaks that would otherwise be parse errors. That makes them confusing
+to look at and brittle to modify. This is why <em>Black</em> always gets rid of them.</p>
+<p>If you’re reaching for backslashes, that’s a clear signal that you can do better if you
+slightly refactor your code. I hope some of the examples above show you that there are
+many ways in which you can do it.</p>
+</section>
+<section id="line-length">
+<span id="labels-line-length"></span><h3>Line length<a class="headerlink" href="#line-length" title="Link to this heading">¶</a></h3>
+<p>You probably noticed the peculiar default line length. <em>Black</em> defaults to 88 characters
+per line, which happens to be 10% over 80. This number was found to produce
+significantly shorter files than sticking with 80 (the most popular), or even 79 (used
+by the standard library). In general,
+<a class="reference external" href="https://youtu.be/wf-BqAjZb8M?t=260">90-ish seems like the wise choice</a>.</p>
+<p>If you’re paid by the lines of code you write, you can pass <code class="docutils literal notranslate"><span class="pre">--line-length</span></code> with a lower
+number. <em>Black</em> will try to respect that. However, sometimes it won’t be able to without
+breaking other rules. In those rare cases, auto-formatted code will exceed your allotted
+limit.</p>
+<p>You can also increase it, but remember that people with sight disabilities find it
+harder to work with line lengths exceeding 100 characters. It also adversely affects
+side-by-side diff review on typical screen resolutions. Long lines also make it harder
+to present code neatly in documentation or talk slides.</p>
+<section id="flake8-and-other-linters">
+<h4>Flake8 and other linters<a class="headerlink" href="#flake8-and-other-linters" title="Link to this heading">¶</a></h4>
+<p>See <a class="reference internal" href="../guides/using_black_with_other_tools.html"><span class="std std-doc">Using <em>Black</em> with other tools</span></a> about
+linter compatibility.</p>
+</section>
+</section>
+<section id="empty-lines">
+<h3>Empty lines<a class="headerlink" href="#empty-lines" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> avoids spurious vertical whitespace. This is in the spirit of PEP 8 which says
+that in-function vertical whitespace should only be used sparingly.</p>
+<p><em>Black</em> will allow single empty lines inside functions, and single and double empty
+lines on module level left by the original editors, except when they’re within
+parenthesized expressions. Since such expressions are always reformatted to fit minimal
+space, this whitespace is lost.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in:</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span>
+    <span class="n">some_argument</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+
+    <span class="n">other_argument</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EmptyLineInParenWillBeDeleted</span><span class="p">:</span>
+
+
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One empty line above me will be kept!&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">this_is_okay_too</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No empty line here&quot;</span><span class="p">)</span>
+<span class="c1"># out:</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span>
+    <span class="n">some_argument</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">other_argument</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EmptyLineInParenWillBeDeleted</span><span class="p">:</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One empty line above me will be kept!&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">this_is_okay_too</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No empty line here&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It will also insert proper spacing before and after function definitions. It’s one line
+before and after inner functions and two lines before and after module-level functions
+and classes. <em>Black</em> will not put empty lines between function/class definitions and
+standalone comments that immediately precede the given function/class.</p>
+<p><em>Black</em> will enforce single empty lines between a class-level docstring and the first
+following field or method. This conforms to
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0257/#multi-line-docstrings">PEP 257</a>.</p>
+<p><em>Black</em> won’t insert empty lines after function docstrings unless that empty line is
+required due to an inner function starting immediately after.</p>
+</section>
+<section id="comments">
+<h3>Comments<a class="headerlink" href="#comments" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> does not format comment contents, but it enforces two spaces between code and a
+comment on the same line, and a space before the comment text begins. Some types of
+comments that require specific spacing rules are respected: shebangs (<code class="docutils literal notranslate"><span class="pre">#!</span> <span class="pre">comment</span></code>), doc
+comments (<code class="docutils literal notranslate"><span class="pre">#:</span> <span class="pre">comment</span></code>), section comments with long runs of hashes, and Spyder cells.
+Non-breaking spaces after hashes are also preserved. Comments may sometimes be moved
+because of formatting changes, which can break tools that assign special meaning to
+them. See <a class="reference internal" href="#ast-before-and-after-formatting">AST before and after formatting</a> for more
+discussion.</p>
+</section>
+<section id="trailing-commas">
+<h3>Trailing commas<a class="headerlink" href="#trailing-commas" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> will add trailing commas to expressions that are split by comma where each
+element is on its own line. This includes function signatures.</p>
+<p>One exception to adding trailing commas is function signatures containing <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">*args</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>. In this case a trailing comma is only safe to use on Python 3.6. <em>Black</em>
+will detect if your file is already 3.6+ only and use trailing commas in this situation.
+If you wonder how it knows, it looks for f-strings and existing use of trailing commas
+in function signatures that have stars in them. In other words, if you’d like a trailing
+comma in this situation and <em>Black</em> didn’t recognize it was safe to do so, put it there
+manually and <em>Black</em> will keep it.</p>
+<p>A pre-existing trailing comma informs <em>Black</em> to always explode contents of the current
+bracket pair into one item per line. Read more about this in the
+<a class="reference internal" href="#pragmatism">Pragmatism</a> section below.</p>
+</section>
+<section id="strings">
+<span id="labels-strings"></span><h3>Strings<a class="headerlink" href="#strings" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> prefers double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;</span></code>) over single quotes (<code class="docutils literal notranslate"><span class="pre">'</span></code> and <code class="docutils literal notranslate"><span class="pre">'''</span></code>). It
+will replace the latter with the former as long as it does not result in more backslash
+escapes than before.</p>
+<p><em>Black</em> also standardizes string prefixes. Prefix characters are made lowercase with the
+exception of <a class="reference internal" href="#r-strings-and-r-strings">capital “R” prefixes</a>, unicode literal markers
+(<code class="docutils literal notranslate"><span class="pre">u</span></code>) are removed because they are meaningless in Python 3, and in the case of multiple
+characters “r” is put first as in spoken language: “raw f-string”.</p>
+<p>Another area where Python allows multiple ways to format a string is escape sequences.
+For example, <code class="docutils literal notranslate"><span class="pre">&quot;\uabcd&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;\uABCD&quot;</span></code> evaluate to the same string. <em>Black</em> normalizes
+such escape sequences to lowercase, but uses uppercase for <code class="docutils literal notranslate"><span class="pre">\N</span></code> named character escapes,
+such as <code class="docutils literal notranslate"><span class="pre">&quot;\N{MEETEI</span> <span class="pre">MAYEK</span> <span class="pre">LETTER</span> <span class="pre">HUK}&quot;</span></code>.</p>
+<p>The main reason to standardize on a single form of quotes is aesthetics. Having one kind
+of quotes everywhere reduces reader distraction. It will also enable a future version of
+<em>Black</em> to merge consecutive string literals that ended up on the same line (see
+<a class="reference external" href="https://github.com/psf/black/issues/26">#26</a> for details).</p>
+<p>Why settle on double quotes? They anticipate apostrophes in English text. They match the
+docstring standard described in
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0257/#what-is-a-docstring">PEP 257</a>. An empty
+string in double quotes (<code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>) is impossible to confuse with a one double-quote
+regardless of fonts and syntax highlighting used. On top of this, double quotes for
+strings are consistent with C which Python interacts a lot with.</p>
+<p>On certain keyboard layouts like US English, typing single quotes is a bit easier than
+double quotes. The latter requires use of the Shift key. My recommendation here is to
+keep using whatever is faster to type and let <em>Black</em> handle the transformation.</p>
+<p>If you are adopting <em>Black</em> in a large project with pre-existing string conventions
+(like the popular
+<a class="reference external" href="https://stackoverflow.com/a/56190">“single quotes for data, double quotes for human-readable strings”</a>),
+you can pass <code class="docutils literal notranslate"><span class="pre">--skip-string-normalization</span></code> on the command line. This is meant as an
+adoption helper, avoid using this for new projects.</p>
+<p><em>Black</em> also processes docstrings. Firstly the indentation of docstrings is corrected
+for both quotations and the text within, although relative indentation in the text is
+preserved. Superfluous trailing whitespace on each line and unnecessary new lines at the
+end of the docstring are removed. All leading tabs are converted to spaces, but tabs
+inside text are preserved. Whitespace leading and trailing one-line docstrings is
+removed.</p>
+</section>
+<section id="numeric-literals">
+<h3>Numeric literals<a class="headerlink" href="#numeric-literals" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> standardizes most numeric literals to use lowercase letters for the syntactic
+parts and uppercase letters for the digits themselves: <code class="docutils literal notranslate"><span class="pre">0xAB</span></code> instead of <code class="docutils literal notranslate"><span class="pre">0XAB</span></code> and
+<code class="docutils literal notranslate"><span class="pre">1e10</span></code> instead of <code class="docutils literal notranslate"><span class="pre">1E10</span></code>.</p>
+</section>
+<section id="line-breaks-binary-operators">
+<h3>Line breaks &amp; binary operators<a class="headerlink" href="#line-breaks-binary-operators" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> will break a line before a binary operator when splitting a block of code over
+multiple lines. This is so that <em>Black</em> is compliant with the recent changes in the
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#should-a-line-break-before-or-after-a-binary-operator">PEP 8</a>
+style guide, which emphasizes that this approach improves readability.</p>
+<p>Almost all operators will be surrounded by single spaces, the only exceptions are unary
+operators (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, and <code class="docutils literal notranslate"><span class="pre">~</span></code>), and power operators when both operands are simple. For
+powers, an operand is considered simple if it’s only a NAME, numeric CONSTANT, or
+attribute access (chained attribute access is allowed), with or without a preceding
+unary operator.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For example, these won&#39;t be surrounded by whitespace</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="n">y</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">base</span><span class="o">**</span><span class="mf">5.2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">base</span><span class="o">**</span><span class="n">runtime</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">exponent</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">5</span>
+<span class="n">e</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**~</span><span class="mi">5</span>
+
+<span class="c1"># ... but these will be surrounded by whitespace</span>
+<span class="n">f</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">get_exponent</span><span class="p">()</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">get_x</span><span class="p">()</span> <span class="o">**</span> <span class="n">get_y</span><span class="p">()</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+<section id="slices">
+<h3>Slices<a class="headerlink" href="#slices" title="Link to this heading">¶</a></h3>
+<p>PEP 8
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#whitespace-in-expressions-and-statements">recommends</a>
+to treat <code class="docutils literal notranslate"><span class="pre">:</span></code> in slices as a binary operator with the lowest priority, and to leave an
+equal amount of space on either side, except if a parameter is omitted (e.g.
+<code class="docutils literal notranslate"><span class="pre">ham[1</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">:]</span></code>). It recommends no spaces around <code class="docutils literal notranslate"><span class="pre">:</span></code> operators for “simple expressions”
+(<code class="docutils literal notranslate"><span class="pre">ham[lower:upper]</span></code>), and extra space for “complex expressions”
+(<code class="docutils literal notranslate"><span class="pre">ham[lower</span> <span class="pre">:</span> <span class="pre">upper</span> <span class="pre">+</span> <span class="pre">offset]</span></code>). <em>Black</em> treats anything more than variable names as
+“complex” (<code class="docutils literal notranslate"><span class="pre">ham[lower</span> <span class="pre">:</span> <span class="pre">upper</span> <span class="pre">+</span> <span class="pre">1]</span></code>). It also states that for extended slices, both <code class="docutils literal notranslate"><span class="pre">:</span></code>
+operators have to have the same amount of spacing, except if a parameter is omitted
+(<code class="docutils literal notranslate"><span class="pre">ham[1</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">::]</span></code>). <em>Black</em> enforces these rules consistently.</p>
+<p>This behaviour may raise <code class="docutils literal notranslate"><span class="pre">E203</span> <span class="pre">whitespace</span> <span class="pre">before</span> <span class="pre">':'</span></code> warnings in style guide
+enforcement tools like Flake8. Since <code class="docutils literal notranslate"><span class="pre">E203</span></code> is not PEP 8 compliant, you should tell
+Flake8 to ignore these warnings.</p>
+</section>
+<section id="parentheses">
+<h3>Parentheses<a class="headerlink" href="#parentheses" title="Link to this heading">¶</a></h3>
+<p>Some parentheses are optional in the Python grammar. Any expression can be wrapped in a
+pair of parentheses to form an atom. There are a few interesting cases:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(...):</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(...):</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(...)</span> <span class="pre">in</span> <span class="pre">(...):</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assert</span> <span class="pre">(...),</span> <span class="pre">(...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">X</span> <span class="pre">import</span> <span class="pre">(...)</span></code></p></li>
+<li><p>assignments like:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">target</span> <span class="pre">=</span> <span class="pre">(...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target:</span> <span class="pre">type</span> <span class="pre">=</span> <span class="pre">(...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">some,</span> <span class="pre">*un,</span> <span class="pre">packing</span> <span class="pre">=</span> <span class="pre">(...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">augmented</span> <span class="pre">+=</span> <span class="pre">(...)</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>In those cases, parentheses are removed when the entire statement fits in one line, or
+if the inner expression doesn’t have any delimiters to further split on. If there is
+only a single delimiter and the expression starts or ends with a bracket, the
+parentheses can also be successfully omitted since the existing bracket pair will
+organize the expression neatly anyway. Otherwise, the parentheses are added.</p>
+<p>Please note that <em>Black</em> does not add or remove any additional nested parentheses that
+you might want to have for clarity or further code organization. For example those
+parentheses are not going to be removed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="n">this</span> <span class="ow">or</span> <span class="n">that</span><span class="p">)</span>
+<span class="n">decision</span> <span class="o">=</span> <span class="p">(</span><span class="n">maybe</span><span class="o">.</span><span class="n">this</span><span class="p">()</span> <span class="ow">and</span> <span class="n">values</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">maybe</span><span class="o">.</span><span class="n">that</span><span class="p">()</span> <span class="ow">and</span> <span class="n">values</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="call-chains">
+<h3>Call chains<a class="headerlink" href="#call-chains" title="Link to this heading">¶</a></h3>
+<p>Some popular APIs, like ORMs, use call chaining. This API style is known as a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Fluent_interface">fluent interface</a>. <em>Black</em> formats
+those by treating dots that follow a call or an indexing operation like a very low
+priority delimiter. It’s easier to show the behavior than to explain it. Look at the
+example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">account_id</span> <span class="o">==</span> <span class="n">account_id</span><span class="p">,</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">email</span> <span class="o">==</span> <span class="n">email_address</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Customer</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span>
+        <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="typing-stub-files">
+<h3>Typing stub files<a class="headerlink" href="#typing-stub-files" title="Link to this heading">¶</a></h3>
+<p>PEP 484 describes the syntax for type hints in Python. One of the use cases for typing
+is providing type annotations for modules which cannot contain them directly (they might
+be written in C, or they might be third-party, or their implementation may be overly
+dynamic, and so on).</p>
+<p>To solve this,
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0484/#stub-files">stub files with the <code class="docutils literal notranslate"><span class="pre">.pyi</span></code> file extension</a>
+can be used to describe typing information for an external module. Those stub files omit
+the implementation of classes and functions they describe, instead they only contain the
+structure of the file (listing globals, functions, and classes with their members). The
+recommended code style for those files is more terse than PEP 8:</p>
+<ul class="simple">
+<li><p>prefer <code class="docutils literal notranslate"><span class="pre">...</span></code> on the same line as the class/function signature;</p></li>
+<li><p>avoid vertical whitespace between consecutive module-level functions, names, or
+methods and fields within a single class;</p></li>
+<li><p>use a single blank line between top-level class definitions, or none if the classes
+are very small.</p></li>
+</ul>
+<p><em>Black</em> enforces the above rules. There are additional guidelines for formatting <code class="docutils literal notranslate"><span class="pre">.pyi</span></code>
+file that are not enforced yet but might be in a future version of the formatter:</p>
+<ul class="simple">
+<li><p>prefer <code class="docutils literal notranslate"><span class="pre">...</span></code> over <code class="docutils literal notranslate"><span class="pre">pass</span></code>;</p></li>
+<li><p>avoid using string literals in type annotations, stub files support forward references
+natively (like Python 3.7 code with <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">annotations</span></code>);</p></li>
+<li><p>use variable annotations instead of type comments, even for stubs that target older
+versions of Python.</p></li>
+</ul>
+</section>
+<section id="line-endings">
+<h3>Line endings<a class="headerlink" href="#line-endings" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> will normalize line endings (<code class="docutils literal notranslate"><span class="pre">\n</span></code> or <code class="docutils literal notranslate"><span class="pre">\r\n</span></code>) based on the first line ending of
+the file.</p>
+</section>
+<section id="form-feed-characters">
+<h3>Form feed characters<a class="headerlink" href="#form-feed-characters" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> will retain form feed characters on otherwise empty lines at the module level.
+Only one form feed is retained for a group of consecutive empty lines. Where there are
+two empty lines in a row, the form feed is placed on the second line.</p>
+</section>
+</section>
+<section id="pragmatism">
+<h2>Pragmatism<a class="headerlink" href="#pragmatism" title="Link to this heading">¶</a></h2>
+<p>Early versions of <em>Black</em> used to be absolutist in some respects. They took after its
+initial author. This was fine at the time as it made the implementation simpler and
+there were not many users anyway. Not many edge cases were reported. As a mature tool,
+<em>Black</em> does make some exceptions to rules it otherwise holds. This section documents
+what those exceptions are and why this is the case.</p>
+<section id="the-magic-trailing-comma">
+<span id="labels-magic-trailing-comma"></span><h3>The magic trailing comma<a class="headerlink" href="#the-magic-trailing-comma" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> in general does not take existing formatting into account.</p>
+<p>However, there are cases where you put a short collection or function call in your code
+but you anticipate it will grow in the future.</p>
+<p>For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TRANSLATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;en_us&quot;</span><span class="p">:</span> <span class="s2">&quot;English (US)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pl_pl&quot;</span><span class="p">:</span> <span class="s2">&quot;polski&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Early versions of <em>Black</em> used to ruthlessly collapse those into one line (it fits!).
+Now, you can communicate that you don’t want that by putting a trailing comma in the
+collection yourself. When you do, <em>Black</em> will know to always explode your collection
+into one item per line.</p>
+<p>How do you make it stop? Just delete that trailing comma and <em>Black</em> will collapse your
+collection into one line if it fits.</p>
+<p>If you must, you can recover the behaviour of early versions of <em>Black</em> with the option
+<code class="docutils literal notranslate"><span class="pre">--skip-magic-trailing-comma</span></code> / <code class="docutils literal notranslate"><span class="pre">-C</span></code>.</p>
+</section>
+<section id="r-strings-and-r-strings">
+<h3>r”strings” and R”strings”<a class="headerlink" href="#r-strings-and-r-strings" title="Link to this heading">¶</a></h3>
+<p><em>Black</em> normalizes string quotes as well as string prefixes, making them lowercase. One
+exception to this rule is r-strings. It turns out that the very popular
+<a class="reference external" href="https://github.com/MagicStack/MagicPython/">MagicPython</a> syntax highlighter, used by
+default by (among others) GitHub and Visual Studio Code, differentiates between
+r-strings and R-strings. The former are syntax highlighted as regular expressions while
+the latter are treated as true raw strings with no special semantics.</p>
+</section>
+<section id="ast-before-and-after-formatting">
+<span id="labels-ast-changes"></span><h3>AST before and after formatting<a class="headerlink" href="#ast-before-and-after-formatting" title="Link to this heading">¶</a></h3>
+<p>When run with <code class="docutils literal notranslate"><span class="pre">--safe</span></code> (the default), <em>Black</em> checks that the code before and after is
+semantically equivalent. This check is done by comparing the AST of the source with the
+AST of the target. There are three limited cases in which the AST does differ:</p>
+<ol class="arabic simple">
+<li><p><em>Black</em> cleans up leading and trailing whitespace of docstrings, re-indenting them if
+needed. It’s been one of the most popular user-reported features for the formatter to
+fix whitespace issues with docstrings. While the result is technically an AST
+difference, due to the various possibilities of forming docstrings, all real-world
+uses of docstrings that we’re aware of sanitize indentation and leading/trailing
+whitespace anyway.</p></li>
+<li><p><em>Black</em> manages optional parentheses for some statements. In the case of the <code class="docutils literal notranslate"><span class="pre">del</span></code>
+statement, presence of wrapping parentheses or lack of thereof changes the resulting
+AST but is semantically equivalent in the interpreter.</p></li>
+<li><p><em>Black</em> might move comments around, which includes type comments. Those are part of
+the AST as of Python 3.8. While the tool implements a number of special cases for
+those comments, there is no guarantee they will remain where they were in the source.
+Note that this doesn’t change runtime behavior of the source code.</p></li>
+</ol>
+<p>To put things in perspective, the code equivalence check is a feature of <em>Black</em> which
+other formatters don’t implement at all. It is of crucial importance to us to ensure
+code behaves the way it did before it got reformatted. We treat this as a feature and
+there are no plans to relax this in the future. The exceptions enumerated above stem
+from either user feedback or implementation details of the tool. In each case we made
+due diligence to ensure that the AST divergence is of no practical consequence.</p>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="future_style.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">The (future of the) Black code style</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">The Black Code Style</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2018-Present, Łukasz Langa and contributors to Black
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">The <em>Black</em> code style</a><ul>
+<li><a class="reference internal" href="#code-style">Code style</a><ul>
+<li><a class="reference internal" href="#how-black-wraps-lines">How <em>Black</em> wraps lines</a></li>
+<li><a class="reference internal" href="#line-length">Line length</a><ul>
+<li><a class="reference internal" href="#flake8-and-other-linters">Flake8 and other linters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#empty-lines">Empty lines</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+<li><a class="reference internal" href="#trailing-commas">Trailing commas</a></li>
+<li><a class="reference internal" href="#strings">Strings</a></li>
+<li><a class="reference internal" href="#numeric-literals">Numeric literals</a></li>
+<li><a class="reference internal" href="#line-breaks-binary-operators">Line breaks &amp; binary operators</a></li>
+<li><a class="reference internal" href="#slices">Slices</a></li>
+<li><a class="reference internal" href="#parentheses">Parentheses</a></li>
+<li><a class="reference internal" href="#call-chains">Call chains</a></li>
+<li><a class="reference internal" href="#typing-stub-files">Typing stub files</a></li>
+<li><a class="reference internal" href="#line-endings">Line endings</a></li>
+<li><a class="reference internal" href="#form-feed-characters">Form feed characters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pragmatism">Pragmatism</a><ul>
+<li><a class="reference internal" href="#the-magic-trailing-comma">The magic trailing comma</a></li>
+<li><a class="reference internal" href="#r-strings-and-r-strings">r”strings” and R”strings”</a></li>
+<li><a class="reference internal" href="#ast-before-and-after-formatting">AST before and after formatting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5a89f005"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=b612fa2f"></script>
+    </body>
+</html>

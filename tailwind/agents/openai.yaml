@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tailwind"
+  short_description: "Help with Tailwind setup, theming, and maintainability"
+  default_prompt: "Use $tailwind to improve Tailwind configuration, token usage, and UI quality."

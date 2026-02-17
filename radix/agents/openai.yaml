@@ -1,0 +1,4 @@
+interface:
+  display_name: "Radix"
+  short_description: "Help with Radix security, manifests, and dApp operations"
+  default_prompt: "Use $radix to design secure manifests, authorization, and operational runbooks."

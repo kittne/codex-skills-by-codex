@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Commenting"
+  short_description: "Guidance for clear, minimal, intent-first comments."
+  default_prompt: "Use $code-commenting to improve code comments and docstrings."

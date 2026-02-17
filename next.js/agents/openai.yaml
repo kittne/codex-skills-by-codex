@@ -1,0 +1,4 @@
+interface:
+  display_name: "Next.js"
+  short_description: "Help with Next.js routing, caching, and delivery"
+  default_prompt: "Use $next-js to optimize routing, data fetching, caching, and production delivery."

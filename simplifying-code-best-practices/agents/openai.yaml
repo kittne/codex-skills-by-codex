@@ -1,0 +1,4 @@
+interface:
+  display_name: "Simplifying Code Best Practices"
+  short_description: "Reduce duplication and simplify code"
+  default_prompt: "Use $simplifying-code-best-practices to refactor and simplify this code."

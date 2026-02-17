@@ -1,0 +1,4 @@
+interface:
+  display_name: "Vault Best Practices"
+  short_description: "Secure Vault setup and operations"
+  default_prompt: "Use $vault-best-practices to review and harden this Vault setup."

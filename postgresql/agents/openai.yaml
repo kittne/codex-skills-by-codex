@@ -1,0 +1,4 @@
+interface:
+  display_name: "PostgreSQL"
+  short_description: "Help with PostgreSQL design, tuning, and operations"
+  default_prompt: "Use $postgresql to review schema design, query plans, and production operations."

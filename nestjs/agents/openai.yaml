@@ -1,0 +1,4 @@
+interface:
+  display_name: "NestJS"
+  short_description: "Help with NestJS architecture, security, and operations"
+  default_prompt: "Use $nestjs to improve API architecture, validation, security, and observability."

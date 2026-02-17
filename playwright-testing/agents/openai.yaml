@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playwright Testing"
+  short_description: "Playwright web UI testing and automation workflow."
+  default_prompt: "Use $playwright-testing to generate or run Playwright tests."

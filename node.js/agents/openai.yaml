@@ -1,0 +1,4 @@
+interface:
+  display_name: "Node.js"
+  short_description: "Help with Node.js architecture, reliability, and security"
+  default_prompt: "Use $node-js to improve service architecture, resilience, and operational quality."

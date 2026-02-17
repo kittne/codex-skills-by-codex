@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prisma"
+  short_description: "Help with Prisma schema, migrations, and query safety"
+  default_prompt: "Use $prisma to review schema design, migration plans, and query performance."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Markdown Best Practices"
+  short_description: "Consistent Markdown structure, formatting, and linting."
+  default_prompt: "Use $markdown-best-practices to format and polish this Markdown."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "VS Code"
+  short_description: "Help with VS Code workflow, tooling, and governance"
+  default_prompt: "Use $vscode to standardize workspace setup, extensions, and debugging workflows."

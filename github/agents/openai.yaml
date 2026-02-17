@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub"
+  short_description: "Help with GitHub workflows, policy, and automation"
+  default_prompt: "Use $github to strengthen repo governance, PR flow, CI, and security controls."

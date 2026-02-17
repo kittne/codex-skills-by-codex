@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python Module CLI"
+  short_description: "Build packaged Python CLIs (UX, tests)"
+  default_prompt: "Use $python-module-cli to design, package, and test a Python CLI module with pyproject.toml scripts, python -m support, stable stdout/stderr, and documented exit codes."

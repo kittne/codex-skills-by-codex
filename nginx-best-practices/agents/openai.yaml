@@ -1,0 +1,4 @@
+interface:
+  display_name: "NGINX Best Practices"
+  short_description: "Secure, performant NGINX configuration guidance."
+  default_prompt: "Use $nginx-best-practices to review this NGINX config."

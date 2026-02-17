@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Workflow"
+  short_description: "Clean Git workflow and commit best practices."
+  default_prompt: "Use $git-workflow to plan commits and safe Git operations."
