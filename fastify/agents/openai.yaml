@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fastify"
+  short_description: "Guide production Fastify architecture and operations"
+  default_prompt: "Use $fastify to design, secure, and productionize this Node API service."

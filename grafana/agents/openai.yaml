@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grafana"
+  short_description: "Guide Grafana dashboards, alerting, and governance"
+  default_prompt: "Use $grafana to design actionable dashboards and robust alerting governance."

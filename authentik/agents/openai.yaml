@@ -1,0 +1,4 @@
+interface:
+  display_name: "Authentik"
+  short_description: "Guide secure authentik OIDC architecture and ops"
+  default_prompt: "Use $authentik to design secure OIDC integrations and operational guardrails."

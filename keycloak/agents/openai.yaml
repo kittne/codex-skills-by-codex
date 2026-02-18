@@ -1,0 +1,4 @@
+interface:
+  display_name: "Keycloak"
+  short_description: "Guide secure Keycloak OIDC architecture and ops"
+  default_prompt: "Use $keycloak to design secure OIDC realms, clients, and production operations."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript"
+  short_description: "Guide strict, scalable TypeScript engineering"
+  default_prompt: "Use $typescript to design and harden this TypeScript codebase for production."

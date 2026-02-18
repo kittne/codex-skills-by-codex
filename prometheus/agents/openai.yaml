@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prometheus"
+  short_description: "Guide Prometheus metrics, rules, and operations"
+  default_prompt: "Use $prometheus to improve metric design, recording rules, and alerting quality."

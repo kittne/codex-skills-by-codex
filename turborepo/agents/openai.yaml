@@ -1,0 +1,4 @@
+interface:
+  display_name: "Turborepo"
+  short_description: "Guide Turborepo task graphs and cache strategy"
+  default_prompt: "Use $turborepo to optimize task pipelines, caching, and CI execution."

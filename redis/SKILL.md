@@ -5,172 +5,120 @@ description: Design, implement, and operate Redis (6+) safely and efficiently. U
 
 # Redis
 
-## Working Style
+## Workflow
+1. Confirm Redis role and acceptable data-loss window.
+2. Baseline memory, latency, and command patterns.
+3. Design keys/data structures with explicit TTL and retention policies.
+4. Select persistence and HA topology from RPO/RTO needs.
+5. Implement Streams consumers with recovery and replay strategy when required.
+6. Define backup/restore and disaster recovery procedures.
+7. Validate security and operational readiness before rollout.
 
-- Start by clarifying Redis's role (cache vs durable-ish store) and the acceptable data-loss window.
-- Make memory behavior explicit: `maxmemory` and eviction policy must be intentional in production.
-- Design keys and data structures for both latency and memory efficiency.
-- Avoid blocking the main thread: big-key operations and full scans are common outage causes.
+## Preflight (Ask / Check First)
+- Redis version and topology: standalone, Sentinel, or Cluster.
+- Workload roles: cache, queue, streams, session, leaderboard.
+- Memory size, growth forecast, and peak ops/sec.
+- Latency SLOs and tolerated loss window.
+- Network exposure, TLS, ACLs, and secrets handling.
+- Existing incident history: evictions, failover issues, big-key stalls.
 
-## Quick Intake (Ask Before Recommending Changes)
+## Data Modeling and TTL
+- Use consistent key namespaces: `{app}:{env}:{entity}:{id}`.
+- Keep values and collections bounded; shard by time/entity when needed.
+- Use hashes for object-like records and sorted sets for ranking/time windows.
+- Apply TTL to cache-like keys and add expiration jitter.
+- Avoid unbounded list/set/stream growth without retention policy.
 
-- Redis version and deployment: standalone, Sentinel HA, or Cluster (sharded).
-- Role: cache, sessions, rate limiting, pub/sub, queueing/streams, leaderboards, etc.
-- Durability needs: none vs RDB vs AOF (and acceptable data loss).
-- Memory: current dataset size, key counts, largest keys, expected growth, headroom.
-- Latency SLOs and peak ops/sec; client count and connection pattern.
-- Security: network exposure, ACL usage, TLS requirements, secret management.
-- Platform: VMs vs containers vs Kubernetes; resource limits; persistence volumes.
+## Memory and Eviction
+- Always set `maxmemory` with headroom for replication and persistence overhead.
+- Use `allkeys-lfu`/`allkeys-lru` for cache-heavy workloads.
+- Use `volatile-*` only when critical keys must not be evicted.
+- Track fragmentation, evictions, and hot keys continuously.
 
-## Default Design Rules
+## Performance and Latency
+- Avoid blocking commands in hot paths (`KEYS`, huge `HGETALL`, large `LRANGE`).
+- Use `SCAN` family for keyspace traversal.
+- Prefer `UNLINK` for large key deletion when available.
+- Use pipelining and Lua to reduce chatty round-trips.
+- Correlate latency spikes with AOF rewrite/fork events.
 
-- Key naming:
-  - Use a stable namespace pattern like `{app}:{env}:{entity}:{id}:{attr}`.
-  - Keep keys short but readable; every byte matters at scale.
-- Data modeling:
-  - Prefer hashes for object-like data instead of many small keys.
-  - Prefer sorted sets for ranking/time windows; streams for consumer-group patterns.
-  - Avoid huge single keys; shard by entity/time.
-- TTL:
-  - Apply TTL by default for caches.
-  - Add jitter to reduce synchronized expirations ("thundering herd").
-
-## Memory And Eviction (Production Defaults)
-
-- Always set `maxmemory` and leave headroom for replication buffers, AOF rewrite, and fragmentation.
-- Choose eviction policy by role:
-  - Pure cache: `allkeys-lfu` (or `allkeys-lru`).
-  - Mixed critical + cache keys: TTL only for evictable keys and use `volatile-*`.
-  - No eviction allowed: `noeviction` plus strict capacity planning and alerts.
-- Watch `mem_fragmentation_ratio` and large-key patterns; investigate spikes.
-
-## Performance And Latency Debugging
-
-- Avoid blocking commands on hot paths:
-  - Use `SCAN` family instead of `KEYS`.
-  - Prefer `UNLINK` over `DEL` for very large keys where supported.
-  - Avoid `HGETALL` / `SMEMBERS` / big `LRANGE` on huge structures.
-- Reduce round trips:
-  - Pipeline where safe.
-  - Use Lua for multi-step atomic operations when it replaces chatty client logic.
-- Instrument:
-  - Use `SLOWLOG`, `LATENCY`, and `INFO` metrics to correlate spikes with persistence forks, eviction, or IO.
-
-Common debugging commands:
+### Baseline Diagnostics
 ```bash
 redis-cli INFO memory
 redis-cli INFO replication
-redis-cli SLOWLOG GET 10
+redis-cli INFO persistence
+redis-cli SLOWLOG GET 20
 redis-cli LATENCY LATEST
-redis-cli --scan --pattern 'app:prod:*' | head
-redis-cli MEMORY USAGE 'some:key'
 ```
 
-## Durability And HA Choices
+## Streams Architecture
+- Use Streams only when you need durability/replay semantics beyond pub/sub.
+- Model stream names per bounded domain and retention policy.
+- Use consumer groups for horizontal consumers with explicit ownership.
+- Define ack policy and retry/dead-letter flow for poisoned messages.
+- Control pending-entry growth with consumer lag monitoring.
 
-- Persistence:
-  - Cache-only: consider disabling persistence if total loss is acceptable.
-  - Common balance: AOF with `appendfsync everysec` (measure latency and disk IO).
-  - Measure fork and copy-on-write costs for RDB/AOF rewrites on real dataset sizes.
-- HA:
-  - Sentinel: good for a single primary with replicas (no sharding).
-  - Cluster: use when you must shard; design multi-key operations for hash slots (hash tags `{...}`).
-  - Validate client behavior for failover (Sentinel-aware vs cluster client).
+## Streams Consumer Recovery
+- Inspect pending backlog with `XPENDING` and consumer details.
+- Reclaim abandoned messages with `XAUTOCLAIM` after idle threshold.
+- Keep replay limits and idempotency keys in downstream processors.
+- Trim streams intentionally (`MAXLEN`) to control storage growth.
+
+### Streams Ops Commands
+```bash
+redis-cli XINFO GROUPS mystream
+redis-cli XPENDING mystream mygroup
+redis-cli XAUTOCLAIM mystream mygroup worker-2 60000 0-0 COUNT 50
+redis-cli XTRIM mystream MAXLEN ~ 100000
+```
+
+## Persistence, Backup, and Recovery
+- Choose persistence mode explicitly: none, RDB, AOF, or hybrid.
+- For durability-sensitive workloads, prefer AOF with measured fsync policy.
+- Schedule and verify backups of RDB/AOF artifacts.
+- Keep restore runbooks for full-node loss and corruption scenarios.
+- Rehearse restore and failover regularly; record measured RTO.
+
+## HA and Disaster Recovery
+- Use Sentinel for single-primary HA without sharding.
+- Use Cluster when sharding is required; design multi-key operations with hash tags.
+- Validate client failover behavior under planned cutover drills.
+- Keep cross-zone/region replication and restore strategy explicit.
 
 ## Security Defaults
+- Never expose Redis directly to public internet.
+- Enforce ACL least privilege (service-specific users and key patterns).
+- Use TLS on untrusted networks and validate certificates.
+- Keep secrets in secret stores, not plaintext config files.
+- Audit use of dangerous/admin commands.
 
-- Never expose Redis directly to the public internet.
-- Use ACLs (one user per service, least privilege, key prefix restrictions).
-- Enable TLS when traffic crosses untrusted networks; ensure clients validate certs.
-- Consider disabling/renaming dangerous commands in prod (with awareness of tooling impact).
-
-## Production Readiness Checklist
-- Memory:
-  - `maxmemory` set with headroom; eviction policy chosen intentionally.
-  - Alerts on RSS, fragmentation ratio, evictions, and latency spikes.
-- Durability/HA:
-  - Persistence mode chosen explicitly (none/RDB/AOF/hybrid) and tested.
-  - Failover strategy validated (Sentinel-aware clients or Cluster clients).
-- Operations:
-  - Backups/DR plan exists (what to do if disk corrupts, node dies, cluster reshard needed).
-  - Upgrade plan (version drift, rolling restart, compatibility).
-- Security:
-  - Network restricted, ACLs enforced, secrets not in repos, TLS if required.
-
-## Common Anti-Patterns (Call Out)
-- Using Redis as a primary database without an explicit durability/consistency plan.
-- Running without `maxmemory`/eviction settings in production.
-- Huge keys (multi-MB values or massive collections) on the hot path.
-- `KEYS` in production, or large `SMEMBERS/HGETALL/LRANGE` in request paths.
-- Using pub/sub for workloads that need durability or replay (use Streams/queues instead).
-
-## Reference
-
-- Use `references/redis-best-practices.md` for the full guide, checklists, and snippets.
-- Find topics quickly:
-  - `rg -n '^## Data modeling' references/redis-best-practices.md`
-  - `rg -n '^## Memory management and eviction' references/redis-best-practices.md`
-  - `rg -n '^## Persistence and durability' references/redis-best-practices.md`
-  - `rg -n '^## High availability and clustering' references/redis-best-practices.md`
-  - `rg -n '^## Performance and latency' references/redis-best-practices.md`
-  - `rg -n '^## Security' references/redis-best-practices.md`
-
-## Extended Guidance
-Use this when Redis is critical to availability or latency.
-
-## Key Design Checklist (Expanded)
-- Prefix keys with service and entity (`svc:user:123`).
-- Keep key cardinality measurable and predictable.
-- Avoid keys that grow without TTL or retention policy.
-
-## Latency Debugging Commands (Expanded)
+## Validation Commands
 ```bash
+redis-cli PING
 redis-cli INFO
-redis-cli SLOWLOG GET 10
-redis-cli LATENCY DOCTOR
+redis-cli --rdb /tmp/redis-backup-test.rdb
 ```
 
-## Persistence Decisions (Expanded)
-- Use AOF when durability matters; tune fsync for latency.
-- Use RDB snapshots when you can tolerate some data loss.
-
 ## Common Failure Modes
-- No TTLs for cache keys (memory grows without bound).
-- Hot keys concentrate load on a single shard.
-- Large value payloads causing fragmentation and slow operations.
+- Using Redis as system-of-record without durability design.
+- Missing TTL/retention causing memory saturation.
+- Consumer groups accumulating unbounded pending entries.
+- Streams without idempotent consumers or retry policies.
+- Backups existing but restore never tested.
+
+## Definition of Done
+- Data model and TTL policy are bounded and documented.
+- Streams usage includes recovery, replay, and trimming policy.
+- Persistence/backup strategy matches RPO/RTO requirements.
+- Failover and restore drills are tested and measured.
+- Security controls and observability are production-ready.
+
+## References
+- `references/redis-best-practices.md`
+- `references/redis-streams-backup-2026-02-18.md`
 
 ## Reference Index
-- `rg -n "TTL|expiration" references/redis-best-practices.md`
-- `rg -n "SLOWLOG|latency" references/redis-best-practices.md`
-
-## Operational Reminders
-- Validate failover behavior quarterly.
-
-## Quick Questions (When Stuck)
-- What is the minimal change that solves the issue?
-- What is the rollback plan?
-- What is the highest-risk assumption?
-- What is the simplest validation step?
-- What is the known-good baseline?
-- What evidence would change the decision?
-- What is the user-visible impact?
-- What is the operational impact?
-- What is the most likely failure mode?
-- What is the fastest safe experiment?
-
-## Reference Index (Extra)
-- `rg -n "Checklist|checklist" references/redis-best-practices.md`
-- `rg -n "Example|examples" references/redis-best-practices.md`
-- `rg -n "Workflow|process" references/redis-best-practices.md`
-- `rg -n "Pitfall|anti-pattern" references/redis-best-practices.md`
-- `rg -n "Testing|validation" references/redis-best-practices.md`
-- `rg -n "Security|risk" references/redis-best-practices.md`
-- `rg -n "Configuration|config" references/redis-best-practices.md`
-- `rg -n "Deployment|operations" references/redis-best-practices.md`
-- `rg -n "Troubleshoot|debug" references/redis-best-practices.md`
-- `rg -n "Performance|latency" references/redis-best-practices.md`
-- `rg -n "Reliability|availability" references/redis-best-practices.md`
-- `rg -n "Monitoring|metrics" references/redis-best-practices.md`
-- `rg -n "Error|failure" references/redis-best-practices.md`
-- `rg -n "Decision|tradeoff" references/redis-best-practices.md`
-- `rg -n "Migration|upgrade" references/redis-best-practices.md`
+- `rg -n "Streams|consumer group|XPENDING|XAUTOCLAIM" references/redis-streams-backup-2026-02-18.md`
+- `rg -n "backup|restore|RDB|AOF|RPO|RTO" references/redis-streams-backup-2026-02-18.md`
+- `rg -n "Memory|eviction|latency" references/redis-best-practices.md`
+- `rg -n "ACL|TLS|security" references/redis-best-practices.md`

@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenAPI"
+  short_description: "Guide resilient OpenAPI contract design and governance"
+  default_prompt: "Use $openapi to design and govern an API contract with compatibility guardrails."

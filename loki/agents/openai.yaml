@@ -1,0 +1,4 @@
+interface:
+  display_name: "Loki"
+  short_description: "Guide Loki labels, queries, and retention operations"
+  default_prompt: "Use $loki to optimize log labels, query performance, and retention strategy."

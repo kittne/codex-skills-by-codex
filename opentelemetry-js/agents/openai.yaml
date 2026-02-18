@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTelemetry JS"
+  short_description: "Guide OpenTelemetry JS instrumentation and ops"
+  default_prompt: "Use $opentelemetry-js to instrument this service with traces, metrics, and logs."

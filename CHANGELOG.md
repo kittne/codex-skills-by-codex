@@ -29,3 +29,26 @@
   - merged `nginx-best-practices` + `nginx-mail-best-practices` into `nginx`
 - Consolidated Tailwind naming to a single canonical skill:
   - removed `tailwind-best-practices` and kept `tailwind`
+
+### Skill expansion and consolidations
+- Added 14 new canonical skills:
+  - `typescript`
+  - `pnpm`
+  - `turborepo`
+  - `authentik`
+  - `keycloak`
+  - `fastify`
+  - `openapi`
+  - `opentelemetry-js`
+  - `prometheus`
+  - `grafana`
+  - `loki`
+  - `tesseract-ocr`
+  - `paddleocr`
+  - `filesystem`
+- Added Context7-backed dated references (`2026-02-18`) for each new skill.
+- Consolidated legacy backup/streams scope into existing skills:
+  - `redis`: merged `redis-streams` + `redis-backup-recovery`, added `references/redis-streams-backup-2026-02-18.md`.
+  - `postgresql`: merged `postgresql-backup-restore`, added `references/postgresql-backup-restore-2026-02-18.md`.
+- Enforced `SKILL.md` line-count guardrail (100-200 lines) for all touched skills.
+- Ran `quick_validate.py` for all new and updated skills (all passing).

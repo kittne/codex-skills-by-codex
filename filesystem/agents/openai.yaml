@@ -1,0 +1,4 @@
+interface:
+  display_name: "Filesystem Backups"
+  short_description: "Guide filesystem snapshot backup and recovery operations"
+  default_prompt: "Use $filesystem to build snapshot-based backup and recovery workflows."

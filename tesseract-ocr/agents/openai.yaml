@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tesseract OCR"
+  short_description: "Guide Tesseract OCR quality and deployment workflows"
+  default_prompt: "Use $tesseract-ocr to improve OCR accuracy, preprocessing, and runtime tuning."

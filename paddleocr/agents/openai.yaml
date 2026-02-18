@@ -1,0 +1,4 @@
+interface:
+  display_name: "PaddleOCR"
+  short_description: "Guide PaddleOCR pipelines and deployment tuning"
+  default_prompt: "Use $paddleocr to choose OCR models and optimize deployment performance."

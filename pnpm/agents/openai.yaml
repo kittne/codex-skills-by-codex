@@ -1,0 +1,4 @@
+interface:
+  display_name: "pnpm"
+  short_description: "Guide robust pnpm workspace and CI workflows"
+  default_prompt: "Use $pnpm to structure this workspace and harden package workflows."
