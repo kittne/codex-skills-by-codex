@@ -1,0 +1,4 @@
+interface:
+  display_name: "Markdown"
+  short_description: "Consistent Markdown structure, formatting, and linting."
+  default_prompt: "Use $markdown to format and polish this Markdown."

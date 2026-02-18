@@ -1,0 +1,4 @@
+interface:
+  display_name: "NGINX"
+  short_description: "Secure and performant NGINX web and mail proxy guidance."
+  default_prompt: "Use $nginx to review and harden this NGINX configuration."

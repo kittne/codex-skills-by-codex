@@ -1,4 +1,0 @@
-interface:
-  display_name: "Python Best Practices"
-  short_description: "Modern Python standards for quality, safety, and tests."
-  default_prompt: "Use $python-best-practices to align this code with Python best practices."

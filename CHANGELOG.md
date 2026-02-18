@@ -17,3 +17,15 @@
   - `socket.io`
 - Improved structure and guidance quality to align with skill-creator conventions.
 - Validated line-count compliance across all `SKILL.md` files after updates.
+
+### Naming consistency updates
+- Renamed skill folders and metadata:
+  - `docker-best-practices` -> `docker`
+  - `go-best-practices` -> `go`
+  - `markdown-best-practices` -> `markdown`
+  - `python-best-practices` -> `python`
+  - `vault-best-practices` -> `vault`
+- Consolidated NGINX skills into one:
+  - merged `nginx-best-practices` + `nginx-mail-best-practices` into `nginx`
+- Consolidated Tailwind naming to a single canonical skill:
+  - removed `tailwind-best-practices` and kept `tailwind`

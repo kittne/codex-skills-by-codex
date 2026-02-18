@@ -1,4 +1,0 @@
-interface:
-  display_name: "NGINX Mail Best Practices"
-  short_description: "NGINX mail and edge routing best practices."
-  default_prompt: "Use $nginx-mail-best-practices to harden this mail-related NGINX config."

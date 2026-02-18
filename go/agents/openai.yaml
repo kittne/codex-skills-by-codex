@@ -1,0 +1,4 @@
+interface:
+  display_name: "Go"
+  short_description: "Idiomatic Go coding and review best practices."
+  default_prompt: "Use $go to make this Go code idiomatic."

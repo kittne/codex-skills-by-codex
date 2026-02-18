@@ -149,6 +149,7 @@ rg -n "inline\(|@source|safelist|content" styles src tailwind.config.*
 
 ## References
 - `references/tailwind.md`
+- `references/tailwind-css.md`
 
 ## Reference Index
 - `rg -n "^## Project setup|^### Installation" references/tailwind.md`

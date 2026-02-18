@@ -1,4 +1,0 @@
-interface:
-  display_name: "Go Best Practices"
-  short_description: "Idiomatic Go coding and review best practices."
-  default_prompt: "Use $go-best-practices to make this Go code idiomatic."

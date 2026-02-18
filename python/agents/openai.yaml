@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python"
+  short_description: "Modern Python standards for quality, safety, and tests."
+  default_prompt: "Use $python to align this code with Python best practices."
