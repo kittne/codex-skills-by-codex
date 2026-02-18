@@ -1,56 +1,100 @@
 ---
-name: "openai-docs"
-description: "Use when the user asks how to build with OpenAI products or APIs and needs up-to-date official documentation with citations (for example: Codex, Responses API, Chat Completions, Apps SDK, Agents SDK, Realtime, model capabilities or limits); prioritize OpenAI docs MCP tools and restrict any fallback browsing to official OpenAI domains."
+name: openai-docs
+description: Use when the user asks how to build with OpenAI products or APIs and needs up-to-date official documentation with citations (for example: Codex, Responses API, Chat Completions, Apps SDK, Agents SDK, Realtime, model capabilities or limits); prioritize OpenAI docs MCP tools and restrict any fallback browsing to official OpenAI domains.
 ---
-
 
 # OpenAI Docs
 
-Provide authoritative, current guidance from OpenAI developer docs using the developers.openai.com MCP server. Always prioritize the developer docs MCP tools over web.run for OpenAI-related questions. Only if the MCP server is installed and returns no meaningful results should you fall back to web search.
+Use official OpenAI developer documentation as the source of truth for API behavior, model limits, pricing references, and SDK usage. Prefer the MCP docs tools; use web search only as a fallback and only on OpenAI domains.
 
-## Quick start
-
-- Use `mcp__openaiDeveloperDocs__search_openai_docs` to find the most relevant doc pages.
-- Use `mcp__openaiDeveloperDocs__fetch_openai_doc` to pull exact sections and quote/paraphrase accurately.
-- Use `mcp__openaiDeveloperDocs__list_openai_docs` only when you need to browse or discover pages without a clear query.
-
-## OpenAI product snapshots
-
-1. Apps SDK: Build ChatGPT apps by providing a web component UI and an MCP server that exposes your app's tools to ChatGPT.
-2. Responses API: A unified endpoint designed for stateful, multimodal, tool-using interactions in agentic workflows.
-3. Chat Completions API: Generate a model response from a list of messages comprising a conversation.
-4. Codex: OpenAI's coding agent for software development that can write, understand, review, and debug code.
-5. gpt-oss: Open-weight OpenAI reasoning models (gpt-oss-120b and gpt-oss-20b) released under the Apache 2.0 license.
-6. Realtime API: Build low-latency, multimodal experiences including natural speech-to-speech conversations.
-7. Agents SDK: A toolkit for building agentic apps where a model can use tools and context, hand off to other agents, stream partial results, and keep a full trace.
-
-## If MCP server is missing
-
-If MCP tools fail or no OpenAI docs resources are available:
-
-1. Run the install command yourself: `codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp`
-2. If it fails due to permissions/sandboxing, immediately retry the same command with escalated permissions and include a 1-sentence justification for approval. Do not ask the user to run it yet.
-3. Only if the escalated attempt fails, ask the user to run the install command.
-4. Ask the user to restart Codex.
-5. Re-run the doc search/fetch after restart.
+## Goals
+- Answer with accurate, up-to-date guidance.
+- Cite the exact doc pages used.
+- Call out version constraints and deprecations.
 
 ## Workflow
+1. Identify the product area (OpenAI API, Codex, ChatGPT Apps SDK, Agents SDK, Realtime, etc.).
+2. Clarify the specific API surface or task (endpoint, SDK, tool, model, limit).
+3. Search the OpenAI docs MCP server.
+4. Fetch the exact page/section needed.
+5. Answer concisely with citations and code snippets only when doc-backed.
 
-1. Clarify the product scope (Codex, OpenAI API, or ChatGPT Apps SDK) and the task.
-2. Search docs with a precise query.
-3. Fetch the best page and the specific section needed (use `anchor` when possible).
-4. Answer with concise guidance and cite the doc source.
-5. Provide code snippets only when the docs support them.
+## MCP Tooling (Preferred)
+- Use `mcp__openaiDeveloperDocs__search_openai_docs` for discovery.
+- Use `mcp__openaiDeveloperDocs__fetch_openai_doc` for precise sections.
+- Use `mcp__openaiDeveloperDocs__list_openai_docs` only when discovery is too broad.
 
-## Quality rules
+## Fallback (Only If MCP Fails)
+- Use `web.run` with domain restrictions:
+  - `developers.openai.com`
+  - `platform.openai.com`
+- Do not use third-party sources for OpenAI docs questions.
 
-- Treat OpenAI docs as the source of truth; avoid speculation.
-- Keep quotes short and within policy limits; prefer paraphrase with citations.
-- If multiple pages differ, call out the difference and cite both.
-- If docs do not cover the user’s need, say so and offer next steps.
+## Quality Rules
+- Keep quotes short; prefer paraphrase with citations.
+- If multiple docs disagree, note the discrepancy and cite both.
+- If docs are silent, say so and propose next steps.
+- Never invent API parameters or model limits.
 
-## Tooling notes
+## Version and Deprecation Checks
+- Confirm model or SDK versions mentioned in the docs.
+- Call out deprecations or replacements explicitly.
+- If the user's stack version is unknown, say you used latest docs.
 
-- Always use MCP doc tools before any web search for OpenAI-related questions.
-- If the MCP server is installed but returns no meaningful results, then use web search as a fallback.
-- When falling back to web search, restrict to official OpenAI domains (developers.openai.com, platform.openai.com) and cite sources.
+## Typical Queries
+- "How do I call the Responses API with tools?"
+- "What are the current limits for model X?"
+- "How do I set up a ChatGPT app with an MCP server?"
+- "How do I stream outputs from the API?"
+
+## Search Query Tips
+- Include the exact endpoint or SDK method name.
+- Add the feature keyword (streaming, tools, files, images, audio).
+- If the user mentions an error, include the error string verbatim.
+
+## Common Pitfalls
+- Mixing legacy and current endpoints in the same example.
+- Using model names that are deprecated or renamed.
+- Omitting required auth scopes or project IDs.
+- Copying SDK snippets without noting the language/version.
+
+## When Asked About Pricing or Limits
+- Treat the docs as time-sensitive and always cite the source.
+- If pricing tables are not in the docs tool output, say so and point to the official page.
+
+## Citation Rules
+- Cite every non-trivial factual claim from the docs.
+- Place citations near the sentences they support.
+- Avoid large block quotes; keep excerpts short.
+
+## If the User Wants a Link
+- Provide the official OpenAI doc page URL.
+- Do not share unofficial mirrors.
+
+## Answer Structure (Default)
+1. Direct answer (short).
+2. Minimal code or config example.
+3. Caveats/version notes.
+4. Links/citations to the specific sections used.
+
+## If the MCP Server Is Missing
+1. Attempt install: `codex mcp add openaiDeveloperDocs --url https://developers.openai.com/mcp`.
+2. If that fails, ask the user to install it and restart Codex.
+3. Retry MCP search after restart.
+
+## Product Snapshot Checklist
+When relevant, confirm:
+- API family (Responses vs Chat Completions vs legacy endpoints).
+- Supported modalities (text, image, audio).
+- Tooling support (function calling, tools, streaming).
+- Auth requirements (API keys, project scoping).
+
+## Output Expectations
+- Precise, doc-backed instructions.
+- Citations for every non-trivial factual claim.
+- Clear assumptions when user context is missing.
+- Note when guidance is based on latest docs only.
+
+## Definition of Done
+- Answer references the correct OpenAI docs pages.
+- The user can implement the guidance without guesswork.

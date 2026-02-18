@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pyright"
+  short_description: "Help with Pyright config, strictness, and CI"
+  default_prompt: "Use $pyright to align editor and CI typing behavior with explicit config and strictness paths."

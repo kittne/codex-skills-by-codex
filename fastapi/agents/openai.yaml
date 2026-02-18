@@ -1,0 +1,4 @@
+interface:
+  display_name: "FastAPI"
+  short_description: "Help with production FastAPI architecture and ops"
+  default_prompt: "Use $fastapi to architect, secure, and productionize this API with strong operational guardrails."

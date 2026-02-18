@@ -23,7 +23,6 @@ description: >
 - Hardware or service tier constraints (CPU, RAM, disk IOPS, throughput).
 - Critical SLOs (latency, availability) and compliance requirements.
 - Known incidents: lock storms, replica lag, bloat, failover instability.
-- Tooling available: `pg_stat_statements`, log pipeline, metrics/alerts, backup tooling.
 - Change window and rollback expectations.
 
 ## Operating Principles
@@ -33,7 +32,6 @@ description: >
 - Keep durability posture explicit (`fsync` on, scoped `synchronous_commit` decisions).
 - Tune autovacuum per table for high-churn relations.
 - Prove recovery with routine restore tests, not only backup success messages.
-- Prefer guardrails and feedback loops over static folklore values.
 
 ## Configuration and Capacity Planning
 - Tune `max_connections` with pooling strategy; avoid unbounded direct connections.
@@ -194,11 +192,9 @@ psql -X -d "$DATABASE_URL" -f sql/top-queries.sql
 - `rg -n "autovacuum|vacuum|bloat|wraparound" references/postgresql`
 - `rg -n "backup|restore|replication|high availability|RPO|RTO" references/postgresql`
 - `rg -n "security|privilege|TLS|extension" references/postgresql`
-- `rg -n "upgrade|migration|wal_keep_size|version" references/postgresql`
 
 ## Quick Questions (When Stuck)
 - What is the smallest safe change that can be measured quickly?
 - Which SLO is currently at risk: latency, availability, or durability?
 - Is this a planner/stats problem, an I/O problem, or a lock problem?
 - Can this be fixed with scoped settings instead of global changes?
-- What evidence proves recovery works today?

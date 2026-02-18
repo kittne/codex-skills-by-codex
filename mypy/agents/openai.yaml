@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mypy"
+  short_description: "Help with mypy typing strategy and CI"
+  default_prompt: "Use $mypy to design a deterministic, gradual strictness rollout for Python type checking."

@@ -143,5 +143,5 @@ Open only what you need:
 - Prefer explicit commands over `eval` and `run-code` unless needed.
 - When you do not have a fresh snapshot, use placeholder refs like `eX` and say why; do not bypass refs with `run-code`.
 - Use `--headed` when a visual check will help.
-- When capturing artifacts in this repo, use `output/playwright/` and avoid introducing new top-level artifact folders.
+- When capturing artifacts, prefer a user-provided destination or an existing project artifact directory; otherwise, use a temporary directory and report the saved path.
 - Default to CLI commands and workflows, not Playwright test specs.

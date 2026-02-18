@@ -33,7 +33,6 @@ description: >
 - Treat protocol versioning as a design constraint, not an afterthought.
 - Use capability-based authorization (badges, proofs, AccessRules) consistently.
 - Keep manifests human-readable and wallet-conforming when possible.
-- Assume committed failures still cost fees and design fail-fast checks.
 - Keep on-ledger data minimal and non-sensitive by default.
 - Separate protocol-ops governance from application governance.
 - Prefer incremental, measurable changes over large transactional rewrites.
@@ -102,7 +101,6 @@ description: >
 - Partition state to reduce contention and future-proof for sharding.
 - Avoid hot singletons for high-throughput features.
 - Use priority/tip strategy intentionally under contention.
-- Consider hybrid off-ledger compute with on-ledger settlement where justified.
 
 ## Tooling, Testing, and CI/CD
 - Standardize team toolchain: `scrypto`, `resim`, `rtmc`, `rtmd`, `scrypto-bindgen`.
@@ -138,15 +136,11 @@ rtmd --compiled ./manifests/swap.rtmc
 - Model user cost using Radix fee semantics, including committed failures.
 - Keep royalty policy predictable; avoid surprise mutability.
 - Consider fee delegation only with anti-abuse controls.
-- Test economic invariants under adversarial scenarios.
-- Document assumptions for rewards, penalties, and treasury flow.
 
 ## Compliance and Privacy
 - Treat on-ledger data as public and permanent.
 - Keep PII off-ledger; store only references/proofs where required.
 - Use Persona + ROLA patterns for off-ledger authentication.
-- Implement KYC/AML as optional gated capability when required.
-- Design credential checks for minimum data disclosure.
 
 ## Deployment and Operations
 - For critical workloads, run dedicated node infrastructure with hot-swappable backup.
@@ -198,13 +192,9 @@ rtmd --compiled ./manifests/swap.rtmc
 - `rg -n "Performance|scalability|costing|tip|state partition" references/radix.md`
 - `rg -n "testing|CI/CD|resim|RET|rtmc|rtmd" references/radix.md`
 - `rg -n "Governance|upgradeability|backward compatibility|LTS" references/radix.md`
-- `rg -n "Economic design|royalties|fees|incentives" references/radix.md`
-- `rg -n "Compliance|privacy|KYC|AML|zero-knowledge|ROLA" references/radix.md`
-- `rg -n "Deployment and operations|monitoring|Prometheus|Grafana|disaster" references/radix.md`
 
 ## Quick Questions (When Stuck)
 - Is this problem protocol compatibility, auth modeling, or manifest design?
 - Can this permission be narrowed with a badge/proof role split?
 - Should this flow be subintent-based instead of one giant transaction?
-- Are we paying avoidable fees due to late assertion failures?
 - What evidence shows this design remains safe under adversarial behavior?

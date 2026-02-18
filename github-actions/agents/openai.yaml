@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Actions"
+  short_description: "Help with secure and efficient CI/CD workflows"
+  default_prompt: "Use $github-actions to harden workflow security, improve reliability, and reduce CI/CD cost."

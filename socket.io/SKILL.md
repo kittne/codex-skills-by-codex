@@ -31,7 +31,6 @@ description: >
 ## Operating Principles
 - Treat Socket.IO as session/routing infrastructure, not durable messaging by default.
 - Keep security layered: connect middleware + packet middleware + payload validation.
-- Use explicit CORS/origin strategy and remember CORS limitations on WebSocket.
 - Keep heartbeat/proxy timeouts aligned to avoid false disconnect storms.
 - Prefer measured tuning over speculative parameter changes.
 - Keep reconnection and backpressure behavior explicit in client/server logic.
@@ -42,16 +41,6 @@ description: >
 - Keep `maxHttpBufferSize` bounded and documented per workload.
 - Keep `perMessageDeflate` off unless bandwidth gains justify CPU/memory cost.
 - Align reverse proxy idle timeouts with heartbeat window.
-
-### Baseline Config Checks
-```bash
-node -e "console.log(require('socket.io/package.json').version)"
-node -e "console.log(process.versions.node)"
-```
-
-```bash
-rg -n "pingInterval|pingTimeout|maxHttpBufferSize|transports|perMessageDeflate" src
-```
 
 ## Security Best Practices
 - Authenticate at connection time with `io.use()` middleware.
@@ -84,8 +73,7 @@ rg -n "pingInterval|pingTimeout|maxHttpBufferSize|transports|perMessageDeflate" 
 
 ### Latency Measurement Pattern
 - Use ACK + timeout for round-trip latency measurements.
-- Track per-event success, timeout, and retry histogram.
-- Distinguish transient network failures from server processing delays.
+- Track per-event success and timeout rates.
 
 ## Scalability and Topology Patterns
 - Use rooms for routing subsets of clients.
@@ -104,7 +92,6 @@ rg -n "pingInterval|pingTimeout|maxHttpBufferSize|transports|perMessageDeflate" 
 - Session-affinity misconfiguration causing `Session ID unknown` errors.
 - Broker outage causing partial fan-out visibility.
 - Recovery-enabled mass reconnect memory spikes.
-- OS file descriptor and ephemeral port exhaustion.
 
 ## Reliability and Delivery Semantics
 - Assume default delivery is at-most-once.
@@ -124,15 +111,12 @@ rg -n "pingInterval|pingTimeout|maxHttpBufferSize|transports|perMessageDeflate" 
 - Enable connection state recovery only after load testing.
 - Keep `maxDisconnectionDuration` bounded.
 - Use `skipMiddlewares` only when auth state safety is proven.
-- Guard against reconnect spikes with jitter/backoff and edge throttling.
-- Use `socket.conn` signals to implement backpressure policy.
 
 ## API Design and Contract Governance
 - Use stable event naming conventions (`domain:action`).
 - Keep payload schemas versioned and backward-compatible where possible.
 - Prefer explicit error envelopes and ACK semantics.
 - Separate privileged/admin flows into dedicated namespaces.
-- Document room membership and authorization invariants.
 
 ### API Contract Checklist
 - Event names and payload schemas versioned.
@@ -164,8 +148,6 @@ npm run build
 - Maintain dashboards for connections, emits, ACK timeouts, and disconnect reasons.
 - Monitor process memory, event loop lag, and broker health.
 - Keep structured logs for connect/disconnect/auth failures.
-- Prepare playbooks for reconnect storms, broker degradation, and proxy misconfig.
-- Rehearse rollback of transport/adapter changes.
 
 ### Incident Triage Sequence
 1. Check edge/proxy timeout and upgrade metrics.
@@ -205,8 +187,6 @@ npm run build
 - `rg -n "Security best practices|Authentication|authorization|CORS|TLS" references/socket.io.md`
 - `rg -n "Performance and latency|perMessageDeflate|wsEngine|heartbeat" references/socket.io.md`
 - `rg -n "Scalability|Namespaces|rooms|sticky sessions|adapter" references/socket.io.md`
-- `rg -n "Reliability|delivery semantics|ack|retries|recovery" references/socket.io.md`
-- `rg -n "API design|testing|load testing|operations|upgrade" references/socket.io.md`
 
 ## Quick Questions (When Stuck)
 - Is this issue transport/proxy, adapter/broker, or app-level contract design?

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ruff"
+  short_description: "Help with Ruff lint and format workflows"
+  default_prompt: "Use $ruff to configure linting, formatting, and CI-safe autofix policy for this Python repo."
