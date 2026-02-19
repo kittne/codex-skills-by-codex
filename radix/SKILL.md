@@ -192,7 +192,6 @@ rtmd --compiled ./manifests/swap.rtmc
 - `rg -n "Performance|scalability|costing|tip|state partition" references/radix.md`
 - `rg -n "testing|CI/CD|resim|RET|rtmc|rtmd" references/radix.md`
 - `rg -n "Governance|upgradeability|backward compatibility|LTS" references/radix.md`
-
 ## Quick Questions (When Stuck)
 - Is this problem protocol compatibility, auth modeling, or manifest design?
 - Can this permission be narrowed with a badge/proof role split?

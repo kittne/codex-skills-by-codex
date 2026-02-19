@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-19
+
+### Skills updates
+- Trimmed `radix` skill by one line to stay within the 100-200 line limit.
+
 ## 2026-02-18
 
 ### Skills updates (first automation run)
