@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-20
+
+### Skills updates
+- Updated `next.js` caching guidance with current App Router defaults and route segment overrides.
+
 ## 2026-02-19
 
 ### Skills updates
