@@ -52,6 +52,8 @@ app/
 - Use dependency `yield` patterns for request-scoped cleanup.
 - Keep dependency functions small and composable.
 - Avoid hidden I/O side effects in dependency graphs.
+- Prefer the app `lifespan` async context manager over legacy `startup`/`shutdown` events.
+- Do not mix `lifespan` with `startup`/`shutdown`; the events are bypassed when `lifespan` is set.
 
 Example pattern:
 ```python

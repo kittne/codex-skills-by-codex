@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-21
+
+### Skills updates
+- Updated `fastapi` guidance to prefer lifespan async context managers over deprecated startup/shutdown events.
+
 ## 2026-02-20
 
 ### Skills updates
