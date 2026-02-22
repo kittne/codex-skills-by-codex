@@ -63,6 +63,7 @@ description: >
 - Choose rendering mode per route: static, dynamic, or mixed.
 - Use caching primitives intentionally with clear invalidation rules.
 - Treat `fetch` default caching as `force-cache`; use `cache: "no-store"` for per-request data and `next: { revalidate: <seconds> }` for timed revalidation.
+- For explicit no-cache with `revalidate`, use `next: { revalidate: 0 }`; avoid combining `cache: "no-store"` with `revalidate` because conflicts are ignored.
 - Override route defaults with route segment config when needed (`dynamic = "force-dynamic"`, `fetchCache = "default-no-store"`, `revalidate = 0`, `dynamicParams = false`).
 - Audit large dependencies and avoid accidental client bundle growth.
 - Keep image optimization and responsive sizing configured.

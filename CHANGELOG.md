@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-02-22
+
+### Skills updates
+- Updated `next.js` caching guidance to clarify `revalidate: 0` usage and avoid conflicting cache options.
+
 ## 2026-02-21
 
 ### Skills updates
