@@ -74,6 +74,7 @@ pnpm audit
 - Cache pnpm store, not `node_modules` snapshots.
 - Pin Node and pnpm versions in CI toolchain setup.
 - Separate dependency install from build/test stages.
+- Use `pnpm fetch` in Docker/CI to prefill the store from the lockfile, then install with `--offline`.
 - Ensure private registry auth is scoped and rotated.
 - Track install time regressions and cache miss rates.
 

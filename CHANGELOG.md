@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-02-24
+
+### Skills updates
+- Updated `openapi` guidance for OpenAPI 3.1 JSON Schema dialects and nullability.
+- Updated `react` effect guidance for Strict Mode replays and functional state updates.
+- Updated `next.js` caching notes for dynamic APIs and Router Cache invalidation.
+- Updated `typescript` compiler baseline notes for module resolution compatibility and `verbatimModuleSyntax`.
+- Updated `pnpm` CI guidance to use `pnpm fetch` for offline installs.
+
 ## 2026-02-22
 
 ### Skills updates

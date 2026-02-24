@@ -29,8 +29,10 @@ description: >
 - Keep `strict: true` enabled in all production packages.
 - Use shared base config plus per-package overrides only when justified.
 - Prefer modern Node module resolution (`node16`/`nodenext`) to match runtime behavior.
+- Avoid `moduleResolution: "bundler"` with `module: "nodenext"`; keep module and resolution compatible.
 - Set explicit `target` and `lib` for the deployed runtime, not developer machines.
 - Keep emit strategy explicit: `noEmit` for apps checked by bundler, declaration emit for libraries.
+- Use `verbatimModuleSyntax` instead of deprecated `preserveValueImports`.
 
 ### Recommended Defaults
 ```json

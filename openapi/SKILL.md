@@ -35,6 +35,8 @@ description: >
 - Use `components/schemas` for shared domain models.
 - Reuse common parameters (pagination, correlation IDs, locales).
 - Use composition intentionally (`allOf`, `oneOf`, `anyOf`) with discriminator strategy.
+- In 3.1, model nullability with JSON Schema (`type: ["string", "null"]`) instead of `nullable`.
+- Set `jsonSchemaDialect` or `$schema` explicitly when using a non-default dialect.
 - Keep numeric/string formats explicit to reduce codegen drift.
 - Prefer narrow, explicit object schemas over permissive maps.
 

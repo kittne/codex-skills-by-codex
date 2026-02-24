@@ -62,6 +62,8 @@ description: >
 ## Effects, Data Fetching, and Error Handling
 - Keep effects idempotent and dependency-accurate.
 - Always clean up subscriptions, timers, and abortable async work.
+- Assume Strict Mode will re-run effects and initializers in dev; make side effects safe to replay.
+- Use state updater functions in effects when deriving from previous state.
 - Handle loading, empty, error, and retry paths explicitly.
 - Keep side effects in handlers/effects, not render paths.
 - Normalize error boundaries for recoverable UX.
