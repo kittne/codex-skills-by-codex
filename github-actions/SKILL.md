@@ -29,6 +29,8 @@ description: >
 - Set top-level `permissions` to minimum required scope.
 - Elevate permissions only per job that needs write access.
 - Prefer OIDC federation over long-lived cloud credentials.
+- For OIDC, grant `id-token: write` at workflow/job level and keep `contents: read` for checkout.
+- For reusable workflows outside your org/enterprise, set `id-token: write` in the caller workflow.
 - Restrict cloud trust policies by repository, ref, and workflow claims.
 - Mask sensitive data and avoid logging secret-bearing structures.
 

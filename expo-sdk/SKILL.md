@@ -104,6 +104,8 @@ npx expo doctor --fix-dependencies
 - Automate preview builds for QA and stakeholder validation.
 - Use EAS Submit with controlled release gates.
 - Manage OTA rollout by runtime version and staged channels.
+- Pick a `runtimeVersion` policy (`appVersion`, `nativeVersion`, or `fingerprint`) and keep it consistent across builds.
+- Use `expo-build-properties` in app config when platform SDK/target overrides are required.
 
 ### Baseline EAS Flow
 1. `eas build --profile preview` for QA validation.

@@ -24,6 +24,7 @@ description: >
 ## Setup
 - Install Playwright and browsers.
 - Use existing test config when present.
+- In CI, always install browsers explicitly (`npx playwright install --with-deps`) after `npm ci`.
 
 Common setup:
 ```bash
@@ -107,6 +108,7 @@ Use this when test flakiness is high or when scaling test suites.
 - Shard tests by file or tag when suites grow.
 - Collect trace on failure for debug.
 - Keep browser versions pinned in CI for reproducibility.
+- Add an explicit browser install step in CI; Playwright no longer downloads browsers on package install.
 
 ## Debug Commands
 ```bash

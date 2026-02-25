@@ -23,6 +23,9 @@ description: >
 - Add a `.dockerignore` to reduce build context.
 - Combine `RUN` steps and clean package caches in the same layer.
 - Prefer `COPY` over `ADD` unless you need `ADD` features.
+- Use BuildKit cache mounts (`RUN --mount=type=cache`) for language dependency caches.
+- Use BuildKit secrets (`RUN --mount=type=secret`) for build-time credentials.
+- Consider `COPY --link` to improve layer cache reuse in large builds.
 - Never bake secrets into images; inject at runtime or via build secrets.
 - Run as non-root with a dedicated user.
 - Add `HEALTHCHECK` for long-running services.

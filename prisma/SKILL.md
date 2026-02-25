@@ -131,6 +131,7 @@ npm run test:integration
 - Upgrade Prisma and engine components incrementally.
 - Review release notes for breaking behavior changes.
 - Validate generators/plugins compatibility before rollout.
+- For Prisma ORM 7+, migrate `generator client` provider to `prisma-client` and set an explicit `output` path before regenerating client code.
 - Run smoke tests in staging with production-like datasets.
 - Maintain checklist for client regeneration and deployment ordering.
 

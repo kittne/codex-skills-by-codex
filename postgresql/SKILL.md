@@ -104,6 +104,10 @@ pg_restore -d appdb_restore --clean --if-exists /var/backups/pg/app.dump
 - Review extension allowlist and privileged operations.
 - Audit high-impact DDL and superuser activity.
 
+## Upgrade Notes
+- Prefer `scram-sha-256`; MD5 password auth is deprecated and emits warnings on newer releases.
+- Newer `initdb` defaults enable data checksums; ensure checksum settings match before `pg_upgrade`.
+
 ## Validation Commands
 ```bash
 psql -X -d "$DATABASE_URL" -c "SELECT version();"

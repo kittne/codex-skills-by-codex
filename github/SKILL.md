@@ -39,7 +39,7 @@ description: >
 - Standardize README, CONTRIBUTING, and issue/PR templates.
 - Use CODEOWNERS for path-based ownership and review routing.
 - Keep labels and milestones consistent across repositories.
-- Enforce branch protections for default and release branches.
+- Prefer rulesets to enforce protections for default and release branches.
 - Document conventions for commit messages and changelog entries.
 
 ### Repository Contract Checklist

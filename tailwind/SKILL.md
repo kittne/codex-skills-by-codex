@@ -37,6 +37,7 @@ description: >
 ## Setup and Configuration
 - Use official integration path for your bundler.
 - For v4, prefer CSS-first setup and modern scanning directives.
+- For v4, use `@import "tailwindcss";` (avoid legacy `@tailwind base/components/utilities`).
 - Keep project entry CSS explicit and version-controlled.
 - For monorepos, include external sources intentionally.
 - Document any non-default scanning behavior in workspace docs.
@@ -69,6 +70,7 @@ const badgeByTone = {
 
 ## Theming and Tokens
 - Define core tokens for color, spacing, type, radius, and shadow.
+- For v4, define tokens in `@theme` blocks; use `@config` only when loading legacy JS config.
 - Prefer semantic naming (`primary`, `muted`, `danger`) over raw palette usage everywhere.
 - Promote repeated arbitrary values into tokens.
 - Keep dark mode activation strategy consistent (`prefers-color-scheme`, class, or data attribute).

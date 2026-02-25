@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-02-25
+
+### Skills updates
+- Updated `prisma` upgrade notes to include Prisma ORM 7 generator provider change.
+- Updated `tailwind` v4 setup guidance for `@import "tailwindcss"` and `@theme`.
+- Updated `expo-sdk` OTA guidance for runtime version policies and build properties.
+- Updated `playwright-testing` CI setup to explicitly install browsers.
+- Updated `github` governance guidance to prefer rulesets for branch protections.
+- Updated `github-actions` OIDC permission guidance.
+- Updated `docker` build guidance for BuildKit cache/secret mounts and `COPY --link`.
+- Updated `postgresql` upgrade notes for MD5 deprecation and checksum defaults.
+
 ## 2026-02-24
 
 ### Skills updates
