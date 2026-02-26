@@ -100,6 +100,7 @@ test -f /run/reboot-required && echo "reboot required" || true
 ## Release Upgrades
 - Fully patch first and reboot if required.
 - Expect third-party repos to be disabled during upgrade.
+- Use `do-release-upgrade` for LTS-to-LTS upgrades; avoid `-d` for production unless explicitly testing pre-point releases.
 ```bash
 do-release-upgrade -c
 lsb_release -a || cat /etc/os-release

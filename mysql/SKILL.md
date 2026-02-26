@@ -116,6 +116,7 @@ description: Design, query, tune, secure, and operate MySQL (8.0+). Use for sche
 - Replication/HA:
   - Treat replica reads as potentially stale; verify read-after-write requirements.
   - Monitor lag and replication thread health.
+  - For replicas using `caching_sha2_password` without a secure connection, set `SOURCE_PUBLIC_KEY_PATH` or `GET_SOURCE_PUBLIC_KEY=1` during `CHANGE REPLICATION SOURCE TO`.
 - Security:
   - Separate users for app/migrations/admin; apply least privilege.
   - Restrict network exposure; prefer private interfaces and firewall rules.

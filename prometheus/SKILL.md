@@ -37,6 +37,7 @@ description: >
 - Use recording rules for heavy dashboards and common alert predicates.
 - Group related rules and set rule evaluation intervals intentionally.
 - Keep rule files versioned and reviewed like code.
+- Convert legacy rule files to YAML with `promtool update rules` before upgrades.
 
 ### Rule Group Pattern
 ```yaml

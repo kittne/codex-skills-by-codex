@@ -51,6 +51,8 @@ sum by (status) (rate({job="api", namespace="production"} | json [5m]))
 
 ## Retention and Operations
 - Define retention by tenant/classification policy.
+- For new installs, use TSDB schema (v13) with 24h index period.
+- Retention requires 24h index period plus compactor `retention_enabled=true`.
 - Monitor ingestion errors, compaction lag, and query tail latency.
 - Plan object storage costs with realistic growth models.
 - Keep backup strategy for critical config and metadata.

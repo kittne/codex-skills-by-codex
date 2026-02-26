@@ -21,6 +21,7 @@ description: Design, implement, and operate Redis (6+) safely and efficiently. U
 - Latency SLOs and tolerated loss window.
 - Network exposure, TLS, ACLs, and secrets handling.
 - Existing incident history: evictions, failover issues, big-key stalls.
+- Upgrade posture: confirm `redis_version` and review breaking changes before major upgrades.
 
 ## Data Modeling and TTL
 - Use consistent key namespaces: `{app}:{env}:{entity}:{id}`.

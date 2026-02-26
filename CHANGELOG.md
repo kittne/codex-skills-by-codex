@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-02-26
+
+### Skills updates
+- Updated `mysql` replication auth guidance for `caching_sha2_password` replicas.
+- Updated `redis` preflight to confirm version and review breaking changes before upgrades.
+- Updated `prometheus` rule guidance to convert legacy rules via `promtool`.
+- Updated `loki` retention guidance for TSDB v13 schema and compactor requirements.
+- Updated `python` upgrade watchlist for 3.13+ deprecations.
+- Updated `mypy` strict mode notes to clarify flag coverage.
+- Updated `ubuntu` release upgrade guidance for LTS and `-d` usage.
+
 ## 2026-02-25
 
 ### Skills updates

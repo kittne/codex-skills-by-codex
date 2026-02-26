@@ -57,6 +57,7 @@ ignore_errors = true
 - Expand `disallow_untyped_calls` after third-party typing improves.
 - Adopt `strict = true` only where ownership and dependency typing support it.
 - Prefer per-module strict expansion over repo-wide noisy transitions.
+- Remember `--strict` does not enable `--warn-unreachable`, and its flag set can change by version.
 
 ## Import and Stub Strategy
 - Prefer typed libraries that ship `py.typed` metadata.
