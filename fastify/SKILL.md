@@ -35,6 +35,9 @@ description: >
 - Define JSON schema for all externally reachable routes.
 - Use shared schema IDs for reusable components.
 - Keep response schemas explicit to protect serialization boundaries.
+- In v5, require full JSON Schema objects (include `type`) for `querystring`, `params`, `body`, and responses.
+- In v5, `jsonShortHand` is removed; prefer full JSON Schema or a custom validator (for example Zod).
+- In v5, type providers split `validator` and `serializer` types; update custom providers accordingly.
 - Treat schema drift as an API compatibility event.
 - Version contracts intentionally.
 

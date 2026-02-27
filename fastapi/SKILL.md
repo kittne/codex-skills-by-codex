@@ -50,6 +50,7 @@ app/
 - Initialize shared resources in application lifespan handlers.
 - Dispose shared resources deterministically during shutdown.
 - Use dependency `yield` patterns for request-scoped cleanup.
+- If a `yield` dependency uses `except`, re-raise after handling to avoid leaked state.
 - Keep dependency functions small and composable.
 - Avoid hidden I/O side effects in dependency graphs.
 - Prefer the app `lifespan` async context manager over legacy `startup`/`shutdown` events.
@@ -69,6 +70,7 @@ async def lifespan(app: FastAPI):
 ## Data Contracts and Serialization
 - Define separate input and output schemas.
 - Use response models consistently to prevent accidental field leakage.
+- Allow `None` explicitly in `response_model` (for example `Union[Model, None]`) if handlers can return it.
 - Enable strict validation and explicit field constraints.
 - Keep internal ORM models out of API boundary payloads.
 - Version schema changes intentionally and document deprecations.

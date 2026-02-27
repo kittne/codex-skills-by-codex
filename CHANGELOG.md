@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-02-27
+
+### Skills updates
+- Updated `fastapi` guidance for `response_model` returning `None` and `yield` dependency re-raise.
+- Updated `fastify` guidance for v5 full JSON schema requirements and type provider split.
+
 ## 2026-02-26
 
 ### Skills updates
