@@ -32,8 +32,8 @@ description: >
 - Pin model artifacts for reproducibility.
 
 ## Pipeline Configuration
-- Enable orientation and unwarping when document skew/warp is common.
-- Keep optional modules disabled when they add latency without quality gain.
+- Enable orientation, unwarping, and textline-orientation modules when document skew/warp is common.
+- Keep optional modules (`use_doc_orientation_classify`, `use_doc_unwarping`, `use_textline_orientation`) disabled when they add latency without quality gain.
 - Route by document class if one global pipeline underperforms.
 - Keep deterministic preprocessing across environments.
 
@@ -47,6 +47,7 @@ ocr = PaddleOCR(
     device="gpu:0",
     use_doc_orientation_classify=True,
     use_doc_unwarping=True,
+    use_textline_orientation=True,
 )
 ```
 

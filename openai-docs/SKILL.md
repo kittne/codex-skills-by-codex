@@ -40,6 +40,7 @@ Use official OpenAI developer documentation as the source of truth for API behav
 - Confirm model or SDK versions mentioned in the docs.
 - Call out deprecations or replacements explicitly.
 - If the user's stack version is unknown, say you used latest docs.
+- If the user references the Assistants API, note its deprecation and the August 26, 2026 sunset, and guide them to the Responses API migration docs.
 
 ## Typical Queries
 - "How do I call the Responses API with tools?"

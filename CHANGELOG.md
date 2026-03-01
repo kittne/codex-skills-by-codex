@@ -3,6 +3,9 @@
 ## 2026-03-01
 
 ### Skills updates
+- Updated `next.js` caching defaults to reflect Next.js 15 fetch behavior and cache opt-in.
+- Updated `paddleocr` pipeline guidance to include textline-orientation module toggles.
+- Updated `openai-docs` to flag Assistants API deprecation and sunset date.
 - Updated `grafana` to note datasource UID requirement for alerting/proxy APIs.
 - Updated `keycloak` to prefer RFC 7662 token introspection and note `/validate` deprecation.
 - Updated `loki` to capture Loki 3.0 TSDB requirements and ingestion limits.
