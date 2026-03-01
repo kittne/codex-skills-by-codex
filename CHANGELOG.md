@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-01
+
+### Skills updates
+- Updated `grafana` to note datasource UID requirement for alerting/proxy APIs.
+- Updated `keycloak` to prefer RFC 7662 token introspection and note `/validate` deprecation.
+- Updated `loki` to capture Loki 3.0 TSDB requirements and ingestion limits.
+- Updated `mypy` to call out PEP 702 deprecation reporting flags.
+- Updated `mysql` replication and auth guidance for deprecated options.
+
 ## 2026-02-27
 
 ### Skills updates

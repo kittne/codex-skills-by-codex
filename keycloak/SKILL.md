@@ -57,6 +57,7 @@ description: >
 - Version and review realm config changes as code.
 - Keep backup/restore workflows tested before upgrades.
 - Validate client policy controls for redirect enforcement.
+- Prefer RFC 7662 token introspection (`/token/introspect`); the legacy `/validate` endpoint is deprecated.
 
 ### Basic Verification
 ```bash

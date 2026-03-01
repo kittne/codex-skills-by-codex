@@ -29,6 +29,7 @@ description: >
 - Align tooling runtime with supported mypy runtime requirements.
 - Treat Python EOL versions as migration priorities, not permanent targets.
 - Review mypy release notes before bumping strict or plugin-heavy setups.
+- If using PEP 702 `@warnings.deprecated`, enable `deprecated` error code or `report_deprecated_as_note` explicitly.
 
 ## Configuration Architecture
 - Keep one canonical config per invocation.
