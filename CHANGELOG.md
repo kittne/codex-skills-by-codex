@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-03
+
+### Skills updates
+- Updated `prisma` to note Prisma ORM 7 generate behavior and removed skip flags.
+- Updated `prometheus` upgrade guidance for Prometheus 3.0 migration/flag changes.
+- Updated `react` migration guidance for React 19 deprecations and ref-as-prop changes.
+
 ## 2026-03-01
 
 ### Skills updates

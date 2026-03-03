@@ -63,6 +63,10 @@ groups:
 - Keep backup/restore strategy for rules and critical state.
 - Validate upgrade path and config compatibility.
 
+## Upgrade Notes
+- For Prometheus 3.0, review the migration guide and remove deprecated feature flags now enabled by default.
+- Revalidate PromQL range semantics and scrape config changes after major upgrades.
+
 ## Security and Governance
 - Restrict scrape endpoints and admin APIs.
 - Protect service discovery credentials.

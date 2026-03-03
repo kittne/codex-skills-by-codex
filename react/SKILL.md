@@ -127,6 +127,8 @@ npm run typecheck
 - Upgrade React and tooling incrementally.
 - Validate strict mode behavior and deprecated API usage.
 - Remove legacy patterns gradually with codemod/testing support.
+- For React 19, upgrade to 18.3 first to surface deprecation warnings and remove legacy `render`/`hydrate`/`unmountComponentAtNode`/`findDOMNode` usage.
+- Treat `ref` as a regular prop in new components and avoid `element.ref` access in migration work.
 - Re-baseline performance and bundle budgets after upgrades.
 
 ## Common Failure Modes
