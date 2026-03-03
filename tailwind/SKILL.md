@@ -129,6 +129,7 @@ rg -n "inline\(|@source|safelist|content" styles src tailwind.config.*
 ## Migration Playbooks
 - v3 to v4: validate scanning/config model changes early.
 - Confirm plugin compatibility and installation method changes.
+- Run `npx @tailwindcss/upgrade` for v4 migrations and update PostCSS to use `@tailwindcss/postcss`.
 - Re-test dark mode activation and custom theme variables.
 - Compare pre/post build output and runtime visual behavior.
 - Roll out incrementally to reduce regression blast radius.

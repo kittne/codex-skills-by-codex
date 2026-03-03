@@ -137,6 +137,7 @@ npm run test:e2e
 - Upgrade Next.js in controlled increments.
 - Re-test routing, caching, and middleware behavior after upgrades.
 - Verify plugin/tool compatibility before production rollout.
+- In 15+, `params`/`searchParams` (and Route Handler `params`) are async promises; in 16, synchronous access is removed. Await them or use the codemod when upgrading.
 - Keep migration notes for breaking changes and fallback options.
 
 ## Common Failure Modes

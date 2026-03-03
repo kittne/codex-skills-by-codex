@@ -62,6 +62,7 @@ description: >
 - Export remote cache credentials securely via CI secrets.
 - Ensure cold-start path remains acceptable when cache is unavailable.
 - Record task timings and hit rates for regression analysis.
+- For Turborepo 2.x+, use `tasks` instead of `pipeline`, expect cache at `.turbo/cache`, and replace `outputMode` with `outputLogs` during upgrades.
 
 ### Typical Commands
 ```bash

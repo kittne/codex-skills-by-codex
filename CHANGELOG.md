@@ -6,6 +6,9 @@
 - Updated `prisma` to note Prisma ORM 7 generate behavior and removed skip flags.
 - Updated `prometheus` upgrade guidance for Prometheus 3.0 migration/flag changes.
 - Updated `react` migration guidance for React 19 deprecations and ref-as-prop changes.
+- Updated `next.js` upgrade guidance for async `params`/`searchParams` in 15+ and sync removal in 16.
+- Updated `tailwind` v4 migration guidance to include the upgrade tool and PostCSS plugin change.
+- Updated `turborepo` upgrade guidance for `tasks` vs `pipeline` and cache/output key renames.
 
 ## 2026-03-01
 
