@@ -34,6 +34,7 @@ description: >
 ## Upgrade Watchlist (3.13+)
 - Avoid `typing.no_type_check_decorator()` and prefer normal typing exemptions.
 - Prefer class-based `NamedTuple`/`TypedDict` over deprecated functional keyword/empty forms.
+- Prefer the `type` statement over `typing.TypeAlias` (deprecated in modern Python).
 - Avoid asyncio event loop policy APIs; use `asyncio.run(..., loop_factory=...)` if needed.
 - Avoid `http.server` CGI handler/`--cgi`; migrate to modern request handlers.
 

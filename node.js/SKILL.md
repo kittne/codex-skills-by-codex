@@ -101,6 +101,7 @@ npm audit --omit=dev
 
 ## Error Handling and Resilience
 - Use typed/domain errors with stable mapping to HTTP/queue responses.
+- Treat unhandled promise rejections as fatal by default; set `--unhandled-rejections` explicitly only with clear policy.
 - Apply timeouts/retries with jitter and idempotency controls.
 - Guard against cascading failure with circuit-breaker patterns.
 - Ensure graceful shutdown drains in-flight work.
@@ -137,6 +138,7 @@ npm audit --omit=dev
 - Unbounded async concurrency leading to resource exhaustion.
 - Event-loop blocking work in hot request paths.
 - Mixed module systems causing runtime loader errors.
+- Depending on invalid `package.json` `main` fallback behavior that newer Node versions deprecate.
 - CI passing with missing integration coverage.
 - Dependency drift causing non-reproducible builds.
 - Weak shutdown behavior dropping in-flight work.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-04
+
+### Skills updates
+- Updated `node.js` resilience guidance for unhandled rejection policy and invalid `main` fallback deprecation risk.
+- Updated `fastapi` contract guidance to treat `pydantic.v1` usage as temporary migration-only state.
+- Updated `python` upgrade watchlist to prefer the `type` statement over deprecated `typing.TypeAlias`.
+
 ## 2026-03-03
 
 ### Skills updates
