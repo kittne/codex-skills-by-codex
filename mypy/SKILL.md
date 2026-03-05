@@ -26,6 +26,7 @@ description: >
 ## Version and Compatibility Policy
 - Pin mypy and stub-package versions together for reproducible checks.
 - Set `python_version` explicitly in config.
+- Do not target Python 3.8; current mypy requires `--python-version 3.9+`.
 - Align tooling runtime with supported mypy runtime requirements.
 - Treat Python EOL versions as migration priorities, not permanent targets.
 - Review mypy release notes before bumping strict or plugin-heavy setups.

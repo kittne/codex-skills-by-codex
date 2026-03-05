@@ -84,6 +84,7 @@ pyright --project pyrightconfig.json --watch
 - Pin Pyright versions in CI actions or lockfiles.
 - Fail checks on type errors; fail on warnings when maturity allows.
 - Keep type checking as a dedicated job for clear triage.
+- For published libraries, run `pyright --verifytypes <package>` before release.
 - Run targeted checks on changed packages when full checks are too slow.
 - Validate config changes with representative module coverage before merge.
 

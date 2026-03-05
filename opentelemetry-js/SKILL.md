@@ -37,6 +37,7 @@ description: >
 - Avoid redundant instrumentation that duplicates spans.
 - Exclude noisy endpoints (health checks) from high-cardinality signals.
 - Keep span names stable and semantic-convention aligned.
+- Migrate deprecated `SEMATTRS_*`/`SEMRESATTRS_*` constants to `ATTR_*` semantic-convention constants.
 
 ## Propagation and Context
 - Use W3C trace context by default.

@@ -27,6 +27,7 @@ description: >
 ## Workspace Structure
 - Keep package globs explicit and avoid accidental inclusion.
 - Exclude examples/tests from production build graphs when appropriate.
+- Keep `sharedWorkspaceLockfile` enabled unless there is a documented isolation need.
 - Use `workspace:` protocol for internal dependencies to prevent accidental registry drift.
 - Keep root scripts thin; delegate to package-level scripts.
 - Avoid duplicated toolchains across packages unless isolation is required.
@@ -49,6 +50,7 @@ packages:
 
 ## Install and Lockfile Discipline
 - Use `pnpm install --frozen-lockfile` in CI.
+- Keep `--frozen-lockfile` explicit even though CI defaults are frozen in newer pnpm releases.
 - Fail builds on lockfile mutation in protected branches.
 - Use `--prefer-offline` only when cache health is monitored.
 - Never bypass lockfile checks to “fix CI quickly”.

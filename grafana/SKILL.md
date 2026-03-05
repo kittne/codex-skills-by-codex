@@ -63,6 +63,7 @@ curl -H "Authorization: Bearer $TOKEN" "$GRAFANA/api/dashboards/uid/$UID/permiss
 - Backup provisioning and dashboard state for recovery.
 - Rehearse Grafana upgrade and rollback flow.
 - For alerting and proxy APIs, use datasource UID path params (numeric IDs are deprecated in newer releases).
+- Prefer datasource APIs keyed by UID; numeric-ID update endpoints are deprecated for newer Grafana versions.
 
 ## Validation Commands
 ```bash

@@ -63,6 +63,7 @@ redis-cli LATENCY LATEST
 - Inspect pending backlog with `XPENDING` and consumer details.
 - Reclaim abandoned messages with `XAUTOCLAIM` after idle threshold.
 - Keep replay limits and idempotency keys in downstream processors.
+- For Redis 8.6+, use stream idempotency (`IDMP`/`IDMPAUTO`) when duplicate appends are high risk.
 - Trim streams intentionally (`MAXLEN`) to control storage growth.
 
 ### Streams Ops Commands
@@ -89,6 +90,7 @@ redis-cli XTRIM mystream MAXLEN ~ 100000
 ## Security Defaults
 - Never expose Redis directly to public internet.
 - Enforce ACL least privilege (service-specific users and key patterns).
+- On Redis 8+, re-audit ACL category grants because module commands are included in core categories.
 - Use TLS on untrusted networks and validate certificates.
 - Keep secrets in secret stores, not plaintext config files.
 - Audit use of dangerous/admin commands.

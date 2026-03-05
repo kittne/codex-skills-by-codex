@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-03-05
+
+### Skills updates
+- Updated `pnpm` workspace/CI guidance for `sharedWorkspaceLockfile` and explicit `--frozen-lockfile` use.
+- Updated `turborepo` env guidance to avoid removed `dotEnv`/`globalDotEnv` keys.
+- Updated `mypy` compatibility guidance to require Python target 3.9+.
+- Updated `pyright` release guidance to run `--verifytypes` for published libraries.
+- Updated `redis` guidance for Redis 8 ACL category changes and Redis 8.6 stream idempotency.
+- Updated `grafana` API guidance to prefer UID-keyed datasource endpoints over deprecated numeric ID updates.
+- Updated `expo-sdk` release guidance to treat Classic Updates as retired and use EAS Update.
+- Updated `opentelemetry-js` semantic convention guidance to migrate deprecated `SEMATTRS_*`/`SEMRESATTRS_*` constants.
+
 ## 2026-03-04
 
 ### Skills updates

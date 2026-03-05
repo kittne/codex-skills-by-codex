@@ -103,6 +103,7 @@ npx expo doctor --fix-dependencies
 - Use EAS Build profiles with explicit environment mapping.
 - Automate preview builds for QA and stakeholder validation.
 - Use EAS Submit with controlled release gates.
+- Treat Classic Updates as retired (SDK 49 was last supported); use EAS Update instead of `expo publish`.
 - Manage OTA rollout by runtime version and staged channels.
 - Pick a `runtimeVersion` policy (`appVersion`, `nativeVersion`, or `fingerprint`) and keep it consistent across builds.
 - Use `expo-build-properties` in app config when platform SDK/target overrides are required.
