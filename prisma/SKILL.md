@@ -132,7 +132,9 @@ npm run test:integration
 - Review release notes for breaking behavior changes.
 - Validate generators/plugins compatibility before rollout.
 - For Prisma ORM 7+, migrate `generator client` provider to `prisma-client` and set an explicit `output` path before regenerating client code.
+- For Prisma ORM 7+, update imports from `@prisma/client` to your configured generated output path.
 - For Prisma ORM 7+, run `prisma generate` explicitly after schema changes; `migrate dev`/`db push` no longer auto-generate and the `--skip-generate`/`--skip-seed` flags are removed.
+- Use `prisma.config.ts` to pin non-default schema, migrations, and seed paths in monorepos or custom layouts.
 - Run smoke tests in staging with production-like datasets.
 - Maintain checklist for client regeneration and deployment ordering.
 

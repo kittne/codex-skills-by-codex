@@ -100,6 +100,7 @@ npm run typecheck
 - Integration-test feature flows and data boundaries.
 - E2E-test critical user journeys and regressions.
 - Prefer user-centric assertions over implementation details.
+- In React 19+, import `act` from `react`; avoid `react-dom/test-utils` helpers.
 - Keep flaky tests out of required merge gates.
 
 ## Accessibility, Styling, and UX Consistency
@@ -129,6 +130,8 @@ npm run typecheck
 - Remove legacy patterns gradually with codemod/testing support.
 - For React 19, upgrade to 18.3 first to surface deprecation warnings and remove legacy `render`/`hydrate`/`unmountComponentAtNode`/`findDOMNode` usage.
 - Treat `ref` as a regular prop in new components and avoid `element.ref` access in migration work.
+- Replace string refs and legacy context patterns in class components during migration work.
+- Prefer `useActionState` and `useOptimistic` for form/action-driven pending and optimistic UX flows in React 19+ stacks.
 - Re-baseline performance and bundle budgets after upgrades.
 
 ## Common Failure Modes

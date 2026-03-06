@@ -138,6 +138,7 @@ npm run test:e2e
 - Re-test routing, caching, and middleware behavior after upgrades.
 - Verify plugin/tool compatibility before production rollout.
 - In 15+, `params`/`searchParams` (and Route Handler `params`) are async promises; in 16, synchronous access is removed. Await them or use the codemod when upgrading.
+- In 16, `middleware.ts|js` is renamed to `proxy.ts|js`; rename exported `middleware()` to `proxy()` and re-validate runtime behavior before release.
 - Keep migration notes for breaking changes and fallback options.
 
 ## Common Failure Modes

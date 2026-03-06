@@ -33,6 +33,9 @@ description: >
 - Set explicit `target` and `lib` for the deployed runtime, not developer machines.
 - Keep emit strategy explicit: `noEmit` for apps checked by bundler, declaration emit for libraries.
 - Use `verbatimModuleSyntax` instead of deprecated `preserveValueImports`.
+- Align with TS 5.9+ defaults for new projects (`module: "nodenext"`, `target: "esnext"`, `moduleDetection: "force"`).
+- Enable `noUncheckedSideEffectImports` to catch unresolved side-effect imports early.
+- Avoid deprecated resolution modes (`classic`, legacy `node10`) and stale baseUrl patterns that are being removed in future majors.
 
 ### Recommended Defaults
 ```json
@@ -42,6 +45,10 @@ description: >
     "noImplicitOverride": true,
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
+    "module": "nodenext",
+    "target": "esnext",
+    "moduleDetection": "force",
     "moduleResolution": "nodenext"
   }
 }

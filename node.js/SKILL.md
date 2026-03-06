@@ -19,7 +19,7 @@ description: >
 8. Ship with observability and operations runbooks.
 
 ## Preflight (Ask / Check First)
-- Target Node LTS version and hosting/runtime constraints.
+- Target active Node LTS line and hosting/runtime constraints.
 - Service shape: API, worker, CLI, or hybrid.
 - Repo model: single package vs monorepo.
 - Build tooling and transpilation requirements.
@@ -75,6 +75,7 @@ node --check src/index.js
 
 ## Testing and Release Workflow
 - Maintain layered tests: unit, integration, and system/e2e.
+- Prefer `node:test` for lightweight suites and use built-in reporters/watch mode when it simplifies CI and local feedback.
 - Keep CI fast for PR feedback; run heavy suites on merge/nightly.
 - Enforce lint/type/test/build as required gates.
 - Use semantic release/tagging conventions consistently.
@@ -111,8 +112,14 @@ npm audit --omit=dev
 - Validate and sanitize all untrusted inputs.
 - Keep secrets out of source and logs.
 - Enforce authn/authz at boundary and domain levels.
+- Use Node's permission model (`--permission`, `--allow-fs-read`, `--allow-fs-write`) for high-risk jobs to reduce blast radius.
 - Apply secure headers and TLS posture for HTTP services.
 - Protect dependency chain with scanning and provenance where possible.
+
+## Environment Configuration
+- Use core dotenv support (`process.loadEnvFile()` and `util.parseEnv()`) when your Node baseline supports it; prefer one parsing path per service.
+- Keep `.env` usage local/dev-oriented and inject production secrets through platform-native secret managers.
+- Never rely on `.env` `NODE_OPTIONS`; Node ignores it in env files by design.
 
 ## Observability and Operations
 - Emit structured logs with correlation IDs.

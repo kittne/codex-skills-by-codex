@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-06
+
+### Skills updates
+- Updated `next.js` upgrade guidance for Next.js 16 `middleware` to `proxy` rename and export migration.
+- Updated `react` React 19 guidance for `act` import source, legacy ref/context removals, and `useActionState`/`useOptimistic` usage.
+- Updated `typescript` compiler baseline with TS 5.9+ defaults and `noUncheckedSideEffectImports`.
+- Updated `node.js` operational guidance for core `.env` APIs, permission model hardening, and `node:test` first guidance.
+- Updated `prisma` Prisma ORM 7 guidance for generated-client import paths and `prisma.config.ts` path pinning.
+
 ## 2026-03-05
 
 ### Skills updates
