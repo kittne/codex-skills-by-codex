@@ -106,6 +106,7 @@ npx expo doctor --fix-dependencies
 - Treat Classic Updates as retired (SDK 49 was last supported); use EAS Update instead of `expo publish`.
 - Manage OTA rollout by runtime version and staged channels.
 - Pick a `runtimeVersion` policy (`appVersion`, `nativeVersion`, or `fingerprint`) and keep it consistent across builds.
+- For SDK 55+, run `eas update --environment <name>` and rely on EAS server env vars (not local `.env` defaults).
 - Use `expo-build-properties` in app config when platform SDK/target overrides are required.
 
 ### Baseline EAS Flow

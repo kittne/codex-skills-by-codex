@@ -142,6 +142,7 @@ npm run test:e2e
 ## Migration and Upgrade Strategy
 - Upgrade Node and Nest in staged, compatible increments.
 - Verify library compatibility before framework upgrades.
+- For Nest 11+, migrate `CacheModule` Redis setups to `@keyv/redis`-based stores.
 - Run canary deployment for risky runtime changes.
 - Maintain migration docs for module or transport refactors.
 

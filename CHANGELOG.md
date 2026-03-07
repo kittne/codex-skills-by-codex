@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-03-07
+
+### Skills updates
+- Updated `nestjs` migration guidance for Nest 11 `CacheModule` Redis store migration to `@keyv/redis`.
+- Updated `expo-sdk` OTA guidance for SDK 55+ `eas update --environment` behavior and server-side env usage.
+- Updated `opentelemetry-js` for JS SDK 2.x runtime/type baselines and removed tracer-provider API patterns.
+- Updated `go` module/tooling guidance for explicit `go`/`toolchain` directives and supported release-line CI policy.
+
 ## 2026-03-06
 
 ### Skills updates

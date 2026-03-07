@@ -17,6 +17,7 @@ description: >
 
 ## Preflight (Ask / Check First)
 - Target Go version (from `go.mod` and CI).
+- Confirm `go`/`toolchain` directives are intentional for reproducible builds across dev and CI.
 - Package boundaries and public API surface (exported identifiers).
 - Whether this is library code vs service code (logging, config, main).
 - Concurrency model: goroutines per request? background workers? cancellation?
@@ -73,6 +74,7 @@ description: >
 - Run `gofmt`/`goimports` on changed files.
 - Run `go test ./...` and `go test -race ./...` when concurrency is involved.
 - Run `go vet ./...` and a linter suite (e.g., golangci-lint/staticcheck) when configured.
+- Keep CI on supported Go release lines (current and previous major per Go release policy).
 
 Common commands:
 ```bash

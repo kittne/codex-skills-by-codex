@@ -19,6 +19,7 @@ description: >
 
 ## Preflight (Ask / Check First)
 - Node.js and OpenTelemetry package versions.
+- If using JS SDK 2.x, confirm runtime baseline (`^18.19.0 || >=20.6.0`) and TypeScript `>=5.0.4`.
 - Collector endpoint/protocol and auth requirements.
 - Required signals (traces/metrics/logs) and SLO use cases.
 - Existing metric/trace naming conventions.
@@ -47,6 +48,7 @@ description: >
 
 ## Export and Runtime Control
 - Prefer OTLP to a collector for transport abstraction.
+- Prefer `NodeSDK` lifecycle management over low-level tracer provider wiring in new code.
 - Use batch processors for traces/logs in high-throughput services.
 - Set metric export intervals deliberately.
 - Bound queue sizes and retry behavior to protect memory.
@@ -75,6 +77,7 @@ curl -fsS http://localhost:4318/v1/traces || true
 ## Common Failure Modes
 - SDK initialized after framework imports.
 - Missing `service.name` causing unusable telemetry grouping.
+- SDK 2.x migrations still using removed `BasicTracerProvider#addSpanProcessor` patterns.
 - Context propagation broken across async or proxy boundaries.
 - Cardinality explosion from dynamic attribute values.
 - Application shutdown before telemetry flush completes.
