@@ -18,7 +18,7 @@ description: >
 7. Govern versioning and deprecation policy with explicit timelines.
 
 ## Preflight (Ask / Check First)
-- OpenAPI target version (3.1 preferred unless blocked).
+- OpenAPI target version (3.2 preferred when tooling supports it, otherwise 3.1).
 - Consumer types (internal services, third parties, SDK generation).
 - Backward-compatibility policy.
 - Auth schemes and compliance constraints.
@@ -36,7 +36,9 @@ description: >
 - Reuse common parameters (pagination, correlation IDs, locales).
 - Use composition intentionally (`allOf`, `oneOf`, `anyOf`) with discriminator strategy.
 - In 3.1, model nullability with JSON Schema (`type: ["string", "null"]`) instead of `nullable`.
+- In 3.2, require at least one of `paths`, `components`, or `webhooks` in root documents.
 - Set `jsonSchemaDialect` or `$schema` explicitly when using a non-default dialect.
+- In 3.2, use `$self` and schema `$id` deliberately when distributing reusable multi-document components.
 - Keep numeric/string formats explicit to reduce codegen drift.
 - Prefer narrow, explicit object schemas over permissive maps.
 

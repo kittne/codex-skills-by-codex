@@ -33,6 +33,7 @@ description: >
 - Set explicit `target` and `lib` for the deployed runtime, not developer machines.
 - Keep emit strategy explicit: `noEmit` for apps checked by bundler, declaration emit for libraries.
 - Use `verbatimModuleSyntax` instead of deprecated `preserveValueImports`.
+- Remove deprecated `importsNotUsedAsValues`; use `verbatimModuleSyntax` and lint rules for import hygiene.
 - Align with TS 5.9+ defaults for new projects (`module: "nodenext"`, `target: "esnext"`, `moduleDetection: "force"`).
 - Enable `noUncheckedSideEffectImports` to catch unresolved side-effect imports early.
 - Avoid deprecated resolution modes (`classic`, legacy `node10`) and stale baseUrl patterns that are being removed in future majors.

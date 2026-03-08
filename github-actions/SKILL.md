@@ -57,6 +57,7 @@ permissions:
 ## Action Supply-Chain Security
 - Pin third-party actions to full commit SHAs.
 - Keep official core actions on supported major versions.
+- Prefer current GitHub-maintained majors (`actions/checkout@v5`, `actions/setup-node@v4`, `actions/cache@v4`) unless a compatibility constraint is documented.
 - Enforce allowlists and SHA pinning policies at org level where available.
 - Automate dependency updates for action versions with review gates.
 - Add dependency review and workflow security scanning checks.
@@ -123,6 +124,7 @@ concurrency:
 - Keep workflows modular, reusable, and policy-enforced.
 - Keep runtime cost and duration optimized with evidence.
 - Keep observability, approvals, and rollback controls operational.
+- Keep JavaScript action metadata aligned to supported runtimes (`runs.using: node24` for newly published actions).
 
 ## References
 - `references/github-actions-2026-02-17.md`

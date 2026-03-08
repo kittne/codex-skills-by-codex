@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-08
+
+### Skills updates
+- Updated `next.js` migration guidance for Next.js 16 `skipProxyUrlNormalize` config rename.
+- Updated `fastify` v5 guidance for route `constraints.version` and plugin API style consistency.
+- Updated `openapi` guidance to prefer OpenAPI 3.2 when supported and include `$self`/`$id` usage.
+- Updated `github-actions` guidance for current core action majors and `node24` runtime metadata for JavaScript actions.
+- Updated `typescript` compiler guidance to remove deprecated `importsNotUsedAsValues`.
+
 ## 2026-03-07
 
 ### Skills updates
