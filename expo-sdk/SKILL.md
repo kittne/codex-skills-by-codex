@@ -56,6 +56,7 @@ npx expo prebuild --no-install
 - Upgrade Expo SDK intentionally; do not drift package versions.
 - Run compatibility checks before and after upgrades.
 - Upgrade in small steps and preserve rollback path.
+- Keep Expo Go support window in mind; older SDKs age out quickly, so use dev builds for production workflows.
 - Re-test native integrations after each SDK upgrade.
 - Keep changelog summaries and migration notes for teams.
 

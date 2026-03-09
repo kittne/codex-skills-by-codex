@@ -38,7 +38,7 @@ description: >
 - Avoid redundant instrumentation that duplicates spans.
 - Exclude noisy endpoints (health checks) from high-cardinality signals.
 - Keep span names stable and semantic-convention aligned.
-- Migrate deprecated `SEMATTRS_*`/`SEMRESATTRS_*` constants to `ATTR_*` semantic-convention constants.
+- Migrate deprecated `SEMATTRS_*`/`SEMRESATTRS_*` and `SemanticAttributes.*` forms to `ATTR_*` constants.
 
 ## Propagation and Context
 - Use W3C trace context by default.
@@ -49,6 +49,7 @@ description: >
 ## Export and Runtime Control
 - Prefer OTLP to a collector for transport abstraction.
 - Prefer `NodeSDK` lifecycle management over low-level tracer provider wiring in new code.
+- In JS SDK 2.x+, keep exporter/propagator env-driven setup on `NodeSDK` (not low-level provider classes).
 - Use batch processors for traces/logs in high-throughput services.
 - Set metric export intervals deliberately.
 - Bound queue sizes and retry behavior to protect memory.

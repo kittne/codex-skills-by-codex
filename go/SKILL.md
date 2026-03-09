@@ -75,6 +75,7 @@ description: >
 - Run `go test ./...` and `go test -race ./...` when concurrency is involved.
 - Run `go vet ./...` and a linter suite (e.g., golangci-lint/staticcheck) when configured.
 - Keep CI on supported Go release lines (current and previous major per Go release policy).
+- When bumping `go` or `toolchain` via `go get go@...`, run `go mod tidy` to normalize module metadata.
 
 Common commands:
 ```bash

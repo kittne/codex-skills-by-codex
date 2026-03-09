@@ -116,13 +116,14 @@ description: Design, query, tune, secure, and operate MySQL (8.0+). Use for sche
 - Replication/HA:
   - Treat replica reads as potentially stale; verify read-after-write requirements.
   - Monitor lag and replication thread health.
+  - Migrate from deprecated `binlog_format` tuning to row-based replication defaults.
   - Use `replica_skip_errors` instead of deprecated `slave_skip_errors`.
   - For replicas using `caching_sha2_password` without a secure connection, set `SOURCE_PUBLIC_KEY_PATH` or `GET_SOURCE_PUBLIC_KEY=1` during `CHANGE REPLICATION SOURCE TO`.
 - Security:
   - Separate users for app/migrations/admin; apply least privilege.
   - Restrict network exposure; prefer private interfaces and firewall rules.
   - Use TLS in transit where required.
-  - Avoid `mysql_native_password`; it is deprecated and removed in newer releases.
+  - Avoid `mysql_native_password`; deprecated in 8.0.34, disabled by default in 8.4, removed in 9.0.
   - Prevent SQL injection with parameter binding (no string concatenation).
 
 ## Reference

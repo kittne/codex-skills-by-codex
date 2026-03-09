@@ -54,6 +54,7 @@ description: >
 - Use interceptors for logging, serialization, and timing.
 - Apply guards for authn/authz; keep policy explicit.
 - Keep middleware focused on transport-level concerns only.
+- On Nest 11+, remember middleware from global modules runs before imported-module middleware.
 
 ### Validation Snippet
 ```ts
@@ -143,6 +144,7 @@ npm run test:e2e
 - Upgrade Node and Nest in staged, compatible increments.
 - Verify library compatibility before framework upgrades.
 - For Nest 11+, migrate `CacheModule` Redis setups to `@keyv/redis`-based stores.
+- For Nest 11 with Fastify adapter, validate Fastify v5 compatibility and route behavior in e2e tests.
 - Run canary deployment for risky runtime changes.
 - Maintain migration docs for module or transport refactors.
 

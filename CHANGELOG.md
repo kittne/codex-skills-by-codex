@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-09
+
+### Skills updates
+- Updated `nestjs` guidance for Nest 11 middleware ordering and Fastify v5 verification in upgrade testing.
+- Updated `opentelemetry-js` migration guidance for deprecated semantic-convention export forms and NodeSDK-first 2.x configuration.
+- Updated `mysql` replication/auth notes for `binlog_format` deprecation and `mysql_native_password` retirement timeline.
+- Updated `expo-sdk` upgrade guidance to account for Expo Go SDK support-window constraints.
+- Updated `go` tooling guidance to run `go mod tidy` after `go get go@...` or `toolchain` bumps.
+
 ## 2026-03-08
 
 ### Skills updates
