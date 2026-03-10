@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-10
+
+### Skills updates
+- Updated `next.js` migration guidance to flag Next.js 16 removal of `unstable_rootParams`.
+- Updated `fastapi` migration guidance to avoid `pydantic.v1` on Python 3.14 and plan v1 removal.
+- Updated `playwright` setup guidance to require explicit browser install (`npx playwright install --with-deps`) in fresh/CI environments.
+
 ## 2026-03-09
 
 ### Skills updates

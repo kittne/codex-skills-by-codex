@@ -30,6 +30,7 @@ playwright-cli --help
 ```
 
 Once `npx` is present, proceed with the wrapper script. A global install of `playwright-cli` is optional.
+After dependency install (`npm ci`/`npm install`), run `npx playwright install --with-deps` in CI or fresh environments; Playwright no longer auto-downloads browsers during package installation.
 
 ## Skill path (set once)
 
