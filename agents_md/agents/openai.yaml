@@ -1,0 +1,4 @@
+interface:
+  display_name: "AGENTS.md"
+  short_description: "Design and review AGENTS.md repo instructions"
+  default_prompt: "Use $agents-md to create or update a concise AGENTS.md for this repository."
