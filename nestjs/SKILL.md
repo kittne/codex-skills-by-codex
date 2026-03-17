@@ -144,6 +144,7 @@ npm run test:e2e
 - Upgrade Node and Nest in staged, compatible increments.
 - Verify library compatibility before framework upgrades.
 - For Nest 11+, migrate `CacheModule` Redis setups to `@keyv/redis`-based stores.
+- For Nest 11 path matching updates (`path-to-regexp`), replace middleware wildcard `'(.*)'` with named wildcard forms like `'{*splat}'`.
 - For Nest 11 with Fastify adapter, validate Fastify v5 compatibility and route behavior in e2e tests.
 - Run canary deployment for risky runtime changes.
 - Maintain migration docs for module or transport refactors.

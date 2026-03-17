@@ -118,6 +118,7 @@ description: Design, query, tune, secure, and operate MySQL (8.0+). Use for sche
   - Monitor lag and replication thread health.
   - Migrate from deprecated `binlog_format` tuning to row-based replication defaults.
   - Use `replica_skip_errors` instead of deprecated `slave_skip_errors`.
+  - Remove `temptable_use_mmap` from MySQL 9.4+ configs; the variable is removed and can break startup validation.
   - For replicas using `caching_sha2_password` without a secure connection, set `SOURCE_PUBLIC_KEY_PATH` or `GET_SOURCE_PUBLIC_KEY=1` during `CHANGE REPLICATION SOURCE TO`.
 - Security:
   - Separate users for app/migrations/admin; apply least privilege.

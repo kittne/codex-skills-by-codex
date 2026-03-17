@@ -107,6 +107,7 @@ pg_restore -d appdb_restore --clean --if-exists /var/backups/pg/app.dump
 ## Upgrade Notes
 - Prefer `scram-sha-256`; MD5 password auth is deprecated and emits warnings on newer releases.
 - Newer `initdb` defaults enable data checksums; ensure checksum settings match before `pg_upgrade`.
+- For PostgreSQL 18+ upgrades, verify time zone abbreviation behavior in application parsing paths; session abbreviations now take precedence.
 
 ## Validation Commands
 ```bash

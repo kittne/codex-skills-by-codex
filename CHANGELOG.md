@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-03-16
+
+### Skills updates
+- Updated `nestjs` migration guidance to replace deprecated middleware wildcard `'(.*)'` with named wildcard path forms for Nest 11 path matching.
+- Updated `loki` storage guidance to mark Cassandra backend as deprecated for new deployments.
+- Updated `mysql` upgrade guidance to remove `temptable_use_mmap` in MySQL 9.4+ to avoid config/startup failures.
+- Updated `postgresql` upgrade notes for PostgreSQL 18 time zone abbreviation precedence changes.
+
 ## 2026-03-10
 
 ### Skills updates

@@ -53,6 +53,7 @@ sum by (status) (rate({job="api", namespace="production"} | json [5m]))
 - Define retention by tenant/classification policy.
 - For new installs, use TSDB schema (v13) with 24h index period.
 - Retention requires 24h index period plus compactor `retention_enabled=true`.
+- Avoid Cassandra for new deployments; it is deprecated as a Loki storage backend.
 - Loki 3.0 requires TSDB v13 for structured metadata and removes `shared_store`; migrate before upgrade.
 - Loki 3.0 enforces 256KB max line size and reduces label limit per series to 15; budget labels accordingly.
 - Monitor ingestion errors, compaction lag, and query tail latency.
