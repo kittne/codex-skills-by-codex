@@ -56,6 +56,7 @@ description: >
 - Use Compose secrets or external env files (not committed).
 - Drop Linux capabilities and use read-only filesystems where possible.
 - Pin image tags and avoid `latest` in production.
+- Use the Compose Specification (`services:` root) and avoid legacy top-level `version:` keys.
 
 ## Compose Review Checklist (High Signal)
 - Exposure:

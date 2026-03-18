@@ -68,6 +68,7 @@ preview = false
 - Avoid style rules that conflict with formatter ownership.
 - Exclude generated files and migration outputs from formatting.
 - Define notebook behavior explicitly if `.ipynb` files are tracked.
+- Treat notebooks as in-scope by default on modern Ruff; use `extend-exclude` or section-level excludes when opting out.
 
 ## Autofix Safety and Change Control
 - Run safe fixes first: `ruff check . --fix`.
@@ -118,6 +119,7 @@ ruff check . --output-format=github
 - Enabling preview features in CI without local parity.
 - Applying unsafe fixes without targeted review.
 - Letting ignore lists grow without cleanup ownership.
+- Assuming notebooks are excluded by default and silently linting/formatting them in CI.
 
 ## Definition of Done
 - Keep one canonical Ruff config with intentional inheritance.

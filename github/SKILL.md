@@ -92,6 +92,7 @@ gh release create v1.4.0 --generate-notes
 - Prefer OIDC for cloud auth over long-lived secrets.
 - Use concurrency controls to prevent conflicting deploys.
 - Set job timeouts and fail-fast defaults where sensible.
+- Set explicit `permissions` per workflow/job and keep `GITHUB_TOKEN` scopes minimal.
 
 ## Dependency and Supply Chain Management
 - Keep lockfiles committed and deterministic.
@@ -112,6 +113,7 @@ gh release create v1.4.0 --generate-notes
 - Required status checks for merge.
 - Push protection and secret scanning enabled.
 - Scoped PAT usage minimized; prefer GitHub App or OIDC.
+- Prefer short-lived GitHub App installation tokens for automation over long-lived PAT sprawl.
 
 ## Metrics and Onboarding
 - Track PR cycle time, review latency, and CI success rate.

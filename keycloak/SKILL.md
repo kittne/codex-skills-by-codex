@@ -28,7 +28,8 @@ description: >
 - Use separate realms only when policy boundaries require isolation.
 - Classify clients correctly: public for untrusted runtimes, confidential for server-side apps.
 - Keep redirect URIs explicit and narrow.
-- Avoid wildcard redirects unless policy-reviewed and constrained.
+- Use exact redirect URI matching (including scheme/host case and query string where present).
+- Avoid wildcard redirects for sensitive clients; do not register fragment-bearing redirect URIs.
 - Keep client authentication methods explicit.
 
 ## OIDC Flow Security

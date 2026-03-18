@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-03-18
+
+### Skills updates
+- Updated `ruff` guidance to reflect modern default notebook lint/format behavior and required explicit `.ipynb` opt-out policy.
+- Updated `docker` Compose guidance to prefer Compose Specification and avoid legacy top-level `version:` keys.
+- Updated `github` automation security guidance to require explicit `GITHUB_TOKEN` permissions and prefer short-lived GitHub App tokens.
+- Updated `keycloak` redirect policy guidance to require exact URI matching and disallow fragment-bearing redirect URIs.
+
 ## 2026-03-16
 
 ### Skills updates
