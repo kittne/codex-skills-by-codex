@@ -49,12 +49,16 @@ btrfs subvolume snapshot -r /data /snapshots/data-2026-02-18
 
 ## Retention and Repository Hygiene
 - Apply time-based retention tiers (daily/weekly/monthly/yearly).
+- For append-only repositories, prefer `restic forget --keep-within <window>` to reduce malicious snapshot-pruning risk.
 - Dry-run retention changes before destructive prune/forget operations.
+- Prefer `restic forget ... --prune` (or explicit `forget` then `prune`) so snapshot policy and pack cleanup stay coupled.
 - Run repository integrity checks on a schedule.
 - Track storage growth and prune impact.
 
 ## Restore Drills and Verification
 - Test file-level, directory-level, and full-volume restores.
+- For restic restores, choose `--overwrite` mode explicitly (`always`, `if-changed`, `if-newer`, `never`).
+- Use `restic restore --dry-run -vv` before any restore that includes `--delete`.
 - Measure real recovery time against RTO targets.
 - Validate application consistency after restore.
 - Document deterministic restore steps and fallback paths.

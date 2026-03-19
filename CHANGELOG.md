@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-03-19
+
+### Skills updates
+- Updated `filesystem` restore/retention guidance for `restic` append-only retention safety, coupled `forget --prune`, and restore dry-run/overwrite handling.
+- Updated `ubuntu` patching guidance to include phased updates in maintenance windows and explicit unattended-upgrades origins policy.
+- Updated `typescript` compiler guidance for deprecated-option burn-down and Node 24 `module: "node20"` transition.
+- Updated `node.js` testing guidance to add CI deprecation surfacing via `NODE_PENDING_DEPRECATION=1` / `--pending-deprecation`.
+- Updated `python` upgrade watchlist to avoid new `typing.AnyStr` usage (deprecated in 3.13).
+- Updated `fastify` v5 guidance for `request.socket`, null-prototype params checks, and object-form `listen`.
+- Updated `vault` AWS auth guidance to prefer `accesslist`/`denylist` endpoint names over deprecated aliases.
+
 ## 2026-03-18
 
 ### Skills updates

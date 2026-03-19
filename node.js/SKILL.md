@@ -76,6 +76,7 @@ node --check src/index.js
 ## Testing and Release Workflow
 - Maintain layered tests: unit, integration, and system/e2e.
 - Prefer `node:test` for lightweight suites and use built-in reporters/watch mode when it simplifies CI and local feedback.
+- Add at least one CI lane with `NODE_PENDING_DEPRECATION=1` (or `--pending-deprecation`) to catch upcoming runtime breaks early.
 - Keep CI fast for PR feedback; run heavy suites on merge/nightly.
 - Enforce lint/type/test/build as required gates.
 - Use semantic release/tagging conventions consistently.

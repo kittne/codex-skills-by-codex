@@ -91,6 +91,8 @@ systemctl edit <unit>
 Choose one model and make it explicit:
 - In-place updates with unattended security upgrades.
 - Immutable image rebuilds (disable auto-updates).
+- For major maintenance windows, prefer `apt dist-upgrade -o APT::Get::Always-Include::Phased-Updates=true` so phased updates are not silently skipped.
+- If using unattended upgrades, explicitly set allowed origins (`-security`, optional `-updates`, and ESM channels when enabled).
 ```bash
 apt-get update
 apt-get -s upgrade

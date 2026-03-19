@@ -35,6 +35,7 @@ description: >
 - Avoid `typing.no_type_check_decorator()` and prefer normal typing exemptions.
 - Prefer class-based `NamedTuple`/`TypedDict` over deprecated functional keyword/empty forms.
 - Prefer the `type` statement over `typing.TypeAlias` (deprecated in modern Python).
+- Avoid new usage of `typing.AnyStr` (deprecated in 3.13; planned removal in 3.18); use constrained type parameters or explicit unions.
 - Avoid asyncio event loop policy APIs; use `asyncio.run(..., loop_factory=...)` if needed.
 - Avoid `http.server` CGI handler/`--cgi`; migrate to modern request handlers.
 

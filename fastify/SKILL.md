@@ -61,6 +61,8 @@ fastify.post('/items', {
 - Use `onError` and custom handlers for consistent error envelopes.
 - Keep hook behavior deterministic and low-latency.
 - In v5 plugins, use either callback style or promise style, never both in one plugin.
+- In v5 handlers/plugins, replace `request.connection` usage with `request.socket`.
+- In v5 route params checks, prefer `Object.hasOwn(req.params, key)` because params no longer inherit `Object.prototype`.
 - Avoid heavy I/O in hot-path hooks.
 
 ## Performance and Resilience
@@ -74,6 +76,7 @@ fastify.post('/items', {
 - Enforce strict input validation and response shaping.
 - Restrict CORS and trusted proxy settings intentionally.
 - Apply rate limiting and abuse controls where needed.
+- Use the object form for server start (`fastify.listen({ port })`), not legacy variadic signatures.
 - Emit structured logs with request IDs.
 - Instrument latency, error rate, and saturation metrics.
 

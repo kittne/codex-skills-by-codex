@@ -48,6 +48,7 @@ description: >
 - Separate human and machine access:
   - Humans: OIDC/LDAP/GitHub/etc, MFA where possible, narrower admin policies (not root).
   - Machines: AppRole/Kubernetes auth, shortest practical TTLs, renewals handled by Vault Agent when possible.
+- In AWS auth integrations, prefer inclusive endpoint names (`accesslist`/`denylist`) over deprecated `whitelist`/`blacklist` aliases.
 - Use least-privilege policies; avoid broad wildcard permissions and avoid granting write access to `sys/*`.
 - Prefer modular policies (small, reusable) and clear naming (verb + scope).
 - Enable audit devices early and ship logs to centralized storage; restrict log access tightly.
