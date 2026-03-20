@@ -125,6 +125,7 @@ description: Design, query, tune, secure, and operate MySQL (8.0+). Use for sche
   - Restrict network exposure; prefer private interfaces and firewall rules.
   - Use TLS in transit where required.
   - Avoid `mysql_native_password`; deprecated in 8.0.34, disabled by default in 8.4, removed in 9.0.
+  - Avoid relying on `FLUSH PRIVILEGES` and the `FLUSH_PRIVILEGES` privilege; both are deprecated and should be removed from new operational runbooks.
   - Prevent SQL injection with parameter binding (no string concatenation).
 
 ## Reference

@@ -37,8 +37,10 @@ description: >
 - Use composition intentionally (`allOf`, `oneOf`, `anyOf`) with discriminator strategy.
 - In 3.1, model nullability with JSON Schema (`type: ["string", "null"]`) instead of `nullable`.
 - In 3.2, require at least one of `paths`, `components`, or `webhooks` in root documents.
+- Align schema validation with JSON Schema 2020-12 expectations when adopting OpenAPI 3.2.
 - Set `jsonSchemaDialect` or `$schema` explicitly when using a non-default dialect.
 - In 3.2, use `$self` and schema `$id` deliberately when distributing reusable multi-document components.
+- For interoperability in 3.2, reference schemas by the nearest `$id` boundary; avoid crossing `$id` with JSON Pointer fragments.
 - Keep numeric/string formats explicit to reduce codegen drift.
 - Prefer narrow, explicit object schemas over permissive maps.
 

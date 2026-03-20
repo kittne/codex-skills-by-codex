@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-03-20
+
+### Skills updates
+- Updated `openapi` guidance for OpenAPI 3.2 JSON Schema 2020-12 alignment and `$id`-boundary interoperability references.
+- Updated `mysql` operational security notes to remove deprecated `FLUSH PRIVILEGES`-based runbook patterns.
+- Updated `redis` persistence defaults to call out `appendfsync everysec` as the baseline AOF policy.
+- Updated `prometheus` label and remote-write guidance to reserve `__*` labels and enforce deterministic label-set validity.
+
 ## 2026-03-19
 
 ### Skills updates

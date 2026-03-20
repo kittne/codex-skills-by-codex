@@ -77,6 +77,7 @@ redis-cli XTRIM mystream MAXLEN ~ 100000
 ## Persistence, Backup, and Recovery
 - Choose persistence mode explicitly: none, RDB, AOF, or hybrid.
 - For durability-sensitive workloads, prefer AOF with measured fsync policy.
+- Default to `appendfsync everysec` unless stricter durability or lower write latency is explicitly required.
 - Schedule and verify backups of RDB/AOF artifacts.
 - Keep restore runbooks for full-node loss and corruption scenarios.
 - Rehearse restore and failover regularly; record measured RTO.

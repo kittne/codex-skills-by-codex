@@ -30,6 +30,7 @@ description: >
 - Avoid dynamic identifiers (request IDs, user IDs) as labels.
 - Keep most metrics unlabeled or minimally labeled.
 - Prefer counters/histograms with clear semantics.
+- Reserve labels beginning with `__` for system use; do not define them in app instrumentation.
 
 ## Scrape and Rule Architecture
 - Keep scrape intervals aligned with SLO sensitivity.
@@ -62,6 +63,7 @@ groups:
 - Plan compaction/storage overhead with growth forecasts.
 - Keep backup/restore strategy for rules and critical state.
 - Validate upgrade path and config compatibility.
+- For remote write senders, enforce deterministic label sets (no empty names/values, no duplicates, stable ordering).
 
 ## Upgrade Notes
 - For Prometheus 3.0, review the migration guide and remove deprecated feature flags now enabled by default.
