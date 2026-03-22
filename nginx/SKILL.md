@@ -28,12 +28,14 @@ description: >
 ## HTTP / Reverse Proxy Guidance
 - Keep config modular (`conf.d/`, `sites-enabled/`, includes).
 - Use TLS 1.2/1.3 only; redirect HTTP to HTTPS.
+- Prefer `http2 on;` and avoid deprecated `listen ... http2` parameters.
 - Disable version leakage (`server_tokens off;`).
 - Preserve forwarding headers (`Host`, `X-Forwarded-For`, `X-Forwarded-Proto`).
 - Use explicit proxy timeouts; avoid unbounded reads/writes.
 - Configure WebSocket upgrade headers only where needed.
 - Add `limit_req`/`limit_conn` on public APIs and auth-heavy endpoints.
 - Cache only safe, non-user-specific content.
+- Do not use removed HTTP/2 server-push directives (`http2_push*`).
 
 Baseline proxy headers:
 ```nginx

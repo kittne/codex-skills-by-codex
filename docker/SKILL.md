@@ -77,6 +77,7 @@ description: >
 - Lint Dockerfiles (e.g., Hadolint).
 - Scan images for CVEs (e.g., Trivy, Docker Scout).
 - Use BuildKit and `--pull`/`--no-cache` in CI for clean builds.
+- Generate SBOM and provenance attestations in CI builds (`docker buildx build --sbom=true --provenance=true`).
 - Validate Compose rendering with `docker compose config`.
 
 Common commands:

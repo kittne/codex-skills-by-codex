@@ -53,6 +53,7 @@ description: >
 ## Environment and Global Dependencies
 - Use `globalDependencies` for root configs that impact many tasks.
 - Use `globalEnv` only for variables with broad task impact.
+- Keep env mode strict by default; use loose mode only for short-lived debugging with explicit rollback.
 - Use task `inputs` for `.env` files; do not rely on removed `dotEnv`/`globalDotEnv` keys.
 - Keep per-task env lists minimal and explicit.
 - Avoid broad wildcard env strategies that over-invalidate cache.

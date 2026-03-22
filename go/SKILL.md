@@ -76,6 +76,7 @@ description: >
 - Run `go vet ./...` and a linter suite (e.g., golangci-lint/staticcheck) when configured.
 - Keep CI on supported Go release lines (current and previous major per Go release policy).
 - When bumping `go` or `toolchain` via `go get go@...`, run `go mod tidy` to normalize module metadata.
+- For Go 1.24+, track tool dependencies with the `tool` directive in `go.mod` instead of ad-hoc install scripts.
 
 Common commands:
 ```bash

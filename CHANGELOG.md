@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-22
+
+### Skills updates
+- Updated `nginx` HTTP guidance to avoid deprecated `listen ... http2` usage and removed HTTP/2 server-push directives.
+- Updated `keycloak` admin/OIDC guidance to avoid the deprecated `/registrations` initiation endpoint and use standards-based `prompt=create`.
+- Updated `go` module tooling guidance to track tool dependencies via the Go 1.24+ `tool` directive in `go.mod`.
+- Updated `docker` CI tooling guidance to generate SBOM and provenance attestations with `buildx`.
+- Updated `turborepo` env guidance to keep strict env mode as the default and treat loose mode as temporary debugging only.
+
 ## 2026-03-20
 
 ### Skills updates

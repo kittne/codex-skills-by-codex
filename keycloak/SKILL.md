@@ -59,6 +59,7 @@ description: >
 - Keep backup/restore workflows tested before upgrades.
 - Validate client policy controls for redirect enforcement.
 - Prefer RFC 7662 token introspection (`/token/introspect`); the legacy `/validate` endpoint is deprecated.
+- Do not build new flows on `/realms/<realm>/protocol/openid-connect/registrations`; prefer OIDC-standard registration initiation with `prompt=create`.
 
 ### Basic Verification
 ```bash
