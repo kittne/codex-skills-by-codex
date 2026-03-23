@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-23
+
+### Skills updates
+- Updated `tesseract-ocr` engine guidance to prefer LSTM (`--oem 1`) and call out `tessdata_fast`/`tessdata_best` legacy-OEM incompatibility.
+- Updated `filesystem` OpenZFS replication guidance with receive-resume token recovery (`zfs send -t`) and `zfs recv -F` drill requirements.
+
 ## 2026-03-22
 
 ### Skills updates

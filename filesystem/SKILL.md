@@ -34,6 +34,7 @@ description: >
 ## Snapshot and Replication Patterns
 - Create immutable/read-only snapshots for incremental replication baselines.
 - Use incremental send/receive where supported to reduce transfer cost.
+- For OpenZFS replication interruptions, use receive resume tokens (`zfs send -t <token>`) instead of restarting full streams.
 - Protect critical snapshots with holds/pins when available.
 - Keep dataset/subvolume layout designed for restore granularity.
 
@@ -42,6 +43,8 @@ description: >
 # OpenZFS
 zfs snapshot pool/data@daily-2026-02-18
 zfs send -i pool/data@daily-2026-02-17 pool/data@daily-2026-02-18 | ssh backup "zfs receive backuppool/data"
+zfs get receive_resume_token backuppool/data
+zfs send -t <resume_token> | ssh backup "zfs receive -s backuppool/data"
 
 # Btrfs
 btrfs subvolume snapshot -r /data /snapshots/data-2026-02-18
@@ -57,6 +60,7 @@ btrfs subvolume snapshot -r /data /snapshots/data-2026-02-18
 
 ## Restore Drills and Verification
 - Test file-level, directory-level, and full-volume restores.
+- For replication targets, test `zfs recv -F` rollback behavior in non-production drills before using it in incident recovery.
 - For restic restores, choose `--overwrite` mode explicitly (`always`, `if-changed`, `if-newer`, `never`).
 - Use `restic restore --dry-run -vv` before any restore that includes `--delete`.
 - Measure real recovery time against RTO targets.

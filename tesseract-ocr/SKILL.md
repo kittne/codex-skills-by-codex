@@ -33,7 +33,9 @@ description: >
 
 ## Segmentation and Engine Tuning
 - Choose PSM per layout type (`6` block, `7` line, `11` sparse text).
+- Prefer `--oem 1` (LSTM) for modern pipelines unless a legacy-model constraint is explicit.
 - Use OEM settings aligned with installed model support.
+- If using `tessdata_fast` or `tessdata_best`, do not use legacy-only modes (`--oem 0`/`--oem 2`).
 - Preserve interword spacing when layout fidelity matters.
 - Disable dictionaries for serials/codes/non-language text.
 - Use character whitelists for constrained fields.
@@ -47,6 +49,7 @@ tesseract numbers.png output -c tessedit_char_whitelist=0123456789
 
 ## Language and Model Management
 - Install only required language packs for each workload.
+- Treat `tessdata` (legacy-capable) and `tessdata_fast`/`tessdata_best` (LSTM-only) as different operating modes.
 - Route documents by language when multilingual accuracy is critical.
 - Keep model versioning pinned for reproducible output.
 - Revalidate after any language pack upgrade.
