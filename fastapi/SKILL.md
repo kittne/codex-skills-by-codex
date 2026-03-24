@@ -71,8 +71,8 @@ async def lifespan(app: FastAPI):
 - Define separate input and output schemas.
 - Use response models consistently to prevent accidental field leakage.
 - Allow `None` explicitly in `response_model` (for example `Union[Model, None]`) if handlers can return it.
-- Avoid adding new `pydantic.v1` models; treat mixed v1/v2 usage as temporary migration state and plan removal.
-- Avoid Python 3.14 + `pydantic.v1` combinations; Pydantic v1 support is dropped on 3.14 and FastAPI deprecates v1 compatibility for near-term removal.
+- Avoid adding new `pydantic.v1` models; FastAPI 0.126 removed direct Pydantic v1 support and the shim path is migration-only.
+- Avoid Python 3.14 + `pydantic.v1` combinations; Pydantic v1 support is dropped on 3.14 and remaining compatibility shims are deprecated for removal.
 - Enable strict validation and explicit field constraints.
 - Keep internal ORM models out of API boundary payloads.
 - Version schema changes intentionally and document deprecations.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-03-24
+
+### Skills updates
+- Updated `fastapi` migration guidance to explicitly reflect FastAPI 0.126 removing direct Pydantic v1 support and to keep `pydantic.v1` usage migration-only.
+
 ## 2026-03-23
 
 ### Skills updates
