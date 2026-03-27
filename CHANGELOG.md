@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-03-27
+
+### Skills updates
+- Updated `next.js` migration guidance to include Next.js 16 `experimental.dynamicIO` to `cacheComponents` config replacement.
+- Updated `typescript` compiler guidance to target `module: "node20"` for Node 20+ runtimes.
+
 ## 2026-03-24
 
 ### Skills updates

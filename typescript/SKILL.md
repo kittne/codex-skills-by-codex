@@ -36,7 +36,7 @@ description: >
 - Remove deprecated `importsNotUsedAsValues`; use `verbatimModuleSyntax` and lint rules for import hygiene.
 - Align with TS 5.9+ defaults for new projects (`module: "nodenext"`, `target: "esnext"`, `moduleDetection: "force"`).
 - Avoid deprecated compiler options/targets (for example ES3 and legacy suppression flags) to stay compatible with TS 6/7 timelines.
-- For Node 24 targets, prefer `module: "node20"` once your TypeScript baseline supports it; otherwise use `nodenext`.
+- For Node 20+ runtimes, prefer `module: "node20"` once your TypeScript baseline supports it; otherwise use `nodenext`.
 - Enable `noUncheckedSideEffectImports` to catch unresolved side-effect imports early.
 - Avoid deprecated resolution modes (`classic`, legacy `node10`) and stale baseUrl patterns that are being removed in future majors.
 
