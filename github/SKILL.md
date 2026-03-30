@@ -93,6 +93,7 @@ gh release create v1.4.0 --generate-notes
 - Use concurrency controls to prevent conflicting deploys.
 - Set job timeouts and fail-fast defaults where sensible.
 - Set explicit `permissions` per workflow/job and keep `GITHUB_TOKEN` scopes minimal.
+- Assume unspecified workflow permissions become `none`, and grant only the scopes each job truly needs.
 
 ## Dependency and Supply Chain Management
 - Keep lockfiles committed and deterministic.

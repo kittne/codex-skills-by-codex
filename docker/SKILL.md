@@ -57,6 +57,7 @@ description: >
 - Drop Linux capabilities and use read-only filesystems where possible.
 - Pin image tags and avoid `latest` in production.
 - Use the Compose Specification (`services:` root) and avoid legacy top-level `version:` keys.
+- For Compose builds, use `build.sbom` and `build.provenance` when your supply-chain policy requires attestations.
 
 ## Compose Review Checklist (High Signal)
 - Exposure:

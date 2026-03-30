@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-03-30
+
+### Skills updates
+- Updated `authentik` redirect guidance to require post-migration verification of per-URI `strict` vs `regex` comparison mode.
+- Updated `docker` Compose guidance to include `build.sbom` and `build.provenance` for attestation-aware builds.
+- Updated `github` Actions guidance to state that unspecified `permissions` should be treated as `none` and explicitly minimized.
+
 ## 2026-03-27
 
 ### Skills updates

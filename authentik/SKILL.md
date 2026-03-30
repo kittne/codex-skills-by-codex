@@ -49,6 +49,7 @@ description: >
 - Validate OIDC discovery endpoint and JWKS availability.
 - Test callback and logout URLs in every environment.
 - Use strict redirect validation for internet-facing clients.
+- On upgrades affected by CVE-2024-52289 fixes, re-check each redirect URI comparison mode (`strict` vs `regex`) after migration.
 - Ensure clock sync across IdP and relying parties.
 - Explicitly document offline_access usage and revocation behavior.
 
